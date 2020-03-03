@@ -1,6 +1,7 @@
 <template>
   <div style="height:100%;width:100%;">
     <input type="button" @click="loadData" value="获取" />
+    <input type="button" @click="heatMap" value="绘制" />
     <div ref="basicMapbox" :style="mapSize"></div>
   </div>
 </template>
@@ -27,13 +28,39 @@ export default {
         "pk.eyJ1IjoiY2l2aXRhc3YiLCJhIjoiY2s3YXByZWltMDBydjNubjJnbXZkM3o0YyJ9.npjfP2uX8YHUtd2uOm6cJg";
       this.map = new mapboxgl.Map({
         container: this.$refs.basicMapbox,
-        style: "mapbox://styles/mapbox/dark-v10"
+        style: "mapbox://styles/mapbox/dark-v10",
+        center: [114, 38.54],
+        zoom: 6
       });
+      // 地图导航
+      var nav = new mapboxgl.NavigationControl();
+      this.map.addControl(nav, "top-left");
+      // 比例尺
+      var scale = new mapboxgl.ScaleControl({
+        maxWidth: 80,
+        unit: "imperial"
+      });
+      this.map.addControl(scale);
+      scale.setUnit("metric");
+      // 全图
+      this.map.addControl(new mapboxgl.FullscreenControl());
+      // 定位
+      this.map.addControl(
+        new mapboxgl.GeolocateControl({
+          positionOptions: {
+            enableHighAccuracy: true
+          },
+          trackUserLocation: true
+        })
+      );
+      // console.log(map)
     },
     ...mapActions("virus", ["getAllVirus"]),
     loadData() {
       // 发送请求获得数据
       this.getAllVirus();
+    },
+    heatMap() {
       // 添加geojson格式数据
       this.map.addSource("virus", {
         type: "geojson",

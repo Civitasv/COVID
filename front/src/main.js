@@ -7,7 +7,7 @@ import ViewUI from "view-design"
 // 引入css
 import 'view-design/dist/styles/iview.css'
 import echarts from "echarts"
-
+import 'mapbox-gl/dist/mapbox-gl.css'
 Vue.config.productionTip = false
 // 安装ViewUI
 Vue.use(ViewUI)
