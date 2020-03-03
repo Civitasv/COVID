@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gis.application.mapper.VirusMapper">
+
+    <insert id="insertHistoryVirus" parameterType="Virus" flushCache="true" timeout="20" useGeneratedKeys="true"
+            keyProperty="id">
+        <selectKey keyProperty="id" resultType="Long" order="BEFORE">
+            SELECT nextval('history_id_seq'::regclass)
+        </selectKey>
+        insert into history_virus(public_time,lat,lng,origin,new_diagnosis,new_recovery,new_death,location)
+        values
+        (#{publicTime},#{lat},#{lng},#{origin},#{newDiagnosis},#{newRecovery},#{newDeath},ST_GeomFromText(#{location},
+        4326))
+    </insert>
+
+    <insert id="insertRecentVirus" parameterType="Virus" flushCache="true" timeout="20" useGeneratedKeys="true"
+            keyProperty="id">
+        <selectKey keyProperty="id" resultType="Long" order="BEFORE">
+            SELECT nextval('recent_id_seq'::regclass)
+        </selectKey>
+        insert into recent_virus(public_time,lat,lng,origin,new_diagnosis,new_recovery,new_death,location)
+        values
+        (#{publicTime},#{lat},#{lng},#{origin},#{newDiagnosis},#{newRecovery},#{newDeath},ST_GeomFromText(#{location},
+        4326))
+    </insert>
+
+    <update id="updateVirusOriginByID">
+         update history_virus set
+            origin = #{origin}
+          where id = #{id}
+    </update>
+
+    <select id="getAllOrigin" resultType="Map">
+        select id,origin from history_virus
+    </select>
+
+    <select id="getVirusByTime" resultType="Map">
+        select id,lat,lng,origin,new_diagnosis,new_recovery,new_death from history_virus where public_time = #{publicTime}
+    </select>
+
+    <select id="getAllVirus" resultType="Map">
+        select id,lat,lng,origin,new_diagnosis,new_recovery,new_death from history_virus
+    </select>
+</mapper>

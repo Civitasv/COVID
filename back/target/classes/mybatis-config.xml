@@ -6,10 +6,10 @@
 <configuration>
     <!-- 配置别名 -->
     <typeAliases>
-        <!--<typeAlias type="com.gis.application.model.Label" alias="Label"/>-->
+        <typeAlias type="com.gis.application.model.Virus" alias="Virus"/>
     </typeAliases>
     <!-- 配置mapper -->
     <mappers>
-        <!--<mapper resource="com/gis/application/mapper/Mapper.xml"/>-->
+        <mapper resource="com/gis/application/mapper/VirusMapper.xml"/>
     </mappers>
 </configuration>

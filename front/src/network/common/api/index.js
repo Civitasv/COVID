@@ -1,8 +1,8 @@
 /**
  * api接口的出口
  */
-import home from "./home"
+import virus from "./virus"
 
 export default ({
-    home
+    virus
 })

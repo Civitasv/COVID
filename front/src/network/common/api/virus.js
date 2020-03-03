@@ -2,12 +2,12 @@ import base from "./base"
 import axios from "../request" // 导入axios实例
 // import qs from "qs"
 
-const article = {
+const virus = {
     // 数据
-    getAllArticles() {
-        return axios.get(`${base.blog}/articles`);
+    getAllVirus() {
+        return axios.get(`${base.blog}/getAllVirus`);
     }
     // 其它...
 }
 
-export default article;
+export default virus;
