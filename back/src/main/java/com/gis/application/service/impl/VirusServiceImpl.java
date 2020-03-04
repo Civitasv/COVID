@@ -20,27 +20,9 @@ public class VirusServiceImpl implements VirusService {
     }
 
     @Override
-    public int insertHistoryVirus(Virus virus) {
+    public int insertVirus(Virus virus) {
         VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
-        return mapper.insertHistoryVirus(virus);
-    }
-
-    @Override
-    public int insertRecentVirus(Virus virus) {
-        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
-        return mapper.insertRecentVirus(virus);
-    }
-
-    @Override
-    public int updateVirusOriginByID(String origin, int id) {
-        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
-        return mapper.updateVirusOriginByID(origin,id);
-    }
-
-    @Override
-    public List<HashMap<String, Object>> getAllOrigin() {
-        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
-        return mapper.getAllOrigin();
+        return mapper.insertVirus(virus);
     }
 
     @Override
@@ -53,5 +35,11 @@ public class VirusServiceImpl implements VirusService {
     public List<HashMap<String, Object>> getAllVirus() {
         VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
         return mapper.getAllVirus();
+    }
+
+    @Override
+    public int updateData() {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.updateData();
     }
 }

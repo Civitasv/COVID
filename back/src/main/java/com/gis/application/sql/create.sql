@@ -1,4 +1,4 @@
-drop table history_virus;
+drop table virus;
 
 create table history_virus(
                               id serial PRIMARY KEY NOT NULL,
@@ -31,7 +31,7 @@ CREATE SEQUENCE id_seq
     NO MAXVALUE
     CACHE 1;
 
-alter table history_virus alter column id set default nextval('id_seq');
+alter table virus alter column id set default nextval('id_seq');
 alter table recent_virus alter column id set default nextval('id_seq');
 
 

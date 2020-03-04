@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONObject;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,34 +50,30 @@ public class ExcelUtil {
     /**
      * 读取Excel文件内容
      *
-     * @param fileName 要读取的Excel文件所在路径
+     * @param file 要读取的Excel文件所在路径
      * @return 读取结果列表，读取失败时返回null
      */
-    public static List<Virus> readExcel(String fileName) {
+    public static List<Virus> readExcel(MultipartFile file) {
 
         Workbook workbook = null;
-        FileInputStream inputStream = null;
+        InputStream inputStream = null;
 
         try {
-            // 获取Excel后缀名
-            String fileType = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
-            // 获取Excel文件
-            File excelFile = new File(fileName);
-            if (!excelFile.exists()) {
-                logger.warning("指定的Excel文件不存在！");
-                return null;
-            }
+            // 获取文件名
+            String fileName = file.getOriginalFilename();
+            // 获取文件的后缀名
+            String suffixName = fileName.substring(fileName.lastIndexOf(".")+1);
 
             // 获取Excel工作簿
-            inputStream = new FileInputStream(excelFile);
-            workbook = getWorkbook(inputStream, fileType);
+            inputStream = file.getInputStream();
+            workbook = getWorkbook(inputStream, suffixName);
 
             // 读取excel中的数据
             List<Virus> resultDataList = parseExcel(workbook);
 
             return resultDataList;
         } catch (Exception e) {
-            logger.warning("解析Excel失败，文件名：" + fileName + " 错误信息：" + e.getMessage());
+            logger.warning("解析Excel失败，文件名：" + file.getOriginalFilename() + " 错误信息：" + e.getMessage());
             return null;
         } finally {
             try {
@@ -183,7 +180,6 @@ public class ExcelUtil {
             resultData.setCity("");
             resultData.setDistrict("");
         }
-        resultData.setOrigin(resultData.getCountry()+","+resultData.getProvince()+","+resultData.getCity()+","+resultData.getDistrict());
 
         // 获取新增确诊
         cell = row.getCell(cellNum++);
@@ -196,12 +192,11 @@ public class ExcelUtil {
         resultData.setNewDeath((int) (cell.getNumericCellValue()));
         // 获取lat，lng
         JSONObject lnglat = GaodeHttp.getPosition(resultData.getCountry()+resultData.getProvince()+resultData.getCity());
-        // 转为WGS84
+        // GCJ02转为WGS84坐标
         double[] wgs84 = Transform.transformGCJ02ToWGS84(lnglat.getDouble("lng"), lnglat.getDouble("lat"));
         resultData.setLat(wgs84[1]);
         resultData.setLng(wgs84[0]);
         resultData.setLocation(GISUtil.geometryToString(resultData.getLng(), resultData.getLat()));
-
         return resultData;
     }
 }

@@ -1,5 +1,4 @@
 import com.gis.application.util.GaodeHttp;
-import com.gis.application.util.VirusDataUtil;
 import org.json.JSONObject;
 import org.junit.Test;
 

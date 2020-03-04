@@ -5,9 +5,12 @@ import axios from "../request" // 导入axios实例
 const virus = {
     // 数据
     getAllVirus() {
-        return axios.get(`${base.blog}/getAllVirus`);
+        return axios.get(`${base.virus}/getAllVirus`);
     }
-    // 其它...
+    // 上传文件
+    /*uploadData(file) {
+        return axios.post(`${base.virus}/upload`, file)
+    }*/
 }
 
 export default virus;

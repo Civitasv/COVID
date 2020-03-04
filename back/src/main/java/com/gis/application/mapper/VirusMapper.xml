@@ -5,43 +5,31 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gis.application.mapper.VirusMapper">
 
-    <insert id="insertHistoryVirus" parameterType="Virus" flushCache="true" timeout="20" useGeneratedKeys="true"
+    <!-- 插入数据 -->
+    <insert id="insertVirus" parameterType="Virus" flushCache="true" timeout="20" useGeneratedKeys="true"
             keyProperty="id">
         <selectKey keyProperty="id" resultType="Long" order="BEFORE">
-            SELECT nextval('history_id_seq'::regclass)
+            SELECT nextval('id_seq'::regclass)
         </selectKey>
-        insert into history_virus(public_time,lat,lng,origin,new_diagnosis,new_recovery,new_death,location)
+        insert into
+        virus(public_time,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,location)
         values
-        (#{publicTime},#{lat},#{lng},#{origin},#{newDiagnosis},#{newRecovery},#{newDeath},ST_GeomFromText(#{location},
+        (#{publicTime},#{lat},#{lng},#{country},#{province},#{city},#{district},#{newDiagnosis},#{newRecovery},#{newDeath},ST_GeomFromText(#{location},
         4326))
     </insert>
 
-    <insert id="insertRecentVirus" parameterType="Virus" flushCache="true" timeout="20" useGeneratedKeys="true"
-            keyProperty="id">
-        <selectKey keyProperty="id" resultType="Long" order="BEFORE">
-            SELECT nextval('recent_id_seq'::regclass)
-        </selectKey>
-        insert into recent_virus(public_time,lat,lng,origin,new_diagnosis,new_recovery,new_death,location)
-        values
-        (#{publicTime},#{lat},#{lng},#{origin},#{newDiagnosis},#{newRecovery},#{newDeath},ST_GeomFromText(#{location},
-        4326))
-    </insert>
-
-    <update id="updateVirusOriginByID">
-         update history_virus set
-            origin = #{origin}
-          where id = #{id}
-    </update>
-
-    <select id="getAllOrigin" resultType="Map">
-        select id,origin from history_virus
-    </select>
-
+    <!--根据时间戳获得数据-->
     <select id="getVirusByTime" resultType="Map">
-        select id,lat,lng,origin,new_diagnosis,new_recovery,new_death from history_virus where public_time = #{publicTime}
+        select id,lat,lng,origin,new_diagnosis,new_recovery,new_death from virus where public_time = #{publicTime}
     </select>
 
+    <!--获得所有数据-->
     <select id="getAllVirus" resultType="Map">
-        select id,lat,lng,origin,new_diagnosis,new_recovery,new_death from history_virus
+        select id,lat,lng,origin,new_diagnosis,new_recovery,new_death from virus
     </select>
+
+    <!-- 更新数据 -->
+    <update id="updateData">
+        <include refid="com.gis.application.mapper.update.updateData"></include>
+    </update>
 </mapper>

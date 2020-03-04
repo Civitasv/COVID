@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Virus {
+
     // 自增ID
     private Long id;
 
@@ -25,9 +26,6 @@ public class Virus {
     // 新增死亡
     private int newDeath;
 
-    // 地址
-    // private String origin;
-
     // 国家
     private String country;
 
@@ -40,10 +38,7 @@ public class Virus {
     // 区县
     private String district;
 
-    //
-    private String origin;
-
-    // 位置字符串
+    // 位置字符串，Postgis字段
     private String location;
 
     public Virus(int publicTime, double lat, double lng, int newDiagnosis, int newRecovery, int newDeath, String country, String province, String city, String district) {
@@ -57,8 +52,6 @@ public class Virus {
         this.province = province;
         this.city = city;
         this.district = district;
-        this.origin = this.country+","+this.province+","+this.city+","+this.district;
-
     }
 
     public Virus() {
