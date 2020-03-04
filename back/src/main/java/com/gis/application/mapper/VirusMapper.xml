@@ -20,12 +20,12 @@
 
     <!--根据时间戳获得数据-->
     <select id="getVirusByTime" resultType="Map">
-        select id,lat,lng,origin,new_diagnosis,new_recovery,new_death from virus where public_time = #{publicTime}
+        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death from virus where public_time = #{publicTime}
     </select>
 
     <!--获得所有数据-->
     <select id="getAllVirus" resultType="Map">
-        select id,lat,lng,origin,new_diagnosis,new_recovery,new_death from virus
+        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death from virus
     </select>
 
     <!-- 更新数据 -->

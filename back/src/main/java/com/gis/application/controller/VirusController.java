@@ -12,13 +12,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * restful style
+ */
 @RestController
+@RequestMapping("/virus")
 public class VirusController {
 
     @Autowired
     VirusService service;
 
-    @PostMapping("/upload")
+    @PostMapping("")
     public String upload(MultipartFile file) {
         if (Objects.isNull(file) || file.isEmpty()) {
             return "文件为空，请重新上传";
@@ -43,9 +47,9 @@ public class VirusController {
         return "数据录入完成！";
     }
 
-    @GetMapping("/getVirusByTime")
-    public String getVirusByTime() {
-        List<HashMap<String, Object>> list = service.getVirusByTime(43891);
+    @GetMapping(value="/{time}")
+    public String getVirusByTime(@PathVariable int time) {
+        List<HashMap<String, Object>> list = service.getVirusByTime(time);
 
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < list.size(); i++) {
@@ -56,7 +60,7 @@ public class VirusController {
         return jsonArray.toString();
     }
 
-    @GetMapping("/getAllVirus")
+    @GetMapping("")
     public String getAllVirus() {
         List<HashMap<String, Object>> list = service.getAllVirus();
         // 组装GeoJSON数据
@@ -69,7 +73,10 @@ public class VirusController {
             JSONObject jsonObject1 = new JSONObject();
             jsonObject1.put("type", "Feature");
             JSONObject jsonObject2 = new JSONObject();
-            jsonObject2.put("origin", hashMap.get("origin"));
+            jsonObject2.put("country", hashMap.get("country"));
+            jsonObject2.put("province", hashMap.get("province"));
+            jsonObject2.put("city", hashMap.get("city"));
+            jsonObject2.put("district", hashMap.get("district"));
             jsonObject2.put("new_diagnosis", hashMap.get("new_diagnosis"));
             jsonObject2.put("new_recovery", hashMap.get("new_recovery"));
             jsonObject2.put("new_death", hashMap.get("new_death"));

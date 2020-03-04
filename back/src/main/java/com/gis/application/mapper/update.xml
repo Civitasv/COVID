@@ -5,7 +5,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gis.application.mapper.update">
     <sql id="updateData">
-       update virus  set country = replace(country , '河南' , '中国');
+       update virus  set city = replace(city , '地市明细不详' , '');
 update virus
 set lng=127.739326,
     lat=35.914773,

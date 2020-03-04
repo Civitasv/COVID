@@ -7,7 +7,8 @@
       :format="['xls','xlsx']"
       :on-success="handleSuccess"
       :on-format-error="handleFormatError"
-      action="http://localhost:8080/upload"
+      action="http://localhost:8080/virus"
+      method="post"
     >
       <div style="padding: 20px 0">
         <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
