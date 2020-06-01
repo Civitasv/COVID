@@ -1,5 +1,8 @@
 package com.gis.application.util;
 
+/**
+ * 坐标转换工具
+ */
 public class Transform {
 
 	private static final double x_PI = 3.14159265358979324 * 3000.0 / 180.0;

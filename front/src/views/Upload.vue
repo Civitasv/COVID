@@ -7,7 +7,7 @@
       :format="['xls','xlsx']"
       :on-success="handleSuccess"
       :on-format-error="handleFormatError"
-      action="http://localhost:8080/virus"
+      action="http://localhost/virus/"
       method="post"
     >
       <div style="padding: 20px 0">

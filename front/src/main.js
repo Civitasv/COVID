@@ -8,12 +8,14 @@ import ViewUI from "view-design"
 import 'view-design/dist/styles/iview.css'
 import echarts from "echarts"
 import 'mapbox-gl/dist/mapbox-gl.css'
+import VueiClient from '@supermap/vue-iclient-mapboxgl';
+import "./assets/css/app.css"
+Vue.use(VueiClient);
 Vue.config.productionTip = false
 // 安装ViewUI
 Vue.use(ViewUI)
 // 全局作用域
 Vue.prototype.$echarts = echarts
-
 new Vue({
   store,
   router,

@@ -12,24 +12,82 @@
             SELECT nextval('id_seq'::regclass)
         </selectKey>
         insert into
-        virus(public_time,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,location)
+        virus(public_time,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,location,description)
         values
         (#{publicTime},#{lat},#{lng},#{country},#{province},#{city},#{district},#{newDiagnosis},#{newRecovery},#{newDeath},ST_GeomFromText(#{location},
-        4326))
+        4326),#{description})
     </insert>
 
-    <!--根据时间戳获得数据-->
-    <select id="getVirusByTime" resultType="Map">
-        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death from virus where public_time = #{publicTime}
+    <!-- 查询lat为0的 -->
+    <select id="selectLatLngEqualZero" resultType="Map">
+        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,description from virus where lat=0 or lng=0 and country='中国'
     </select>
 
     <!--获得所有数据-->
     <select id="getAllVirus" resultType="Map">
-        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death from virus
+        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,description from virus order by id asc
     </select>
 
-    <!-- 更新数据 -->
-    <update id="updateData">
-        <include refid="com.gis.application.mapper.update.updateData"></include>
+    <!--根据时间戳获得数据-->
+    <select id="getVirusByTime" resultType="Map">
+        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,description from virus where public_time = #{publicTime}
+    </select>
+
+    <!-- **************************************************************************分组查询********************************************************************************** -->
+    <!-- 按日期进行分组 -->
+    <select id="getVirusDivideByTime" resultType="Map">
+         select public_time , sum(new_diagnosis) as new_diagnosis,sum(new_recovery) as new_recovery,sum(new_death) as new_death
+            from virus
+            group by public_time
+            order by public_time asc
+    </select>
+
+    <!--按国家进行分组-->
+    <select id="getVirusDivideByCountry" resultType="Map">
+        select country as name, sum(new_recovery) as value
+            from virus
+            group by name
+            order by value Desc
+            limit 10
+    </select>
+
+    <select id="getProvinceData" resultType="Map">
+        select province , sum(new_diagnosis) as new_diagnosis,sum(new_recovery) as new_recovery,sum(new_death) as new_death
+            from virus where country  = '中国'
+            group by province
+    </select>
+
+    <!-- 按国家更新数据 -->
+    <update id="updateVirusByCountry">
+        <bind name="pattern" value="'%' + country + '%'"/>
+        update virus
+        set lng = #{lng},
+        lat = #{lat},
+        location=ST_GeomFromText('POINT(${lng} ${lat})', 4326)
+        where country like #{pattern};
+    </update>
+
+    <!-- 按省份更新数据 -->
+    <update id="updateVirusByProvince">
+        <bind name="pattern" value="'%' + province + '%'"/>
+        update virus
+        set lng = #{lng},
+        lat = #{lat},
+        location=ST_GeomFromText('POINT(${lng} ${lat})', 4326)
+        where province like #{pattern} and city="";
+    </update>
+
+    <!-- 按ID更新数据 -->
+    <update id="updateVirusByID">
+        update virus
+        set lng = #{lng},
+        lat = #{lat},
+        location=ST_GeomFromText('POINT(${lng} ${lat})', 4326)
+        where id=#{id}
+    </update>
+
+    <!-- 更新ID -->
+    <update id="updateID">
+        update virus set id = #{id} where id= #{ids}
     </update>
 </mapper>

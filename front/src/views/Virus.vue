@@ -1,29 +1,37 @@
 <template>
   <div style="height:100%;width:100%;">
-    <div class="data">
-      <Button type="success" class="btn" ghost @click="loadData">数据获得</Button>
-      <Button type="primary" class="btn" ghost @click="heatMap">绘制热力图</Button>
-      <Button type="warning" class="btn" ghost @click="removeHeat">清除热力图</Button>
+    <div class="descrip">
+      <div class="title">
+        <span>新型冠状病毒疫情</span>
+      </div>
+      <div class="box">
+        <div class="redbox">
+          <p class="text">
+            <span>确诊</span>
+          </p>
+          <p class="diagnosis">
+            <span>{{diagnosis}}</span>
+          </p>
+        </div>
+        <div class="greenbox">
+          <p class="text">
+            <span>治愈</span>
+          </p>
+          <p class="recovery">
+            <span>{{recovery}}</span>
+          </p>
+        </div>
+        <div class="graybox">
+          <p class="text">
+            <span>死亡</span>
+          </p>
+          <p class="death">
+            <span>{{death}}</span>
+          </p>
+        </div>
+      </div>
     </div>
-    <div id="menu">
-      <input
-        id="streets-v11"
-        type="radio"
-        name="rtoggle"
-        value="streets"
-        checked="checked"
-        @click="swichLayer"
-      />
-      <label for="streets">streets</label>
-      <input id="light-v10" type="radio" name="rtoggle" value="light" @click="swichLayer" />
-      <label for="light">light</label>
-      <input id="dark-v10" type="radio" name="rtoggle" value="dark" @click="swichLayer" />
-      <label for="dark">dark</label>
-      <input id="outdoors-v11" type="radio" name="rtoggle" value="outdoors" @click="swichLayer" />
-      <label for="outdoors">outdoors</label>
-      <input id="satellite-v9" type="radio" name="rtoggle" value="satellite" @click="swichLayer" />
-      <label for="satellite">satellite</label>
-    </div>
+
     <div ref="basicMapbox" :style="mapSize"></div>
   </div>
 </template>
@@ -33,36 +41,50 @@
 
 <script>
 import mapboxgl from "mapbox-gl";
+import MapboxLanguage from "@mapbox/mapbox-gl-language";
 import { mapState, mapActions } from "vuex";
 
 export default {
   data() {
     return {
       map: null,
-      loaded: false,
       heatID: "virus-heat",
-      pointID: "virus-point",
-      sourceID: "virus-data"
+      clusterID: "cluster-point",
+      clusterCountID: "cluster-count",
+      sourceID: "virus-data",
+      visualData: "new_diagnosis",
+      diagnosis: 0,
+      recovery: 0,
+      death: 0
     };
   },
   mounted() {
     this.init();
+    this.loadData();
   },
   methods: {
     init() {
       mapboxgl.accessToken =
-        "pk.eyJ1IjoiY2l2aXRhc3YiLCJhIjoiY2s3YXByZWltMDBydjNubjJnbXZkM3o0YyJ9.npjfP2uX8YHUtd2uOm6cJg";
+        "pk.eyJ1IjoiY2l2aXRhc3YiLCJhIjoiY2s3YXBvdDU1MTZpdDNlcDVhb3FrbjdtaiJ9.kLk_w4wIjIQ6dunGULViqw";
       this.map = new mapboxgl.Map({
         container: this.$refs.basicMapbox,
-        style: "mapbox://styles/mapbox/streets-v11",
+        style: "mapbox://styles/mapbox/light-v9",
         center: [114, 38.54],
-        zoom: 6
+        zoom: 3
       });
+      mapboxgl.setRTLTextPlugin(
+        "https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js"
+      );
+      this.map.addControl(
+        new MapboxLanguage({
+          defaultLanguage: "zh"
+        })
+      );
       // 地图导航
-      var nav = new mapboxgl.NavigationControl();
-      this.map.addControl(nav, "top-left");
+      //var nav = new mapboxgl.NavigationControl();
+      //this.map.addControl(nav, "top-left");
       // 比例尺
-      var scale = new mapboxgl.ScaleControl({
+      /*var scale = new mapboxgl.ScaleControl({
         maxWidth: 80,
         unit: "imperial"
       });
@@ -79,176 +101,166 @@ export default {
           trackUserLocation: true
         })
       );
+      */
       // console.log(map)
     },
     ...mapActions("virus", ["getAllVirus"]),
-    loadData() {
+    async loadData() {
       // 发送请求获得数据
-      this.getAllVirus();
+      await this.getAllVirus();
+      this.heatMap();
+      this.calData();
     },
     heatMap() {
-      // 添加geojson格式数据
-      if (this.geoJSON == "") {
-        alert("请先加载数据");
-        return;
-      }
-      if (!this.loaded) {
-        this.map.addSource(this.sourceID, {
-          type: "geojson",
-          data: this.geoJSON
-        });
-        this.loaded = true;
+      this.map.addSource(this.sourceID, {
+        type: "geojson",
+        data: this.geoJSON
+      });
 
-        // 添加热力图图层
-        this.map.addLayer(
-          {
-            id: this.heatID,
-            type: "heatmap",
-            source: this.sourceID,
-            maxzoom: 9,
-            paint: {
-              // 使用new_diagnosis属性
-              "heatmap-weight": [
-                "interpolate",
-                ["linear"],
-                ["get", "new_diagnosis"],
-                0,
-                0,
-                6,
-                1
-              ],
-              "heatmap-intensity": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                0,
-                1,
-                9,
-                3
-              ],
-              // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
-              // Begin color ramp at 0-stop with a 0-transparancy color
-              // to create a blur-like effect.
-              "heatmap-color": [
-                "interpolate",
-                ["linear"],
-                ["heatmap-density"],
-                0,
-                "rgba(33,102,172,0)",
-                0.2,
-                "rgb(103,169,207)",
-                0.4,
-                "rgb(209,229,240)",
-                0.6,
-                "rgb(253,219,199)",
-                0.8,
-                "rgb(239,138,98)",
-                1,
-                "rgb(178,24,43)"
-              ],
-              // Adjust the heatmap radius by zoom level
-              "heatmap-radius": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                0,
-                2,
-                9,
-                20
-              ],
-              // Transition from heatmap to circle layer by zoom level
-              "heatmap-opacity": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                7,
-                1,
-                9,
-                0
-              ]
-            }
-          },
-          "waterway-label"
-        );
+      // 添加热力图图层
+      this.map.addLayer(
+        {
+          id: this.heatID,
+          type: "heatmap",
+          source: this.sourceID,
+          maxzoom: 7,
+          paint: {
+            // 使用new_diagnosis属性
+            "heatmap-weight": [
+              "interpolate",
+              ["linear"],
+              ["get", this.visualData],
+              0,
+              0,
+              1000,
+              1
+            ],
+            "heatmap-intensity": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              0,
+              3,
+              9,
+              5
+            ],
+            // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+            // Begin color ramp at 0-stop with a 0-transparancy color
+            // to create a blur-like effect.
+            "heatmap-color": [
+              "interpolate",
+              ["linear"],
+              ["heatmap-density"],
+              0,
+              "rgba(0, 0, 0, 0)",
+              0.1,
+              "#927903",
+              0.15,
+              "#ffd403",
+              1,
+              "red"
+            ],
+            // Adjust the heatmap radius by zoom level
+            "heatmap-radius": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              0,
+              2,
+              1,
+              4,
+              2,
+              8,
+              3,
+              16,
+              4,
+              32,
+              5,
+              64,
+              6,
+              128,
+              7,
+              256,
+              8,
+              512,
+              9,
+              1024
+            ],
+            // Transition from heatmap to circle layer by zoom level
+            "heatmap-opacity": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              5,
+              0.95,
+              6,
+              0
+            ]
+          }
+        },
+        "waterway-label"
+      );
+      /*
         // 添加圆圈图层
-        this.map.addLayer(
-          {
-            id: this.pointID,
-            type: "circle",
-            source: this.sourceID,
-            minzoom: 7,
-            paint: {
-              "circle-radius": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                7,
-                [
-                  "interpolate",
-                  ["linear"],
-                  ["get", "new_diagnosis"],
-                  1,
-                  1,
-                  6,
-                  4
-                ],
-                16,
-                [
-                  "interpolate",
-                  ["linear"],
-                  ["get", "new_diagnosis"],
-                  1,
-                  5,
-                  6,
-                  50
-                ]
-              ],
-              "circle-color": [
-                "interpolate",
-                ["linear"],
-                ["get", "new_diagnosis"],
-                1,
-                "rgba(33,102,172,0)",
-                2,
-                "rgb(103,169,207)",
-                3,
-                "rgb(209,229,240)",
-                4,
-                "rgb(253,219,199)",
-                5,
-                "rgb(239,138,98)",
-                6,
-                "rgb(178,24,43)"
-              ],
-              "circle-stroke-color": "white",
-              "circle-stroke-width": 1,
-              "circle-opacity": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                7,
-                0,
-                8,
-                1
-              ]
-            }
-          },
-          "waterway-label"
-        );
-      }
+        this.map.addLayer({
+          id: this.clusterID,
+          type: "circle",
+          source: this.sourceID,
+          filter: ["has", this.visualData],
+          minzoom: 5,
+          paint: {
+            "circle-radius": [
+              "step",
+              ["get", this.visualData],
+              20,
+              300,
+              30,
+              1000,
+              40
+            ],
+            "circle-color": [
+              "step",
+              ["get", this.visualData],
+              "#51bbd6",
+              20,
+              "#f1f075",
+              50,
+              "#f28cb1"
+            ],
+            "circle-opacity": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              5,
+              0,
+              6,
+              0.6
+            ]
+          }
+        });
+        // 添加计数
+        this.map.addLayer({
+          id: this.clusterCountID,
+          type: "symbol",
+          source: this.sourceID,
+          minzoom: 5,
+          filter: ["has", this.visualData],
+          layout: {
+            "text-field": "{" + this.visualData + "}",
+            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+            "text-size": 15
+          }
+        });
+        */
     },
-    removeHeat() {
-      if (this.loaded) {
-        this.map.removeLayer(this.heatID);
-        this.map.removeLayer(this.pointID);
-        this.map.removeSource(this.sourceID);
-        this.loaded = false;
+    calData() {
+      for (var i = 0; i < this.geoJSON.features.length; i++) {
+        this.diagnosis += this.geoJSON.features[i]["properties"][
+          "new_diagnosis"
+        ];
+        this.recovery += this.geoJSON.features[i]["properties"]["new_recovery"];
+        this.death += this.geoJSON.features[i]["properties"]["new_death"];
       }
-    },
-    swichLayer(layer) {
-      this.removeHeat();
-      var layerId = layer.target.id;
-      this.map.setStyle("mapbox://styles/mapbox/" + layerId);
     }
   },
   computed: {
@@ -268,26 +280,116 @@ export default {
 
 <style scoped>
 @import url("https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css");
-.data {
+.descrip .title {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font-size: 38px;
   position: absolute;
-  z-index: 1;
-  padding-left: 30px;
-  font-family: "Open Sans", sans-serif;
+  left: 20px;
+  top: 20px;
+  z-index: 99;
+}
+.box {
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5), -1px -1px 0 rgba(0, 0, 0, 0.5),
+    -1px 1px 0 rgba(0, 0, 0, 0.5), 1px -1px 0 rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 65px;
+  left: 20px;
+  width: 12%;
+  z-index: 99;
 }
 
-.data .btn {
-  margin: 20px;
+.redbox .text,
+.greenbox .text,
+.graybox .text {
+  text-align: left;
+  color: #fff;
+  margin: 10px 10px 0 0;
+  position: relative;
+  padding: 5px 0 5px 10px;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 700;
+  text-shadow: 1px 1px 1px #000, 1px 1px 1px #fff;
 }
-#menu {
-  z-index: 1;
+.redbox .text:before,
+.greenbox .text:before,
+.graybox .text:before {
   position: absolute;
-  right: 0px;
-  bottom: 30px;
-  background: #fff;
-  padding: 10px;
-  font-family: "Open Sans", sans-serif;
+  right: -10px;
+  bottom: 0;
+  content: "";
+
+  border-style: solid;
+  border-width: 5px;
+  width: 0;
+  height: 0;
+  pointer-events: none;
 }
-#menu label {
-  padding: 5px;
+.redbox .text:before {
+  border-bottom: 5px solid rgba(251, 103, 103, 0.5);
+  border-right: 5px solid rgba(251, 103, 103, 0.5);
+  border-color: rgba(251, 103, 103, 0.5) transparent transparent
+    rgba(251, 103, 103, 0.5);
+}
+.greenbox .text:before {
+  border-bottom: 5px solid rgba(40, 218, 111, 0.5);
+  border-right: 5px solid rgba(40, 218, 111, 0.5);
+  border-color: rgba(40, 218, 111, 0.5) transparent transparent
+    rgba(40, 218, 111, 0.5);
+}
+
+.graybox .text:before {
+  border-bottom: 5px solid rgba(148, 159, 165, 0.5);
+  border-right: 5px solid rgba(148, 159, 165, 0.5);
+  border-color: rgba(148, 159, 165, 0.5) transparent transparent
+    rgba(148, 159, 165, 0.5);
+}
+.redbox .text:after,
+.greenbox .text:after,
+.graybox .text:after {
+  position: absolute;
+  right: -10px;
+  bottom: 10px;
+  top: 0;
+  content: "";
+  width: 10px;
+  pointer-events: none;
+}
+.redbox .text:after {
+  background: rgba(251, 103, 103, 0.5);
+}
+.greenbox .text:after {
+  background: rgba(40, 218, 111, 0.5);
+}
+.graybox .text:after {
+  background: rgba(148, 159, 165, 0.5);
+}
+.redbox .text {
+  background: rgba(251, 103, 103, 0.5);
+  border-left: 5px solid #fb6767;
+}
+.greenbox .text {
+  background: rgba(40, 218, 111, 0.5);
+  border-left: 5px solid #28da6f;
+}
+.graybox .text {
+  background: rgba(148, 159, 165, 0.5);
+  border-left: 5px solid #949fa5;
+}
+.redbox .diagnosis,
+.greenbox .recovery,
+.graybox .death {
+  font-size: 30px;
+  margin: 5px 0;
+}
+.redbox .diagnosis {
+  color: #f99;
+}
+.greenbox .recovery {
+  color: #28ca68;
+}
+.graybox .death {
+  color: #dadada;
 }
 </style>

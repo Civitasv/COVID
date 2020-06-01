@@ -41,7 +41,10 @@ public class Virus {
     // 位置字符串，Postgis字段
     private String location;
 
-    public Virus(int publicTime, double lat, double lng, int newDiagnosis, int newRecovery, int newDeath, String country, String province, String city, String district) {
+    // 描述
+    private String description;
+
+    public Virus(int publicTime, double lat, double lng, int newDiagnosis, int newRecovery, int newDeath, String country, String province, String city, String district, String description) {
         this.publicTime = publicTime;
         this.lat = lat;
         this.lng = lng;
@@ -52,6 +55,7 @@ public class Virus {
         this.province = province;
         this.city = city;
         this.district = district;
+        this.description = description;
     }
 
     public Virus() {

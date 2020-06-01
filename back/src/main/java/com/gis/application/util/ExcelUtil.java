@@ -99,7 +99,7 @@ public class ExcelUtil {
     private static List<Virus> parseExcel(Workbook workbook) throws IOException {
         List<Virus> resultDataList = new ArrayList<>();
         // 解析sheet
-        for (int sheetNum = 0; sheetNum < workbook.getNumberOfSheets() - 1; sheetNum++) {
+        for (int sheetNum = 0; sheetNum < 1; sheetNum++) {
             Sheet sheet = workbook.getSheetAt(sheetNum);
 
             // 校验sheet是否合法
@@ -161,8 +161,12 @@ public class ExcelUtil {
         cell = row.getCell(cellNum++);
         String province = "", city = "";
         province = cell.getStringCellValue();
+
         cell = row.getCell(cellNum++);
         city = cell.getStringCellValue();
+        if("境外输入".equals(city.split("-")[0])){
+            city = "";
+        }
         boolean ifsuit = false;
         for (int j = 0; j < provinces.length; j++) {
             if (provinces[j].equals(province)) {

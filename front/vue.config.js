@@ -4,16 +4,15 @@ module.exports = {
     // 运行完即打开浏览器
     open: true,
     port: 3000,
-    /* 后端已经配置
     proxy: {
       '/api': {
-        target: 'localhost:8080', // 不要加http:
+        target: 'http://47.100.65.60/', // 不要加http:
         ws: true,
         changeOrigin: true,
         // rewrite path
         pathRewrite: { '^/api': '' }
       }
-    }*/
+    }
   },
   pages: {
     index: {
@@ -32,7 +31,5 @@ module.exports = {
     }
   },
 
-  publicPath: process.env.NODE_ENV === 'production'
-    ? '/vue-study/'
-    : '/'
+  publicPath: ""
 }

@@ -13,10 +13,10 @@ public class TimeUtil {
      * 计算excel时间值对应的日期
      * @return 日期
      */
-    public static Date transfromNumToDate(){
+    public static Date transfromNumToDate(int excel){
         Calendar c = new GregorianCalendar(1900,0,-1);
         Date d = c.getTime();
-        Date _d = DateUtils.addDays(d, 43891);
+        Date _d = DateUtils.addDays(d, excel);
         return _d;
     }
 
