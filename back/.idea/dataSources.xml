@@ -7,5 +7,11 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/tiny_gis</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="postgres@47.100.65.60" uuid="a487d09d-0fb6-4bda-93f8-76a13403ddce">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://47.100.65.60:5432/postgres</jdbc-url>
+    </data-source>
   </component>
 </project>

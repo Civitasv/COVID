@@ -11,5 +11,6 @@
     <!-- 配置mapper -->
     <mappers>
         <mapper resource="com/gis/application/mapper/VirusMapper.xml"/>
+        <mapper resource="com/gis/application/mapper/update.xml"/>
     </mappers>
 </configuration>
