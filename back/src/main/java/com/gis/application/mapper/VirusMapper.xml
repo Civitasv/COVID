@@ -28,6 +28,11 @@
         select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,description from virus order by id asc
     </select>
 
+    <!--获得中国所有数据-->
+    <select id="getAllChinaVirus" resultType="Map">
+        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,description from virus  where country='中国' order by id asc
+    </select>
+
     <!--根据时间戳获得数据-->
     <select id="getVirusByTime" resultType="Map">
         select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,description from virus where public_time = #{publicTime}
@@ -42,6 +47,12 @@
             order by public_time asc
     </select>
 
+    <select id="getChinaVirusDivideByTime" resultType="Map">
+         select public_time , sum(new_diagnosis) as new_diagnosis,sum(new_recovery) as new_recovery,sum(new_death) as new_death
+            from virus where country = '中国'
+            group by public_time
+            order by public_time asc
+    </select>
     <!--按国家进行分组-->
     <select id="getVirusDivideByCountry" resultType="Map">
         select country as name, sum(new_recovery) as value
@@ -52,7 +63,7 @@
     </select>
 
     <select id="getProvinceData" resultType="Map">
-        select province , sum(new_diagnosis) as new_diagnosis,sum(new_recovery) as new_recovery,sum(new_death) as new_death
+        select province , sum(new_diagnosis) as confirmed,sum(new_recovery) as recovery,sum(new_death) as deaths
             from virus where country  = '中国'
             group by province
     </select>

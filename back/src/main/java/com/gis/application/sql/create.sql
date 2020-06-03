@@ -79,4 +79,15 @@ set lng = 1,
     location=ST_GeomFromText('POINT(1 1)', 4326)
 where id=15
 
+          <select id="getVirusDivideByTime" resultType="Map">
+select public_time , sum(new_diagnosis) as new_diagnosis,sum(new_recovery) as new_recovery,sum(new_death) as new_death
+from virus
+group by public_time
+order by public_time asc
+
+select public_time , sum(new_diagnosis) as new_diagnosis,sum(new_recovery) as new_recovery,sum(new_death) as new_death
+from virus where country = '中国'
+group by public_time
+order by public_time asc
+
 select * from virus where id=15

@@ -38,6 +38,12 @@ public class VirusServiceImpl implements VirusService {
     }
 
     @Override
+    public List<HashMap<String, Object>> getAllChinaVirus() {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.getAllChinaVirus();
+    }
+
+    @Override
     public int updateVirusByCountry(String country,double lng,double lat) {
         VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
         return mapper.updateVirusByCountry(country,lng,lat);
@@ -77,5 +83,17 @@ public class VirusServiceImpl implements VirusService {
     public List<HashMap<String, Integer>> getVirusDivideByTime() {
         VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
         return mapper.getVirusDivideByTime();
+    }
+
+    @Override
+    public List<HashMap<String, Integer>> getChinaVirusDivideByTime() {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.getChinaVirusDivideByTime();
+    }
+
+    @Override
+    public List<HashMap<String, Object>> getProvinceData() {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.getProvinceData();
     }
 }

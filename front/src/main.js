@@ -2,18 +2,22 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router/Router.js'
 import store from "./store/index.js"
-// 引入view-design
-import ViewUI from "view-design"
-// 引入css
-import 'view-design/dist/styles/iview.css'
+// 引入element
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 import echarts from "echarts"
 import 'mapbox-gl/dist/mapbox-gl.css'
 import VueiClient from '@supermap/vue-iclient-mapboxgl';
 import "./assets/css/app.css"
+
+// 粒子库
+import VueParticles from 'vue-particles'
+
+Vue.use(VueParticles)
+Vue.use(ElementUI);
 Vue.use(VueiClient);
 Vue.config.productionTip = false
-// 安装ViewUI
-Vue.use(ViewUI)
+
 // 全局作用域
 Vue.prototype.$echarts = echarts
 new Vue({

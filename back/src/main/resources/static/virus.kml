@@ -1,0 +1,970 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:ns2="http://www.google.com/kml/ext/2.2" xmlns:ns3="http://www.w3.org/2005/Atom" xmlns:ns4="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0">
+    <Document>
+        <Schema name="virus_1" id="virus_1">
+            <SimpleField type="int" name="public_time"/>
+            <SimpleField type="float" name="lat"/>
+            <SimpleField type="float" name="lng"/>
+            <SimpleField type="int" name="new_diagnosis"/>
+            <SimpleField type="int" name="new_recovery"/>
+            <SimpleField type="int" name="new_death"/>
+            <SimpleField type="string" name="country"/>
+            <SimpleField type="string" name="province"/>
+            <SimpleField type="string" name="city"/>
+            <SimpleField type="string" name="district"/>
+        </Schema>
+        <Folder>
+            <name>virus</name>
+            <Placemark id="virus.234">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">36.668205</SimpleData>
+                        <SimpleData name="lng">117.01443</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">6</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">山东</SimpleData>
+                        <SimpleData name="city"></SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>117.01442954184283,36.66820602820571</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.238">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">25.60952</SimpleData>
+                        <SimpleData name="lng">100.26654</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">1</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">云南</SimpleData>
+                        <SimpleData name="city">大理州</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>100.26653968731445,25.609519579417018</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.239">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">39.902626</SimpleData>
+                        <SimpleData name="lng">116.40128</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">14</SimpleData>
+                        <SimpleData name="new_death">1</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">北京</SimpleData>
+                        <SimpleData name="city"></SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>116.4012838125243,39.90262669169653</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.240">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">39.947533</SimpleData>
+                        <SimpleData name="lng">116.59535</SimpleData>
+                        <SimpleData name="new_diagnosis">1</SimpleData>
+                        <SimpleData name="new_recovery">0</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">北京</SimpleData>
+                        <SimpleData name="city">朝阳区</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>116.5953524736945,39.947533322919085</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.241">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">30.947723</SimpleData>
+                        <SimpleData name="lng">117.80674</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">1</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">安徽</SimpleData>
+                        <SimpleData name="city">铜陵市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>117.8067390595837,30.94772294258696</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.243">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">38.486732</SimpleData>
+                        <SimpleData name="lng">106.22651</SimpleData>
+                        <SimpleData name="new_diagnosis">1</SimpleData>
+                        <SimpleData name="new_recovery">0</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">宁夏</SimpleData>
+                        <SimpleData name="city">银川市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>106.22651009349637,38.486733475614535</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.245">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">39.216625</SimpleData>
+                        <SimpleData name="lng">117.13292</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">1</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">天津</SimpleData>
+                        <SimpleData name="city">北辰区</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>117.13292161723143,39.21662363734761</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.248">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">27.95235</SimpleData>
+                        <SimpleData name="lng">116.35317</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">江西</SimpleData>
+                        <SimpleData name="city">抚州市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>116.35317544583334,27.952351213975774</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.249">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">28.458267</SimpleData>
+                        <SimpleData name="lng">117.93845</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">江西</SimpleData>
+                        <SimpleData name="city">上饶市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>117.93845343927079,28.45826791379127</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.251">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">27.821266</SimpleData>
+                        <SimpleData name="lng">114.9125</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">江西</SimpleData>
+                        <SimpleData name="city">新余市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>114.91249920083827,27.821265586442617</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.252">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">27.626179</SimpleData>
+                        <SimpleData name="lng">113.84926</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">1</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">江西</SimpleData>
+                        <SimpleData name="city">萍乡市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>113.84925500811941,27.626179298471328</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.253">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">29.707615</SimpleData>
+                        <SimpleData name="lng">115.99683</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">3</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">江西</SimpleData>
+                        <SimpleData name="city">九江市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>115.99683472081992,29.707615176163337</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.277">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">31.69209</SimpleData>
+                        <SimpleData name="lng">113.37624</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">57</SimpleData>
+                        <SimpleData name="new_death">2</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">湖北</SimpleData>
+                        <SimpleData name="city">随州市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>113.37624060040842,31.6920887797962</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.278">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">30.33772</SimpleData>
+                        <SimpleData name="lng">112.23403</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">52</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">湖北</SimpleData>
+                        <SimpleData name="city">荆州市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>112.23403062567205,30.33772164782398</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.279">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">30.394636</SimpleData>
+                        <SimpleData name="lng">114.8898</SimpleData>
+                        <SimpleData name="new_diagnosis">1</SimpleData>
+                        <SimpleData name="new_recovery">62</SimpleData>
+                        <SimpleData name="new_death">1</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">湖北</SimpleData>
+                        <SimpleData name="city">鄂州市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>114.88980207754837,30.39463577403297</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.280">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">30.202074</SimpleData>
+                        <SimpleData name="lng">115.033134</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">0</SimpleData>
+                        <SimpleData name="new_death">1</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">湖北</SimpleData>
+                        <SimpleData name="city">黄石市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>115.03313245597053,30.202074465026644</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.281">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">30.927048</SimpleData>
+                        <SimpleData name="lng">113.911415</SimpleData>
+                        <SimpleData name="new_diagnosis">1</SimpleData>
+                        <SimpleData name="new_recovery">252</SimpleData>
+                        <SimpleData name="new_death">1</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">湖北</SimpleData>
+                        <SimpleData name="city">孝感市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>113.91141801676467,30.9270471600044</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.284">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">33.34882</SimpleData>
+                        <SimpleData name="lng">120.158615</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">江苏</SimpleData>
+                        <SimpleData name="city">盐城市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>120.15861799236964,33.34882072751277</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.286">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">31.493057</SimpleData>
+                        <SimpleData name="lng">120.307304</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">1</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">江苏</SimpleData>
+                        <SimpleData name="city">无锡市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>120.30730137699582,31.49305814316863</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.387">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">29.517012</SimpleData>
+                        <SimpleData name="lng">106.52816</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">重庆</SimpleData>
+                        <SimpleData name="city">九龙坡区</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>106.52816311406174,29.517011936809546</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.388">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">29.609571</SimpleData>
+                        <SimpleData name="lng">106.57058</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">重庆</SimpleData>
+                        <SimpleData name="city">江北区</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>106.57057860741594,29.609572165635992</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.390">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43890</SimpleData>
+                        <SimpleData name="lat">30.809929</SimpleData>
+                        <SimpleData name="lng">108.40407</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">3</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">重庆</SimpleData>
+                        <SimpleData name="city">万州区</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>108.40407100683169,30.809929016093328</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.401">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">36.2</SimpleData>
+                        <SimpleData name="lng">117.08154</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">山东</SimpleData>
+                        <SimpleData name="city">泰安市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>117.08154632982676,36.20000232711609</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.498">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">28.874847</SimpleData>
+                        <SimpleData name="lng">105.43867</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">3</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">四川</SimpleData>
+                        <SimpleData name="city">泸州市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>105.43866654289809,28.874847690181788</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.499">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">29.34189</SimpleData>
+                        <SimpleData name="lng">104.77575</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">1</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">四川</SimpleData>
+                        <SimpleData name="city">自贡市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>104.77574579650523,29.341889503964378</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.500">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">30.574724</SimpleData>
+                        <SimpleData name="lng">104.06403</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">四川</SimpleData>
+                        <SimpleData name="city">成都市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>104.06403602048286,30.5747234125493</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.501">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">30.052341</SimpleData>
+                        <SimpleData name="lng">101.96079</SimpleData>
+                        <SimpleData name="new_diagnosis">4</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">四川</SimpleData>
+                        <SimpleData name="city">甘孜州</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>101.96079084496147,30.052340626453788</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.504">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">32.458</SimpleData>
+                        <SimpleData name="lng">119.91838</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">5</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">江苏</SimpleData>
+                        <SimpleData name="city">泰州市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>119.91837977624525,32.45800058485999</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.506">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">34.207058</SimpleData>
+                        <SimpleData name="lng">117.27837</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">江苏</SimpleData>
+                        <SimpleData name="city">徐州市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>117.27837055875617,34.2070579056782</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.507">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">31.493057</SimpleData>
+                        <SimpleData name="lng">120.307304</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">江苏</SimpleData>
+                        <SimpleData name="city">无锡市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>120.30730137699582,31.49305814316863</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.508">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">32.303562</SimpleData>
+                        <SimpleData name="lng">118.31171</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">1</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">安徽</SimpleData>
+                        <SimpleData name="city">滁州市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>118.31170526974806,32.30356287931035</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.509">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">32.62753</SimpleData>
+                        <SimpleData name="lng">116.99451</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">1</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">安徽</SimpleData>
+                        <SimpleData name="city">淮南市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>116.99450476778655,32.62752807500683</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.511">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">31.822586</SimpleData>
+                        <SimpleData name="lng">117.221756</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">3</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">安徽</SimpleData>
+                        <SimpleData name="city">合肥市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>117.22175672616737,31.822585179443667</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.512">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">30.947723</SimpleData>
+                        <SimpleData name="lng">117.80674</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">4</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">安徽</SimpleData>
+                        <SimpleData name="city">铜陵市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>117.8067390595837,30.94772294258696</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.513">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">30.545776</SimpleData>
+                        <SimpleData name="lng">117.0583</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">5</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">安徽</SimpleData>
+                        <SimpleData name="city">安庆市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>117.05829647002794,30.54577560694322</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.515">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">32.892124</SimpleData>
+                        <SimpleData name="lng">115.80883</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">7</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">安徽</SimpleData>
+                        <SimpleData name="city">阜阳市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>115.80883340249329,32.8921224458238</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.517">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">33.846027</SimpleData>
+                        <SimpleData name="lng">115.77314</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">10</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">安徽</SimpleData>
+                        <SimpleData name="city">亳州市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>115.77313662011757,33.846025681697505</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.518">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">31.354712</SimpleData>
+                        <SimpleData name="lng">118.42756</SimpleData>
+                        <SimpleData name="new_diagnosis">1</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">安徽</SimpleData>
+                        <SimpleData name="city">芜湖市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>118.42755963895839,31.35471093040426</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.519">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">34.343124</SimpleData>
+                        <SimpleData name="lng">108.93552</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">1</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">陕西</SimpleData>
+                        <SimpleData name="city">西安市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>108.93551737285786,34.343122890178485</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.520">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">27.703379</SimpleData>
+                        <SimpleData name="lng">111.98798</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">湖南</SimpleData>
+                        <SimpleData name="city">娄底市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>111.98798265079994,27.70337837796305</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.521">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">25.773468</SimpleData>
+                        <SimpleData name="lng">113.00921</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">1</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">湖南</SimpleData>
+                        <SimpleData name="city">郴州市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>113.00920930360928,25.773467263651757</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.523">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">29.034698</SimpleData>
+                        <SimpleData name="lng">111.69289</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">湖南</SimpleData>
+                        <SimpleData name="city">常德市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>111.6928874274141,29.034697697369662</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.15">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43891</SimpleData>
+                        <SimpleData name="lat">22.279013</SimpleData>
+                        <SimpleData name="lng">114.158844</SimpleData>
+                        <SimpleData name="new_diagnosis">1</SimpleData>
+                        <SimpleData name="new_recovery">3</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">香港</SimpleData>
+                        <SimpleData name="city"></SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>114.15884559064351,22.27901206327346</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.542">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">33.767605</SimpleData>
+                        <SimpleData name="lng">113.18639</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">河南</SimpleData>
+                        <SimpleData name="city">平顶山市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>113.18639229107752,33.7676051166355</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.543">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">33.627705</SimpleData>
+                        <SimpleData name="lng">114.691475</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">9</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">河南</SimpleData>
+                        <SimpleData name="city">周口市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>114.69147679739342,33.62770617931713</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.546">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">45.7695</SimpleData>
+                        <SimpleData name="lng">130.99544</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">1</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">黑龙江</SimpleData>
+                        <SimpleData name="city">七台河市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>130.99543352305665,45.76950151403024</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.547">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">46.587204</SimpleData>
+                        <SimpleData name="lng">125.09673</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">黑龙江</SimpleData>
+                        <SimpleData name="city">大庆市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>125.0967304560664,46.587205219878875</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.569">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">30.595507</SimpleData>
+                        <SimpleData name="lng">114.29995</SimpleData>
+                        <SimpleData name="new_diagnosis">313</SimpleData>
+                        <SimpleData name="new_recovery">2498</SimpleData>
+                        <SimpleData name="new_death">28</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">湖北</SimpleData>
+                        <SimpleData name="city">武汉市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>114.29994723502688,30.595507505937476</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.571">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">39.934277</SimpleData>
+                        <SimpleData name="lng">119.59472</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">1</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">河北</SimpleData>
+                        <SimpleData name="city">秦皇岛市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>119.59472129304116,39.93427682769326</coordinates>
+                </Point>
+            </Placemark>
+            <Placemark id="virus.572">
+                <ExtendedData>
+                    <SchemaData schemaUrl="#virus_1">
+                        <SimpleData name="public_time">43889</SimpleData>
+                        <SimpleData name="lat">38.041687</SimpleData>
+                        <SimpleData name="lng">114.50889</SimpleData>
+                        <SimpleData name="new_diagnosis">0</SimpleData>
+                        <SimpleData name="new_recovery">2</SimpleData>
+                        <SimpleData name="new_death">0</SimpleData>
+                        <SimpleData name="country">中国</SimpleData>
+                        <SimpleData name="province">河北</SimpleData>
+                        <SimpleData name="city">石家庄市</SimpleData>
+                        <SimpleData name="district"></SimpleData>
+                    </SchemaData>
+                </ExtendedData>
+                <Point>
+                    <coordinates>114.50888534948267,38.04168689711368</coordinates>
+                </Point>
+            </Placemark>
+        </Folder>
+    </Document>
+</kml>
