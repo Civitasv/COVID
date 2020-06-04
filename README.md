@@ -14,6 +14,8 @@
 
 
 
+## 填色图
+
 这些天在做基于Mapbox的疫情数据可视化，在[从地图看疫情 by Mofei Zhu](https://www.zhuwenlong.com/blog/article/5e5235cd502a71323370c652)文章中看到了填色专题图，感觉很有意思，如下。
 
 ![](README.assets/aHR0cHM6Ly9pbWdrci5jbi1iai51ZmlsZW9zLmNvbS8zZGJkMGM3OC1mNWEyLTRhODktOTBlZS1iZWZkNmZlNWJjN2IucG5n)
