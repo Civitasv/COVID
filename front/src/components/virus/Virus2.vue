@@ -72,7 +72,6 @@ export default {
       // 集合图
       clusterID: "china-cluster-point",
       clusterCountID: "china-cluster-count",
-      unClusterCountID: "china-unclustered-point",
       clusterSourceID: "china-cluster-virus-data",
       clusterVisualData: "new_diagnosis",
 
@@ -211,14 +210,14 @@ export default {
         clusterMaxZoom: 14,
         clusterRadius: 70,
         clusterProperties: {
-          clusterData: ["+", ["number", ["get", this.clusterVisualData], 0]]
+          clusterData: ["+", ["get", this.clusterVisualData]]
         }
       });
       this.map.addLayer({
         id: this.clusterID,
         type: "circle",
         source: this.clusterSourceID,
-        filter: ["has", "clusterData"],
+        filter: [">=", ["get", "clusterData"], 1],
         paint: {
           "circle-color": [
             "step",
@@ -271,24 +270,11 @@ export default {
         id: this.clusterCountID,
         type: "symbol",
         source: this.clusterSourceID,
-        filter: ["has", "clusterData"],
+        filter: [">=", ["get", "clusterData"], 1],
         layout: {
           "text-field": ["get", "clusterData"],
           "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
           "text-size": 12
-        }
-      });
-
-      this.map.addLayer({
-        id: this.unClusterCountID,
-        type: "circle",
-        source: this.clusterSourceID,
-        filter: ["!", ["has", "clusterData"]],
-        paint: {
-          "circle-color": "#11b4da",
-          "circle-radius": 4,
-          "circle-stroke-width": 1,
-          "circle-stroke-color": "#fff"
         }
       });
     },
