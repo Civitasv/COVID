@@ -12,6 +12,10 @@
         select * from account where username=#{username} and password = #{password}
     </select>
 
+    <insert id="add">
+        insert into account values (#{username},#{password})
+    </insert>
+
     <select id="getByUserName" resultMap="UserMap">
         select * from account where username=#{username}
     </select>

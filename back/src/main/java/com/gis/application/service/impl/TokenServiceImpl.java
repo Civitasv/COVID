@@ -11,8 +11,8 @@ import java.util.Date;
 
 @Service
 public class TokenServiceImpl implements TokenService {
-    // 过期时间20分钟
-    private static final long EXPIRE_TIME = 20 * 60 * 1000;
+    // 过期时间60分钟
+    private static final long EXPIRE_TIME = 60 * 60 * 1000;
 
     @Override
     public String getToken(User user) {

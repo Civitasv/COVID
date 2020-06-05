@@ -101,3 +101,5 @@ CREATE TABLE account
 );
 
 insert into account values ('husen','12345')
+
+delete from account where USERNAME=''

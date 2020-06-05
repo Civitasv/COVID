@@ -22,6 +22,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int add(String username, String password) {
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        return mapper.add(username,password);
+    }
+
+    @Override
     public User getByUserName(String username) {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         return mapper.getByUserName(username);
