@@ -20,6 +20,26 @@ Vue.config.productionTip = false
 
 // 全局作用域
 Vue.prototype.$echarts = echarts
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) {
+    // 获取 JWT Token
+    if (to.path !== '/login' && !window.localStorage.getItem('JWT_TOKEN')) {
+      next({
+        path: 'login',
+        query: { redirect: to.fullPath }
+      })
+    }
+    else {
+      next()
+    }
+  }
+  else {
+    next();
+  }
+}
+)
+
 new Vue({
   store,
   router,

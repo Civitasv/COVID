@@ -1,5 +1,5 @@
-import axios from "axios"
-import store from '../../store/index';
+import axios from "axios";
+import router from "../../router/Router"
 
 // 创建axios实例
 var instance = axios.create({ timeout: 1000 * 120 });
@@ -13,28 +13,40 @@ instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlenco
  */
 instance.interceptors.request.use(
     config => {
+        if (localStorage.JWT_TOKEN) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+            config.headers = {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `${localStorage.JWT_TOKEN}`
+            };
+        }
         return config;
     },
     error => Promise.error(error))
 
 // 响应拦截器
 instance.interceptors.response.use(
-    // 请求成功
     res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
     // 请求失败
     error => {
-        const { response } = error;
-        if (response) {
-            // 请求已发出，但是不在2xx的范围 
-            // errorHandle(response.status, response.data.message);
-            return Promise.reject(response);
+        console.log("error")
+        if (error.response) {
+            switch (error.response.data["message"]) {
+                case "401":
+                    // 返回 401 清除token信息并跳转到登录页面
+                    window.localStorage.removeItem('JWT_TOKEN')
+                    alert("您的登录信息已过期，请重新登录！")
+                    router.push({
+                        path: 'login'
+                    });
+            }
+            return Promise.reject(error.response);   // 返回接口返回的错误信息
         } else {
             // 处理断网的情况
             // eg:请求超时或断网时，更新state的network状态
             // network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
             // 关于断网组件中的刷新重新获取数据，会在断网组件中说明
             if (!window.navigator.onLine) {
-                store.commit('changeNetwork', false);
+                console.log("network error")
             } else {
                 return Promise.reject(error);
             }

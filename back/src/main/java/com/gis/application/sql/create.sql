@@ -90,4 +90,14 @@ from virus where country = '中国'
 group by public_time
 order by public_time asc
 
-select * from virus where id=15
+select * from virus where id=15;
+
+
+CREATE TABLE account
+(
+    USERNAME VARCHAR(45) NOT NULL,
+    PASSWORD  VARCHAR(45) NULL,
+    PRIMARY KEY (USERNAME)
+);
+
+insert into account values ('husen','12345')
