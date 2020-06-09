@@ -1,4 +1,3 @@
-// vue脚手架相关配置
 module.exports = {
   devServer: {
     // 运行完即打开浏览器
@@ -31,5 +30,14 @@ module.exports = {
     }
   },
 
-  publicPath: ""
+  publicPath: "",
+  css: {
+    loaderOptions: {
+      css: {},
+      less: {},
+      sass: {},
+      postcss: {
+      }
+    }
+  }
 }

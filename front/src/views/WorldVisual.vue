@@ -11,7 +11,7 @@
       >
         <span slot="item_1" @click="showWorld">World</span>
         <span slot="item_2" @click="showChina">China</span>
-        <span slot="item_3" class="fa fa-weibo fa-lg" @click="showMore">More+</span>
+        <span slot="item_3" @click="showMore">More+</span>
       </circle-menu>
     </div>
     <Dashboard></Dashboard>

@@ -44,7 +44,10 @@ public class Virus {
     // 描述
     private String description;
 
-    public Virus(int publicTime, double lat, double lng, int newDiagnosis, int newRecovery, int newDeath, String country, String province, String city, String district, String description) {
+    // 图片
+    private String image;
+
+    public Virus(int publicTime, double lat, double lng, int newDiagnosis, int newRecovery, int newDeath, String country, String province, String city, String district, String description,String image) {
         this.publicTime = publicTime;
         this.lat = lat;
         this.lng = lng;
@@ -56,6 +59,7 @@ public class Virus {
         this.city = city;
         this.district = district;
         this.description = description;
+        this.image = image;
     }
 
     public Virus() {

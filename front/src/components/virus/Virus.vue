@@ -54,9 +54,7 @@ import MapboxLanguage from "@mapbox/mapbox-gl-language";
 const Row = () => import("../layer/Row");
 
 import { mapState, mapActions } from "vuex";
-mapboxgl.setRTLTextPlugin(
-  "https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js"
-);
+
 mapboxgl.accessToken =
   "pk.eyJ1IjoiY2l2aXRhc3YiLCJhIjoiY2s3YXBvdDU1MTZpdDNlcDVhb3FrbjdtaiJ9.kLk_w4wIjIQ6dunGULViqw";
 export default {

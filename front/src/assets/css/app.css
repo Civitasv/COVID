@@ -1,3 +1,35 @@
-html{
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+*{
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+}
+
+#poster {
+  background: url("../images/wvisual_bg.jpg");
+  background-size: 100% 100%;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  position: fixed;
+  margin: 0px;
+}
+.login-container {
+  border-radius: 15px;
+  background-clip: padding-box;
+  margin: 150px auto;
+  width: 350px;
+  padding: 35px 35px 15px 35px;
+  background: #fff;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 0 25px #cac6c6;
+}
+.login_title {
+  margin: 0px auto 40px auto;
+  text-align: center;
+  color: #505458;
+}
+
+.avatar {
+  width: 120px;
+  height: auto;
+  display: inline-block;
 }

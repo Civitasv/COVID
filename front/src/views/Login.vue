@@ -8,12 +8,23 @@
       <el-form-item>
         <el-input type="password" v-model="userInfo.password" auto-complete="off" placeholder="密码" />
       </el-form-item>
+      <el-form-item>
+        <el-checkbox v-model="checked">记住密码</el-checkbox>
+      </el-form-item>
+
       <el-form-item style="width: 100%">
         <el-button
           type="primary"
           style="width: 100%;background: #505458;border: none"
-          v-on:click="validateToken"
+          v-on:click="login"
         >登录</el-button>
+      </el-form-item>
+      <el-form-item style="width: 100%">
+        <el-button
+          type="primary"
+          style="width: 100%;background: #051a37;border: none"
+          v-on:click="toRegist"
+        >没有账号？立即注册</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -21,6 +32,7 @@
 
 <script>
 import user from "../network/common/api/user";
+var md5 = require("md5");
 export default {
   name: "Login",
   data() {
@@ -28,13 +40,27 @@ export default {
       userInfo: {
         username: "",
         password: ""
-      }
+      },
+      checked: false
     };
   },
+  mounted() {
+    if (window.localStorage.getItem("username")) {
+      this.userInfo.username = window.localStorage.getItem("username");
+    }
+    if (window.localStorage.getItem("password")) {
+      this.userInfo.password = window.localStorage.getItem("password");
+    }
+  },
   methods: {
-    validateToken() {
+    login() {
+      if (this.checked) {
+        window.localStorage.setItem("username", this.userInfo.username);
+        window.localStorage.setItem("password", this.userInfo.password);
+      }
+
       user
-        .validateLogin(this.userInfo.username, this.userInfo.password)
+        .login(this.userInfo.username, md5(this.userInfo.password))
         .then(res => {
           if (res.data.token) {
             // 如果存在token
@@ -51,34 +77,16 @@ export default {
         .catch(function(res) {
           console.log(res);
         });
+    },
+    toRegist() {
+      this.$router.push({
+        path: "/regist"
+      });
     }
   }
 };
 </script>
 
 <style>
-#poster {
-  background-position: center;
-  height: 100%;
-  width: 100%;
-  background-size: cover;
-  position: fixed;
-  margin: 0px;
-}
-.login-container {
-  border-radius: 15px;
-  background-clip: padding-box;
-  margin: 150px auto;
-  width: 350px;
-  padding: 35px 35px 15px 35px;
-  background: #fff;
-  border: 1px solid #eaeaea;
-  box-shadow: 0 0 25px #cac6c6;
-}
-.login_title {
-  margin: 0px auto 40px auto;
-  text-align: center;
-  color: #505458;
-}
 </style>
 

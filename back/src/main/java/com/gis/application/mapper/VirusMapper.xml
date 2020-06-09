@@ -12,10 +12,10 @@
             SELECT nextval('id_seq'::regclass)
         </selectKey>
         insert into
-        virus(public_time,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,location,description)
+        virus(public_time,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,location,description,image)
         values
         (#{publicTime},#{lat},#{lng},#{country},#{province},#{city},#{district},#{newDiagnosis},#{newRecovery},#{newDeath},ST_GeomFromText(#{location},
-        4326),#{description})
+        4326),#{description},#{image})
     </insert>
 
     <!-- 查询lat为0的 -->
@@ -35,9 +35,15 @@
 
     <!--根据时间戳获得数据-->
     <select id="getVirusByTime" resultType="Map">
-        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,description from virus where public_time = #{publicTime}
+        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,description,public_time,image from virus where public_time = #{publicTime}
     </select>
 
+    <!-- 根据地点模糊查询 -->
+    <select id="getVirusByAddressAndTime" resultType="Map">
+        <bind name="pattern" value="'%' + address + '%'"/>
+        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,description,public_time,image from virus
+        where (country like #{address} or province like #{address} or city like #{address}) and public_time=#{publicTime}
+    </select>
     <!-- **************************************************************************分组查询********************************************************************************** -->
     <!-- 按日期进行分组 -->
     <select id="getVirusDivideByTime" resultType="Map">
@@ -69,7 +75,7 @@
     </select>
 
     <!-- 按国家更新数据 -->
-    <update id="updateVirusByCountry">
+    <update id="updateLngLatByCountry">
         <bind name="pattern" value="'%' + country + '%'"/>
         update virus
         set lng = #{lng},
@@ -79,7 +85,7 @@
     </update>
 
     <!-- 按省份更新数据 -->
-    <update id="updateVirusByProvince">
+    <update id="updateLngLatByProvince">
         <bind name="pattern" value="'%' + province + '%'"/>
         update virus
         set lng = #{lng},
@@ -89,7 +95,7 @@
     </update>
 
     <!-- 按ID更新数据 -->
-    <update id="updateVirusByID">
+    <update id="updateLngLatByID">
         update virus
         set lng = #{lng},
         lat = #{lat},
@@ -100,5 +106,27 @@
     <!-- 更新ID -->
     <update id="updateID">
         update virus set id = #{id} where id= #{ids}
+    </update>
+
+    <update id="updateVirus" parameterType="Virus">
+        update virus
+        set public_time = #{publicTime},
+        new_diagnosis = #{newDiagnosis},
+        new_recovery=#{newRecovery},
+        new_death=#{newDeath},
+        country=#{country},
+        province=#{province},
+        city=#{city},
+        description=#{description},
+        image=#{image}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteVirus" parameterType="Integer">
+        delete from virus where id=#{id}
+    </delete>
+    
+    <update id="addImage" >
+        update virus set image=#{image} where id=#{id}
     </update>
 </mapper>

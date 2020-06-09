@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -59,7 +61,7 @@ public class VirusController {
         // 返回不能为空
         if (readResult != null) {
             for (int i = 0; i < readResult.size(); i++) {
-               service.insertVirus(readResult.get(i));
+                service.insertVirus(readResult.get(i));
             }
         }
         return "数据录入完成！";
@@ -72,16 +74,46 @@ public class VirusController {
      * @return json数据
      */
     @GetMapping(value = "/{time}")
-    public String getVirusByTime(@PathVariable int time) {
-        List<HashMap<String, Object>> list = service.getVirusByTime(time);
-
-        JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < list.size(); i++) {
-            HashMap<String, Object> hashMap = list.get(i);
-            JSONObject jsonObject = new JSONObject(hashMap);
-            jsonArray.put(jsonObject);
+    public String getVirusByTime(@PathVariable String time) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = sdf.parse(time);
+            List<HashMap<String, Object>> list = service.getVirusByTime(TimeUtil.transfromDateToNum(date));
+            JSONArray jsonArray = new JSONArray();
+            for (int i = 0; i < list.size(); i++) {
+                HashMap<String, Object> hashMap = list.get(i);
+                JSONObject jsonObject = new JSONObject(hashMap);
+                jsonArray.put(jsonObject);
+            }
+            return jsonArray.toString();
+        } catch (ParseException e) {
+            throw new RuntimeException("该日期无法解析！");
         }
-        return jsonArray.toString();
+    }
+
+    /**
+     * 按地点和时间查询模糊数据
+     *
+     * @param time 时间
+     * @param address 地点
+     * @return json数据
+     */
+    @GetMapping(value = "/address")
+    public String getVirusByAddress(@RequestParam String time,@RequestParam String address) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = sdf.parse(time);
+            List<HashMap<String, Object>> list = service.getVirusByAddressAndTime(TimeUtil.transfromDateToNum(date), address);
+            JSONArray jsonArray = new JSONArray();
+            for (int i = 0; i < list.size(); i++) {
+                HashMap<String, Object> hashMap = list.get(i);
+                JSONObject jsonObject = new JSONObject(hashMap);
+                jsonArray.put(jsonObject);
+            }
+            return jsonArray.toString();
+        } catch (ParseException e) {
+            throw new RuntimeException("该日期无法解析！");
+        }
     }
 
     /**
@@ -154,6 +186,7 @@ public class VirusController {
         }
         return jsonObject.toString();
     }
+
     /**
      * 更新ID
      */
@@ -186,7 +219,7 @@ public class VirusController {
                 // 在json中循环
                 try {
                     JSONArray jsonArray = jsonObject.getJSONArray(country);
-                    service.updateVirusByID((int) hashMap.get("id"), jsonArray.getDouble(0), jsonArray.getDouble(1));
+                    service.updateLngLatByID((int) hashMap.get("id"), jsonArray.getDouble(0), jsonArray.getDouble(1));
                 } catch (Exception e) {
                     if (!"中国".equals(country))
                         System.out.println("error");
@@ -213,7 +246,7 @@ public class VirusController {
                 String province = hashMap.get("province").toString();
                 try {
                     JSONArray jsonArray = jsonObject.getJSONArray(province);
-                    service.updateVirusByID((int) hashMap.get("id"), jsonArray.getDouble(0), jsonArray.getDouble(1));
+                    service.updateLngLatByID((int) hashMap.get("id"), jsonArray.getDouble(0), jsonArray.getDouble(1));
                 } catch (Exception e) {
                     System.out.println("error");
                 }
@@ -257,6 +290,7 @@ public class VirusController {
         }
         return jsonArray.toString();
     }
+
     /**
      * 获取每天的数据
      *
@@ -315,7 +349,7 @@ public class VirusController {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             Date date = TimeUtil.transfromNumToDate(jsonObject.getInt("public_time"));
-            confirmed =confirmed+ jsonObject.getInt("new_diagnosis")-jsonObject.getInt("new_recovery")-jsonObject.getInt("new_death");
+            confirmed = confirmed + jsonObject.getInt("new_diagnosis") - jsonObject.getInt("new_recovery") - jsonObject.getInt("new_death");
             recovery += jsonObject.getInt("new_recovery");
             deaths += jsonObject.getInt("new_death");
             jsonObject.remove("public_time");
@@ -367,6 +401,7 @@ public class VirusController {
         return jsonArray.toString();
     }
 
+
     @GetMapping("/test")
     public void test() {
         // 得到所有的数据
@@ -384,7 +419,7 @@ public class VirusController {
                 JSONObject lnglat = GaodeHttp.getPosition(country + province + city);
                 // GCJ02转为WGS84坐标
                 double[] wgs84 = Transform.transformGCJ02ToWGS84(lnglat.getDouble("lng"), lnglat.getDouble("lat"));
-                service.updateVirusByID(i + 1, wgs84[0], wgs84[1]);
+                service.updateLngLatByID(i + 1, wgs84[0], wgs84[1]);
             }
         }
     }

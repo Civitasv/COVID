@@ -3,12 +3,21 @@ package com.gis.application.controller;
 
 import com.gis.application.auth.UserLoginToken;
 import com.gis.application.model.User;
+import com.gis.application.model.Virus;
 import com.gis.application.service.TokenService;
 import com.gis.application.service.UserService;
+import com.gis.application.service.VirusService;
+import com.gis.application.util.GISUtil;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 
 @RestController
 @RequestMapping("/admin")
@@ -19,6 +28,9 @@ public class AdminController {
 
     @Autowired
     TokenService tokenService;
+
+    @Autowired
+    VirusService virusService;
 
     @PostMapping("/login")
     public String login(@RequestBody User requestUser) {
@@ -67,11 +79,33 @@ public class AdminController {
         return jsonObject.toString();
     }
 
+
     @UserLoginToken
-    @PutMapping("/add")
-    public String add() {
-        return "add";
+    @PutMapping("/update")
+    public int updateVirus(@RequestBody Virus virus) {
+        int res =  virusService.updateVirus(virus);
+        return res;
     }
 
+    @UserLoginToken
+    @DeleteMapping("/delete")
+    public int deleteVirus(@RequestParam int id) {
+        int res =  virusService.deleteVirus(id);
+        return res;
+    }
 
+    @UserLoginToken
+    @PostMapping("/add")
+    public int addVirus(@RequestBody Virus virus) {
+        virus.setLocation(GISUtil.geometryToString(virus.getLng(), virus.getLat()));
+        int res =  virusService.insertVirus(virus);
+        return res;
+    }
+
+    @UserLoginToken
+    @PostMapping("/uploadImage")
+    public int uploadImage(int virusID,String base64) {
+        // 上传至服务器
+        return virusService.addImage(virusID,base64);
+    }
 }

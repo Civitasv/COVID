@@ -19,6 +19,9 @@ public interface VirusMapper {
     // 按时间查询
     List<HashMap<String, Object>> getVirusByTime(int publicTime);
 
+    // 按特定时间，对地点模糊查询
+    List<HashMap<String, Object>> getVirusByAddressAndTime(@Param("publicTime") int publicTime, @Param("address") String address);
+
     // 得到所有
     List<HashMap<String, Object>> getAllVirus();
 
@@ -37,16 +40,24 @@ public interface VirusMapper {
     // 按省份分组查询
     List<HashMap<String, Object>> getProvinceData();
 
-    // 按国家更新数据
-    int updateVirusByCountry(@Param("country") String country, @Param("lng") double lng, @Param("lat") double lat);
+    // 按国家更新经纬度数据
+    int updateLngLatByCountry(@Param("country") String country, @Param("lng") double lng, @Param("lat") double lat);
 
-    // 按省份更新数据
-    int updateVirusByProvince(@Param("province") String province, @Param("lng") double lng, @Param("lat") double lat);
+    // 按省份更新经纬度数据
+    int updateLngLatByProvince(@Param("province") String province, @Param("lng") double lng, @Param("lat") double lat);
 
-    // 按ID更新数据
-    int updateVirusByID(@Param("id") int id, @Param("lng") double lng, @Param("lat") double lat);
+    // 按ID更新经纬度数据
+    int updateLngLatByID(@Param("id") int id, @Param("lng") double lng, @Param("lat") double lat);
 
     // 更新ID
     int updateID(int id, int ids);
 
+    // 按ID更新疫情数据
+    int updateVirus(Virus virus);
+
+    // 按ID删除疫情数据
+    int deleteVirus(int id);
+
+    // 按ID添加BASE64图片
+    int addImage(int id,String base64);
 }

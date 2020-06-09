@@ -6,6 +6,7 @@ import Manage from "../views/Manage"
 import WorldVisualize from "../views/WorldVisual"
 import ChinaVisualize from "../views/ChinaVisual"
 import Login from "../views/Login"
+import Regist from "../views/Regist"
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,9 @@ const routes = [
   { path: "/cvisual", name: "cvisual", component: ChinaVisualize },
   {
     path: "/login", name: "login", component: Login
+  },
+  {
+    path: "/regist", name: "regist", component: Regist
   }
 ]
 

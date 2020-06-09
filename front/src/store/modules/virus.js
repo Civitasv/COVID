@@ -16,7 +16,6 @@ const state = {
     allVirusDivideByTime: [],
     // 获取中国累积的数据
     allChinaVirusDivideByTime: [],
-
 }
 
 // getters

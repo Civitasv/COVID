@@ -29,7 +29,7 @@
 
     <div class="pages">
       <el-button class="btn" :style="btnstyle">
-        <label>INTRO</label>
+        <label class="link">INTRO</label>
       </el-button>
       <el-button :style="btnstyle" class="btn">
         <router-link to="/wvisual" class="link" tag="label">VISUALIZE</router-link>
@@ -40,7 +40,7 @@
       </el-button>
 
       <el-button :style="btnstyle" class="btn">
-        <label>ABOUT</label>
+        <label class="link">ABOUT</label>
       </el-button>
     </div>
     <Footer></Footer>

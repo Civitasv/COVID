@@ -32,6 +32,12 @@ public class VirusServiceImpl implements VirusService {
     }
 
     @Override
+    public List<HashMap<String, Object>> getVirusByAddressAndTime(int publicTime,String address) {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.getVirusByAddressAndTime(publicTime,address);
+    }
+
+    @Override
     public List<HashMap<String, Object>> getAllVirus() {
         VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
         return mapper.getAllVirus();
@@ -44,21 +50,21 @@ public class VirusServiceImpl implements VirusService {
     }
 
     @Override
-    public int updateVirusByCountry(String country,double lng,double lat) {
+    public int updateLngLatByCountry(String country,double lng,double lat) {
         VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
-        return mapper.updateVirusByCountry(country,lng,lat);
+        return mapper.updateLngLatByCountry(country,lng,lat);
     }
 
     @Override
-    public int updateVirusByProvince(String province, double lng, double lat) {
+    public int updateLngLatByProvince(String province, double lng, double lat) {
         VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
-        return mapper.updateVirusByProvince(province,lng,lat);
+        return mapper.updateLngLatByProvince(province,lng,lat);
     }
 
     @Override
-    public int updateVirusByID(int id, double lng, double lat) {
+    public int updateLngLatByID(int id, double lng, double lat) {
         VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
-        return mapper.updateVirusByID(id,lng,lat);
+        return mapper.updateLngLatByID(id,lng,lat);
     }
 
     @Override
@@ -71,6 +77,24 @@ public class VirusServiceImpl implements VirusService {
     public int updateID(int id,int ids) {
         VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
         return mapper.updateID(id,ids);
+    }
+
+    @Override
+    public int updateVirus(Virus virus) {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.updateVirus(virus);
+    }
+
+    @Override
+    public int deleteVirus(int id) {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.deleteVirus(id);
+    }
+
+    @Override
+    public int addImage(int id, String base64) {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.addImage(id,base64);
     }
 
     @Override
