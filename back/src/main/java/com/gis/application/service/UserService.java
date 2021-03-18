@@ -8,5 +8,4 @@ public interface UserService {
     int add(String username,String password);
 
     User getByUserName(String username);
-
 }

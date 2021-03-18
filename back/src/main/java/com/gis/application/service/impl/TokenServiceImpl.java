@@ -29,7 +29,4 @@ public class TokenServiceImpl implements TokenService {
     public String getUserNameFromToken(String token) {
         return JWT.decode(token).getAudience().get(0);
     }
-
-
-
 }

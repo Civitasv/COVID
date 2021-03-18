@@ -9,14 +9,20 @@
         <result property="password" column="PASSWORD"/>
     </resultMap>
     <select id="get" resultMap="UserMap">
-        select * from account where username=#{username} and password = #{password}
+        select *
+        from account
+        where username = #{username}
+          and password = #{password}
     </select>
 
     <insert id="add">
-        insert into account values (#{username},#{password})
+        insert into account
+        values (#{username}, #{password})
     </insert>
 
     <select id="getByUserName" resultMap="UserMap">
-        select * from account where username=#{username}
+        select *
+        from account
+        where username = #{username}
     </select>
 </mapper>

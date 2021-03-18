@@ -1,67 +1,52 @@
 package com.gis.application.model;
 
+import com.gis.application.util.TimeUtil;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Virus {
-
-    // 自增ID
-    private Long id;
-
-    // 发布时间
-    private int publicTime;
-
-    // 纬度
+    private int id;
+    private long timestamp;
     private double lat;
+    private double lon;
+    private int confirmed;
+    private int deaths;
+    private int recovered;
+    private int suspect;
+    private int currentConfirmed;
+    private int newConfirmed;
+    private int newDeaths;
+    private int newRecovered;
+    private int newSuspect;
+    private String country = "";
+    private String province = "";
+    private String city = "";
+    private String combinedKey = "";
+    private double caseFatalityRatio;
 
-    // 经度
-    private double lng;
-
-    // 新增确诊
-    private int newDiagnosis;
-
-    // 新增康复
-    private int newRecovery;
-
-    // 新增死亡
-    private int newDeath;
-
-    // 国家
-    private String country;
-
-    // 省份
-    private String province;
-
-    // 市级
-    private String city;
-
-    // 区县
-    private String district;
-
-    // 位置字符串，Postgis字段
-    private String location;
-
-    // 描述
-    private String description;
-
-    // 图片
-    private String image;
-
-    public Virus(int publicTime, double lat, double lng, int newDiagnosis, int newRecovery, int newDeath, String country, String province, String city, String district, String description,String image) {
-        this.publicTime = publicTime;
+    public Virus(long timestamp, double lat, double lon, int confirmed, int deaths, int recovered, int suspect, int currentConfirmed, int newConfirmed, int newDeaths, int newRecovered, int newSuspect, String country, String province, String city, String combinedKey, double caseFatalityRatio) {
+        this.timestamp = timestamp;
         this.lat = lat;
-        this.lng = lng;
-        this.newDiagnosis = newDiagnosis;
-        this.newRecovery = newRecovery;
-        this.newDeath = newDeath;
+        this.lon = lon;
+        this.confirmed = confirmed;
+        this.deaths = deaths;
+        this.recovered = recovered;
+        this.suspect = suspect;
+        this.currentConfirmed = currentConfirmed;
+        this.newConfirmed = newConfirmed;
+        this.newDeaths = newDeaths;
+        this.newRecovered = newRecovered;
+        this.newSuspect = newSuspect;
         this.country = country;
         this.province = province;
         this.city = city;
-        this.district = district;
-        this.description = description;
-        this.image = image;
-    }
-
-    public Virus() {
+        this.combinedKey = combinedKey;
+        this.caseFatalityRatio = caseFatalityRatio;
     }
 }

@@ -15,11 +15,9 @@ public class MyApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         // Spring应用启动
-        SpringApplication s = new SpringApplication();
+        SpringApplication application = new SpringApplication();
         // 懒初始化
-        s.setLazyInitialization(true);
-        s.run(MyApplication.class, args);
+        application.setLazyInitialization(true);
+        SpringApplication.run(MyApplication.class, args);
     }
-
-
 }
