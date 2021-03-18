@@ -23,7 +23,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) {
-        String token = httpServletRequest.getHeader("Authorization");// 从 http 请求头中取出 token
+        // 从 http 请求头中取出 token，这能够免疫XSRF攻击（因为第三方网站构建请求时无法获知我的token，自然也就没办法在请求头中添加该请求信息）
+        String token = httpServletRequest.getHeader("Authorization");
         // 如果不是映射到方法直接通过
         if (!(object instanceof HandlerMethod)) {
             return true;
