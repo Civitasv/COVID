@@ -2,16 +2,7 @@ module.exports = {
   devServer: {
     // 运行完即打开浏览器
     open: true,
-    port: 3000,
-    proxy: {
-      '/api': {
-        target: 'http://47.100.65.60/', // 不要加http:
-        ws: true,
-        changeOrigin: true,
-        // rewrite path
-        pathRewrite: { '^/api': '' }
-      }
-    }
+    port: 3000
   },
   pages: {
     index: {

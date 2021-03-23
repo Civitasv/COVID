@@ -1,5 +1,6 @@
-*{
-    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+* {
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 }
 
 #poster {
@@ -32,4 +33,28 @@
   width: 120px;
   height: auto;
   display: inline-block;
+}
+
+.el-table .table-row {
+  background-color: #222222;
+  border-bottom: 1px solid #5c5c5c;
+}
+.el-table::before {
+  height: 0px;
+}
+.el-table .table-cell {
+  border-bottom: 1px solid #5c5c5c;
+  color: white;
+  text-align: center;
+  font-size: 16px;
+}
+.el-table .table-cell-red {
+  border-bottom: 1px solid #5c5c5c;
+  color: red;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+  background-color: #222222;
 }

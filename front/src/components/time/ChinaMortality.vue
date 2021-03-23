@@ -13,14 +13,14 @@ export default {
   data() {
     return {
       chart: null,
-      name: "死亡率(China)"
+      name: "死亡率(China)",
     };
   },
   components: { Header },
   computed: {
     ...mapState({
-      timeData: state => state.virus.allChinaVirusDivideByTime
-    })
+      timeData: (state) => state.virus.allChinaVirusDivideByTime,
+    }),
   },
   methods: {
     ...mapActions("virus", ["getAllChinaVirusDivideByTime"]),
@@ -37,62 +37,62 @@ export default {
 
       const option = {
         tooltip: {
-          trigger: "axis"
+          trigger: "axis",
         },
         legend: {
           data: ["Confirmed", "Deaths", "Recovery"],
           textStyle: {
-            color: "rgba(255, 255, 255, 0.69)"
-          }
+            color: "rgba(255, 255, 255, 0.69)",
+          },
         },
         xAxis: {
           type: "category",
-          data: this.timeData.map(function(d) {
+          data: this.timeData.map(function (d) {
             return d.public_date;
           }),
 
           axisLabel: {
             fontSize: 12,
             textStyle: {
-              color: "whitesmoke"
-            }
-          }
+              color: "whitesmoke",
+            },
+          },
         },
         yAxis: {
           type: "value",
           axisLabel: {
             textStyle: {
               color: "whitesmoke",
-              fontSize: 12
+              fontSize: 12,
             },
-            fontWeight: "bold"
+            fontWeight: "bold",
           },
           splitLine: {
             lineStyle: {
-              color: ["rgba(230, 230, 230, 0.2)"]
-            }
-          }
+              color: ["rgba(230, 230, 230, 0.2)"],
+            },
+          },
         },
         series: [
           {
             name: "Mortality Rate",
-            data: this.timeData.map(function(d) {
+            data: this.timeData.map(function (d) {
               return (d.deaths * 1.0) / d.confirmed;
             }),
             type: "line",
             smooth: true,
             itemStyle: {
               color: "#a32222",
-              opacity: 1
+              opacity: 1,
             },
             lineStyle: {
-              width: 3
-            }
-          }
-        ]
+              width: 3,
+            },
+          },
+        ],
       };
       this.chart.setOption(option);
-    }
+    },
   },
   mounted() {
     this.drawGraph();
@@ -106,7 +106,7 @@ export default {
     window.removeEventListener("resize", this.resizeHandler);
     // 销毁 Echarts 实例
     this.chart.dispose();
-  }
+  },
 };
 </script>
 <style scoped>

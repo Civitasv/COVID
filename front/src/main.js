@@ -9,8 +9,7 @@ import echarts from "echarts"
 import 'mapbox-gl/dist/mapbox-gl.css'
 import VueiClient from '@supermap/vue-iclient-mapboxgl';
 import "./assets/css/app.css"
-
-// 粒子库
+// 粒子
 import VueParticles from 'vue-particles'
 
 Vue.use(VueParticles)
@@ -21,7 +20,7 @@ Vue.config.productionTip = false
 // 全局作用域
 Vue.prototype.$echarts = echarts
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   if (to.meta.requireAuth) {
     // 获取 JWT Token
     if (to.path !== '/login' && !window.localStorage.getItem('JWT_TOKEN')) {

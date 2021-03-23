@@ -16,6 +16,8 @@ const state = {
     allVirusDivideByTime: [],
     // 获取中国累积的数据
     allChinaVirusDivideByTime: [],
+    // 最近一天的所有数据
+    allLatestVirus: ""
 }
 
 // getters
@@ -80,10 +82,17 @@ const actions = {
                 commit('setAllChinaVirusDivideByTime', res.data);
             }
         )
+    },
+    async getAllLatestVirus({ commit }) {
+        await virus.getAllLatestVirus().then(
+            function (res) {
+                commit("setAllLatestVirus", res.data);
+            }
+        )
     }
 }
 
-// mutatios
+// mutations
 const mutations = {
     setAllVirus(state, allVirus) {
         state.allVirus = allVirus;
@@ -108,6 +117,9 @@ const mutations = {
     },
     setAllChinaVirusDivideByTime(state, allChinaVirusDivideByTime) {
         state.allChinaVirusDivideByTime = allChinaVirusDivideByTime;
+    },
+    setAllLatestVirus(state, allLatestVirus) {
+        state.allLatestVirus = allLatestVirus;
     }
 }
 

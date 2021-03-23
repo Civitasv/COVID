@@ -7,7 +7,7 @@ import WorldVisualize from "../views/WorldVisual"
 import ChinaVisualize from "../views/ChinaVisual"
 import Login from "../views/Login"
 import Regist from "../views/Regist"
-
+import Dashboard from "../views/Dashboard"
 Vue.use(VueRouter)
 
 const routes = [
@@ -17,7 +17,7 @@ const routes = [
       requireAuth: true
     }
   },
-  { path: "/home", name: "home", component: Home },
+  { path: "/home", name: "home", component: Dashboard },
   { path: "/wvisual", name: "wvisual", component: WorldVisualize },
   { path: "/cvisual", name: "cvisual", component: ChinaVisualize },
   {
@@ -25,7 +25,8 @@ const routes = [
   },
   {
     path: "/regist", name: "regist", component: Regist
-  }
+  },
+  { path: "/test", name: "test", component: Home }
 ]
 
 const router = new VueRouter({

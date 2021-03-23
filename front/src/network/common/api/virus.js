@@ -3,9 +3,12 @@ import axios from "../request" // 导入axios实例
 // import qs from "qs"
 
 const virus = {
-    // 获取全部数据 可静态 热力图 聚合图
+    // 查询最近一天的所有数据
     getAllVirus() {
         return axios.get(`${base.virus}/virus/`);
+    },
+    getAllLatestVirus() {
+        return axios.get(`${base.virus}/virus/latest`);
     },
     // 获取全部中国数据 可静态 热力图 聚合图
     getAllChinaVirus() {
