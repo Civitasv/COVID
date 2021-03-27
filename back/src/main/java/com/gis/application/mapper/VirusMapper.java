@@ -42,7 +42,7 @@ public interface VirusMapper {
     List<VirusDeaths> getAllWorldDeathsVirusByTimestamp(int timestamp);
 
     // 查询某时间戳的中国所有现存数据
-    List<VirusDeaths> getAllChinaActiveVirusByTimestamp(int timestamp);
+    List<VirusActive> getAllChinaActiveVirusByTimestamp(int timestamp);
 
     // 查询某时间戳的世界所有现存数据
     List<VirusActive> getAllWorldActiveVirusByTimestamp(int timestamp);

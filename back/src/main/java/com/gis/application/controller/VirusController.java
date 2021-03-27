@@ -81,7 +81,7 @@ public class VirusController {
         return geoJSON.toString();
     }
 
-    @GetMapping({"/active", "/avtive/{timestamp}"})
+    @GetMapping({"/active", "/active/{timestamp}"})
     public String getAllActiveVirusByTimestamp(@PathVariable(value = "timestamp", required = false) Integer timestamp) {
         List<VirusActive> virusList;
         if (timestamp == null)
@@ -134,6 +134,14 @@ public class VirusController {
         else return gson.toJson(service.getWorldDeathsVirusData(timestamp));
     }
 
+    @GetMapping(value = {"/active/table", "/active/table/{timestamp}"})
+    public String getWorldActiveVirusData(@PathVariable(value = "timestamp", required = false) Integer timestamp) {
+        Gson gson = new Gson();
+        if (timestamp == null)
+            return gson.toJson(service.getWorldActiveVirusData(Constants.END.val));
+        else return gson.toJson(service.getWorldActiveVirusData(timestamp));
+    }
+
     @GetMapping(value = "/confirmed/table/{country}/{timestamp}")
     public String getCountryConfirmedVirusData(@PathVariable("country") String country, @PathVariable("timestamp") int timestamp) {
         Gson gson = new Gson();
@@ -152,6 +160,12 @@ public class VirusController {
         return gson.toJson(service.getCountryDeathsVirusData(country, timestamp));
     }
 
+    @GetMapping(value = "/active/table/{country}/{timestamp}")
+    public String getCountryActiveVirusData(@PathVariable("country") String country, @PathVariable("timestamp") int timestamp) {
+        Gson gson = new Gson();
+        return gson.toJson(service.getCountryActiveVirusData(country, timestamp));
+    }
+
     @GetMapping(value = "/confirmed/table/{country}/{province}/{timestamp}")
     public String getProvinceConfirmedVirusData(@PathVariable("country") String country, @PathVariable("province") String province, @PathVariable("timestamp") int timestamp) {
         Gson gson = new Gson();
@@ -168,5 +182,11 @@ public class VirusController {
     public String getProvinceDeathsVirusData(@PathVariable("country") String country, @PathVariable("province") String province, @PathVariable("timestamp") int timestamp) {
         Gson gson = new Gson();
         return gson.toJson(service.getProvinceDeathsVirusData(country, province, timestamp));
+    }
+
+    @GetMapping(value = "/active/table/{country}/{province}/{timestamp}")
+    public String getProvinceActiveVirusData(@PathVariable("country") String country, @PathVariable("province") String province, @PathVariable("timestamp") int timestamp) {
+        Gson gson = new Gson();
+        return gson.toJson(service.getProvinceActiveVirusData(country, province, timestamp));
     }
 }
