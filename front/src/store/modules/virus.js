@@ -14,18 +14,24 @@ const state = {
     worldRecovered: {},
     // 全球每个国家死亡数据
     worldDeaths: {},
+    // 全球每个国家现存数据
+    worldActive: {},
     // 某国家每个省份确诊数据
     countryConfirmed: {},
     // 某国家每个省份治愈数据
     countryRecovered: {},
     // 某国家每个省份死亡数据
     countryDeaths: {},
+    // 某国家每个省份现存数据
+    countryActive: {},
     // 某国家某省份某城市确诊数据
     provinceConfirmed: {},
     // 某国家某省份某城市治愈数据
     provinceRecovered: {},
     // 某国家某省份某城市死亡数据
     provinceDeaths: {},
+    // 某国家某省份某城市现存数据
+    provinceActive: {},
 }
 
 // getters
@@ -71,6 +77,10 @@ const actions = {
         const res = await virus.getWorldDeathsVirusData(timestamp);
         commit('setWorldDeathsVirusData', { data: res.data, timestamp: timestamp });
     },
+    async getWorldActiveVirusData({ commit }, timestamp) {
+        const res = await virus.getWorldActiveVirusData(timestamp);
+        commit('setWorldActiveVirusData', { data: res.data, timestamp: timestamp });
+    },
     async getCountryConfirmedVirusData({ commit }, { country, timestamp }) {
         const res = await virus.getCountryConfirmedVirusData(country, timestamp);
         commit('setCountryConfirmedVirusData', { data: res.data, country: country, timestamp: timestamp });
@@ -83,15 +93,25 @@ const actions = {
         const res = await virus.getCountryDeathsVirusData(country, timestamp);
         commit('setCountryDeathsVirusData', { data: res.data, country: country, timestamp: timestamp });
     },
+    async getCountryActiveVirusData({ commit }, { country, timestamp }) {
+        const res = await virus.getCountryActiveVirusData(country, timestamp);
+        commit('setCountryActiveVirusData', { data: res.data, country: country, timestamp: timestamp });
+    },
     async getProvinceConfirmedVirusData({ commit }, { country, province, timestamp }) {
         const res = await virus.getProvinceConfirmedVirusData(country, province, timestamp);
         commit('setProvinceConfirmedVirusData', { data: res.data, country: country, province, timestamp: timestamp });
-    }, async getProvinceRecoveredVirusData({ commit }, { country, province, timestamp }) {
+    },
+    async getProvinceRecoveredVirusData({ commit }, { country, province, timestamp }) {
         const res = await virus.getProvinceRecoveredVirusData(country, province, timestamp);
         commit('setProvinceRecoveredVirusData', { data: res.data, country: country, province, timestamp: timestamp });
-    }, async getProvinceDeathsVirusData({ commit }, { country, province, timestamp }) {
+    },
+    async getProvinceDeathsVirusData({ commit }, { country, province, timestamp }) {
         const res = await virus.getProvinceDeathsVirusData(country, province, timestamp);
         commit('setProvinceDeathsVirusData', { data: res.data, country: country, province, timestamp: timestamp });
+    },
+    async getProvinceActiveVirusData({ commit }, { country, province, timestamp }) {
+        const res = await virus.getProvinceActiveVirusData(country, province, timestamp);
+        commit('setProvinceActiveVirusData', { data: res.data, country: country, province, timestamp: timestamp });
     }
 }
 
@@ -121,6 +141,9 @@ const mutations = {
     setWorldDeathsVirusData(state, res) {
         state.worldDeaths[res.timestamp] = res.data;
     },
+    setWorldActiveVirusData(state, res) {
+        state.worldActive[res.timestamp] = res.data;
+    },
     setCountryConfirmedVirusData(state, res) {
         if (state.countryConfirmed[res.country]) {
             const country = state.countryConfirmed[res.country];
@@ -149,6 +172,16 @@ const mutations = {
         } else {
             state.countryDeaths[res.country] = new Object();
             const country = state.countryDeaths[res.country];
+            country[res.timestamp] = res.data;
+        }
+    },
+    setCountryActiveVirusData(state, res) {
+        if (state.countryActive[res.country]) {
+            const country = state.countryActive[res.country];
+            country[res.timestamp] = res.data;
+        } else {
+            state.countryActive[res.country] = new Object();
+            const country = state.countryActive[res.country];
             country[res.timestamp] = res.data;
         }
     },
@@ -214,6 +247,30 @@ const mutations = {
         } else {
             state.provinceDeaths[res.country] = new Object();
             const country = state.provinceDeaths[res.country];
+            if (country[res.province]) {
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            } else {
+                country[res.province] = new Object();
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            }
+        }
+    },
+    setProvinceActiveVirusData(state, res) {
+        if (state.provinceActive[res.country]) {
+            const country = state.provinceActive[res.country];
+            if (country[res.province]) {
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            } else {
+                country[res.province] = new Object();
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            }
+        } else {
+            state.provinceActive[res.country] = new Object();
+            const country = state.provinceActive[res.country];
             if (country[res.province]) {
                 const province = country[res.province];
                 province[res.timestamp] = res.data;

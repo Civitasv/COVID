@@ -307,12 +307,15 @@ export default {
       worldConfirmedTable: (state) => state.virus.worldConfirmed,
       worldRecoveredTable: (state) => state.virus.worldRecovered,
       worldDeathsTable: (state) => state.virus.worldDeaths,
+      worldActiveTable: (state) => state.virus.worldActive,
       countryConfirmedTable: (state) => state.virus.countryConfirmed,
       countryRecoveredTable: (state) => state.virus.countryRecovered,
       countryDeathsTable: (state) => state.virus.countryDeaths,
+      countryActiveTable: (state) => state.virus.countryActive,
       provinceConfirmedTable: (state) => state.virus.provinceConfirmed,
       provinceRecoveredTable: (state) => state.virus.provinceRecovered,
       provinceDeathsTable: (state) => state.virus.provinceDeaths,
+      provinceActiveTable: (state) => state.virus.provinceActive,
     }),
     confirmedUrl() {
       return "http://localhost/virus/confirmed/" + this.date_timestamp;
@@ -323,8 +326,11 @@ export default {
     deathsUrl() {
       return "http://localhost/virus/deaths/" + this.date_timestamp;
     },
+    activeUrl() {
+      return "http://localhost/virus/active/" + this.date_timestamp;
+    },
     caseClass() {
-      if (this.info_title == "累计确诊") {
+      if (this.info_title == "累计确诊" || this.info_title == "现存确诊") {
         return "case text-red";
       } else if (this.info_title == "累计治愈") {
         return "case text-green";
@@ -339,12 +345,15 @@ export default {
       "getWorldConfirmedVirusData",
       "getWorldRecoveredVirusData",
       "getWorldDeathsVirusData",
+      "getWorldActiveVirusData",
       "getCountryConfirmedVirusData",
       "getCountryRecoveredVirusData",
       "getCountryDeathsVirusData",
+      "getCountryActiveVirusData",
       "getProvinceConfirmedVirusData",
       "getProvinceRecoveredVirusData",
       "getProvinceDeathsVirusData",
+      "getProvinceActiveVirusData",
     ]),
     async showTableData() {
       this.date_timestamp = DateStringToTimestamp(this.date_time);
@@ -363,6 +372,10 @@ export default {
           if (!this.worldDeathsTable[this.date_timestamp])
             await this.getWorldDeathsVirusData(this.date_timestamp);
           this.tableCountryData = this.worldDeathsTable[this.date_timestamp];
+        } else if (this.info_title == "现存确诊") {
+          if (!this.worldActiveTable[this.date_timestamp])
+            await this.getWorldActiveVirusData(this.date_timestamp);
+          this.tableCountryData = this.worldActiveTable[this.date_timestamp];
         }
         if (this.tableCountryData.length == 0) return;
         var sum = 0;
@@ -416,6 +429,21 @@ export default {
               timestamp: this.date_timestamp,
             });
           this.tableProvinceData = this.countryDeathsTable[
+            this.table_active_country
+          ][this.date_timestamp];
+          if (this.tableProvinceData.length == 0) return;
+        } else if (this.info_title == "现存确诊") {
+          if (
+            !this.countryActiveTable[this.table_active_country] ||
+            !this.countryActiveTable[this.table_active_country][
+              this.date_timestamp
+            ]
+          )
+            await this.getCountryActiveVirusData({
+              country: this.table_active_country,
+              timestamp: this.date_timestamp,
+            });
+          this.tableProvinceData = this.countryActiveTable[
             this.table_active_country
           ][this.date_timestamp];
           if (this.tableProvinceData.length == 0) return;
@@ -482,6 +510,24 @@ export default {
               timestamp: this.date_timestamp,
             });
           this.tableCityData = this.provinceDeathsTable[
+            this.table_active_country
+          ][this.table_active_province][this.date_timestamp];
+        } else if (this.info_title == "现存确诊") {
+          if (
+            !this.provinceActiveTable[this.table_active_country] ||
+            !this.provinceActiveTable[this.table_active_country][
+              this.table_active_province
+            ] ||
+            !this.provinceActiveTable[this.table_active_country][
+              this.table_active_province
+            ][this.date_timestamp]
+          )
+            await this.getProvinceActiveVirusData({
+              country: this.table_active_country,
+              province: this.table_active_province,
+              timestamp: this.date_timestamp,
+            });
+          this.tableCityData = this.provinceActiveTable[
             this.table_active_country
           ][this.table_active_province][this.date_timestamp];
         }
@@ -551,6 +597,15 @@ export default {
                 width: 1,
               },
             };
+            const activeSym = {
+              type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+              style: "circle",
+              color: [250, 204, 219, 0.5],
+              outline: {
+                color: [250, 204, 219, 0.5],
+                width: 1,
+              },
+            };
             const confirmedRenderer = {
               type: "simple", // autocasts as new SimpleRenderer()
               symbol: confirmedSym,
@@ -616,16 +671,39 @@ export default {
                 },
               ],
             };
-            const clusterConfig = {
+
+            const activeRenderer = {
+              type: "simple", // autocasts as new SimpleRenderer()
+              symbol: activeSym,
+              visualVariables: [
+                {
+                  type: "size",
+                  field: "active",
+                  legendOptions: {
+                    title: "现存确诊人数",
+                  },
+                  stops: [
+                    { value: 0, size: 0 },
+                    { value: 1, size: "8px" },
+                    { value: 100, size: "10px" },
+                    { value: 1000, size: "15px" },
+                    { value: 10000, size: "20px" },
+                    { value: 500000, size: "120px" },
+                  ],
+                },
+              ],
+            };
+
+            const activeClusterConfig = {
               type: "cluster",
               clusterRadius: "100px",
               // {cluster_count} is an aggregate field containing
               // the number of features comprised by the cluster
               popupTemplate: {
-                content: "This cluster represents {cluster_count} earthquakes.",
+                content: "该聚类共包括 {cluster_avg_active} 个现存确诊病例.",
                 fieldInfos: [
                   {
-                    fieldName: "cluster_count",
+                    fieldName: "cluster_avg_active",
                     format: {
                       places: 0,
                       digitSeparator: true,
@@ -635,24 +713,6 @@ export default {
               },
               clusterMinSize: "24px",
               clusterMaxSize: "60px",
-              labelingInfo: [
-                {
-                  deconflictionStrategy: "none",
-                  labelExpressionInfo: {
-                    expression: "Text($feature.cluster_count, '#,###')",
-                  },
-                  symbol: {
-                    type: "text",
-                    color: "#fff",
-                    font: {
-                      weight: "bold",
-                      family: "Noto Sans",
-                      size: "12px",
-                    },
-                  },
-                  labelPlacement: "center-center",
-                },
-              ],
             };
             var layers = () => {
               const confirmedLayer = new GeoJSONLayer({
@@ -715,23 +775,11 @@ export default {
                   ],
                 },
               });
-              const clusterConfirmedLayer = new GeoJSONLayer({
-                url: this.confirmedUrl,
-                renderer: {
-                  type: "simple",
-                  field: "confirmed",
-                  symbol: {
-                    type: "simple-marker",
-                    size: 4,
-                    color: "rgba(250, 204, 219, 0.8)",
-                    outline: {
-                      color: "rgba(255, 0, 0, 0.5)",
-                      width: 5,
-                    },
-                  },
-                },
-                title: "COVID-19累计确诊（聚合图）",
-                featureReduction: clusterConfig,
+              const clusterActiveLayer = new GeoJSONLayer({
+                url: this.activeUrl,
+                renderer: activeRenderer,
+                title: "COVID-19现存确诊（聚合图）",
+                featureReduction: activeClusterConfig,
                 popupTemplate: {
                   // autocasts as new PopupTemplate()
                   title: "<font color='#FFFFFF'>{combined_key}",
@@ -740,8 +788,28 @@ export default {
                       type: "fields",
                       fieldInfos: [
                         {
-                          fieldName: "confirmed",
-                          label: "累计确诊",
+                          fieldName: "active",
+                          label: "现存确诊",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              });
+              const activeLayer = new GeoJSONLayer({
+                url: this.activeUrl,
+                renderer: activeRenderer,
+                title: "COVID-19现存确诊（分布图）",
+                popupTemplate: {
+                  // autocasts as new PopupTemplate()
+                  title: "<font color='#FFFFFF'>{combined_key}",
+                  content: [
+                    {
+                      type: "fields",
+                      fieldInfos: [
+                        {
+                          fieldName: "active",
+                          label: "现存确诊",
                         },
                       ],
                     },
@@ -749,7 +817,8 @@ export default {
                 },
               });
               return [
-                clusterConfirmedLayer,
+                clusterActiveLayer,
+                activeLayer,
                 deathsLayer,
                 recoveredLayer,
                 confirmedLayer,
@@ -783,6 +852,11 @@ export default {
                       this.info_title = "累计治愈";
                     } else if (item.title == "COVID-19累计死亡（分布图）") {
                       this.info_title = "累计死亡";
+                    } else if (
+                      item.title == "COVID-19现存确诊（聚合图）" ||
+                      item.title == "COVID-19现存确诊（分布）"
+                    ) {
+                      this.info_title = "现存确诊";
                     }
                     // 返回国家数据，防止数据冲突
                     this.clearTableSelect(0);
@@ -924,7 +998,7 @@ export default {
     },
     tableCellClassName({ columnIndex }) {
       if (columnIndex == 0) {
-        if (this.info_title == "累计确诊") {
+        if (this.info_title == "累计确诊" || this.info_title == "现存确诊") {
           return "table-cell-red";
         } else if (this.info_title == "累计治愈") {
           return "table-cell-green";

@@ -98,7 +98,7 @@
                ST_AsGeoJSON(location) as location
         from china_all
         where timestamp = #{timestamp}
-          and deaths > 0
+          and current_confirmed > 0
     </select>
     <select id="getAllWorldActiveVirusByTimestamp" resultType="VirusActive">
         select timestamp,
@@ -107,7 +107,25 @@
                ST_ASGEOJSON(location) as location
         from world_all
         where timestamp = #{timestamp}
-          and deaths > 0
+          and current_confirmed > 0
+    </select>
+    <select id="getAllChinaDeathsRatioByTimestamp" resultType="VirusDeathsRatio">
+        select timestamp,
+               case_fatality_ratio    as ratio,
+               combined_key,
+               ST_AsGeoJSON(location) as location
+        from china_all
+        where timestamp = #{timestamp}
+          and case_fatality_ratio > 0
+    </select>
+    <select id="getAllWorldDeathsRatioByTimestamp" resultType="VirusDeathsRatio">
+        select timestamp,
+               case_fatality_ratio    as ratio,
+               combined_key,
+               ST_ASGEOJSON(location) as location
+        from world_all
+        where timestamp = #{timestamp}
+          and case_fatality_ratio > 0
     </select>
     <select id="getWorldNewIncreaseVirusData" resultType="VirusNewIncrease">
         select timestamp,
@@ -157,7 +175,7 @@
         order by val desc;
     </select>
     <!-- 按时间戳获取世界每个国家的现存数据 -->
-    <select id="getWorldDeathsVirusData" resultType="DailyVirus">
+    <select id="getWorldActiveVirusData" resultType="DailyVirus">
         select timestamp,
                current_confirmed as val,
                country           as combined_key
@@ -165,6 +183,16 @@
         where timestamp = #{timestamp}
           and current_confirmed > 0
         order by val desc;
+    </select>
+    <!-- 按时间戳获取世界每个国家的死亡率数据 -->
+    <select id="getWorldDeathsRatioData" resultType="DeathsRatio">
+        select timestamp,
+               case_fatality_ratio as ratio,
+               country             as combined_key
+        from world
+        where timestamp = #{timestamp}
+          and case_fatality_ratio > 0
+        order by ratio desc;
     </select>
     <!-- 按时间戳获取国家每个省份的确诊数据（除中国） -->
     <select id="getCountryConfirmedVirusData" resultType="DailyVirus">
@@ -210,6 +238,17 @@
           and current_confirmed > 0
         order by val desc;
     </select>
+    <!-- 按时间戳获取国家每个省份的死亡率数据（除中国） -->
+    <select id="getCountryDeathsRatioData" resultType="DeathsRatio">
+        select timestamp,
+               case_fatality_ratio as ratio,
+               province            as combined_key
+        from world_state
+        where timestamp = #{timestamp}
+          and country = #{country}
+          and case_fatality_ratio > 0
+        order by ratio desc;
+    </select>
     <!-- 按时间戳获取中国每个省份的确诊数据 -->
     <select id="getChinaConfirmedVirusData" resultType="DailyVirus">
         select timestamp,
@@ -240,7 +279,7 @@
           and deaths > 0
         order by val desc;
     </select>
-    <!-- 按时间戳获取中国每个省份的死亡数据 -->
+    <!-- 按时间戳获取中国每个省份的现存数据 -->
     <select id="getChinaActiveVirusData" resultType="DailyVirus">
         select timestamp,
                current_confirmed as val,
@@ -249,6 +288,16 @@
         where timestamp = #{timestamp}
           and current_confirmed > 0
         order by val desc;
+    </select>
+    <!-- 按时间戳获取中国每个省份的死亡率数据 -->
+    <select id="getChinaDeathsRatioData" resultType="DeathsRatio">
+        select timestamp,
+               case_fatality_ratio as ratio,
+               province            as combined_key
+        from china_province
+        where timestamp = #{timestamp}
+          and case_fatality_ratio > 0
+        order by ratio desc;
     </select>
     <!-- 按时间戳获取省份每个城市的确诊数据（除中国） -->
     <select id="getProvinceConfirmedVirusData" resultType="DailyVirus">
@@ -287,7 +336,7 @@
         order by val desc;
     </select>
     <!-- 按时间戳获取省份每个城市的现存数据（除中国） -->
-    <select id="getProvinceDeathsVirusData" resultType="DailyVirus">
+    <select id="getProvinceDeathsActiveData" resultType="DailyVirus">
         select timestamp,
                current_confirmed as val,
                city              as combined_key
@@ -297,6 +346,18 @@
           and province = #{province}
           and current_confirmed > 0
         order by val desc;
+    </select>
+    <!-- 按时间戳获取省份每个城市的死亡率数据（除中国） -->
+    <select id="getProvinceDeathsRatioData" resultType="DeathsRatio">
+        select timestamp,
+               case_fatality_ratio as ratio,
+               city                as combined_key
+        from world_county
+        where timestamp = #{timestamp}
+          and country = #{country}
+          and province = #{province}
+          and case_fatality_ratio > 0
+        order by ratio desc;
     </select>
     <!-- 按时间戳获取中国省份每个城市的确诊数据 -->
     <select id="getChinaProvinceConfirmedVirusData" resultType="DailyVirus">
@@ -341,5 +402,16 @@
           and province = #{province}
           and current_confirmed > 0
         order by val desc;
+    </select>
+    <!-- 按时间戳获取中国省份每个城市的死亡率数据 -->
+    <select id="getChinaProvinceDeathsRatioData" resultType="DeathsRatio">
+        select timestamp,
+               case_fatality_ratio as ratio,
+               city                as combined_key
+        from china_city
+        where timestamp = #{timestamp}
+          and province = #{province}
+          and case_fatality_ratio > 0
+        order by ratio desc;
     </select>
 </mapper>

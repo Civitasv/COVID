@@ -15,7 +15,9 @@
         <typeAlias type="com.gis.application.vo.VirusConfirmedRecovered" alias="VirusConfirmedRecovered"/>
         <typeAlias type="com.gis.application.vo.VirusConfirmed" alias="VirusConfirmed"/>
         <typeAlias type="com.gis.application.vo.VirusDeaths" alias="VirusDeaths"/>
-        <typeAlias type="com.gis.application.vo.VirusDeaths" alias="VirusActive"/>
+        <typeAlias type="com.gis.application.vo.VirusDeathsRatio" alias="VirusDeathsRatio"/>
+        <typeAlias type="com.gis.application.vo.DeathsRatio" alias="DeathsRatio"/>
+        <typeAlias type="com.gis.application.vo.VirusActive" alias="VirusActive"/>
         <typeAlias type="com.gis.application.vo.Daily" alias="DailyVirus"/>
         <typeAlias type="com.gis.application.vo.VirusRecovered" alias="VirusRecovered"/>
         <typeAlias type="com.gis.application.model.User" alias="User"/>

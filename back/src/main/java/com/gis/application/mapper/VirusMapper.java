@@ -47,6 +47,12 @@ public interface VirusMapper {
     // 查询某时间戳的世界所有现存数据
     List<VirusActive> getAllWorldActiveVirusByTimestamp(int timestamp);
 
+    // 查询某时间戳的中国所有死亡率数据
+    List<VirusDeathsRatio> getAllChinaDeathsRatioByTimestamp(int timestamp);
+
+    // 查询某时间戳的世界所有死亡率数据
+    List<VirusDeathsRatio> getAllWorldDeathsRatioByTimestamp(int timestamp);
+
     // 查询世界区域每日新增数据
     List<VirusNewIncrease> getWorldNewIncreaseVirusData();
 
@@ -65,6 +71,9 @@ public interface VirusMapper {
     // 获取世界每个国家现存数据
     List<Daily> getWorldActiveVirusData(int timestamp);
 
+    // 获取世界每个国家死亡率数据
+    List<DeathsRatio> getWorldDeathsRatioData(int timestamp);
+
     // 获取国家每个省份确诊数据
     List<Daily> getCountryConfirmedVirusData(String country, int timestamp);
 
@@ -76,6 +85,9 @@ public interface VirusMapper {
 
     // 获取国家每个省份现存数据
     List<Daily> getCountryActiveVirusData(String country, int timestamp);
+
+    // 获取国家每个省份死亡率数据
+    List<DeathsRatio> getCountryDeathsRatioData(String country, int timestamp);
 
     // 获取中国每个省份确诊数据
     List<Daily> getChinaConfirmedVirusData(int timestamp);
@@ -89,6 +101,9 @@ public interface VirusMapper {
     // 获取中国每个省份现存数据
     List<Daily> getChinaActiveVirusData(int timestamp);
 
+    // 获取中国每个省份现存数据
+    List<DeathsRatio> getChinaDeathsRatioData(int timestamp);
+
     // 获取省份每个城市确诊数据
     List<Daily> getProvinceConfirmedVirusData(String country, String province, int timestamp);
 
@@ -101,6 +116,9 @@ public interface VirusMapper {
     // 获取省份每个现存死亡数据
     List<Daily> getProvinceActiveVirusData(String country, String province, int timestamp);
 
+    // 获取省份每个现存死亡率数据
+    List<DeathsRatio> getProvinceDeathsRatioData(String country, String province, int timestamp);
+
     // 获取中国省份每个城市确诊数据
     List<Daily> getChinaProvinceConfirmedVirusData(String province, int timestamp);
 
@@ -112,4 +130,7 @@ public interface VirusMapper {
 
     // 获取中国省份每个城市现存数据
     List<Daily> getChinaProvinceActiveVirusData(String province, int timestamp);
+
+    // 获取中国省份每个城市现存数据
+    List<DeathsRatio> getChinaProvinceDeathsRatioData(String province, int timestamp);
 }

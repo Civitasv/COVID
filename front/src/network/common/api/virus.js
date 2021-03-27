@@ -15,6 +15,10 @@ const virus = {
     getAllDeathsVirusByTimestamp(timestamp = 1610380800) {
         return axios.get(`${base.virus}/virus/deaths/` + timestamp);
     },
+    // 获取世界现存数据
+    getAllActiveVirusByTimestamp(timestamp = 1610380800) {
+        return axios.get(`${base.virus}/virus/active/` + timestamp);
+    },
     // 获取世界每日新增数据（确诊，死亡，治愈）
     getWorldNewIncreaseVirusData() {
         return axios.get(`${base.virus}/virus/newIncrease`);
@@ -35,6 +39,10 @@ const virus = {
     getWorldDeathsVirusData(timestamp = 1610380800) {
         return axios.get(`${base.virus}/virus/deaths/table/` + timestamp);
     },
+    // 获取全球每个国家现存数据
+    getWorldActiveVirusData(timestamp = 1610380800) {
+        return axios.get(`${base.virus}/virus/active/table/` + timestamp);
+    },
     // 获取国家每个省份确诊数据
     getCountryConfirmedVirusData(country, timestamp) {
         return axios.get(`${base.virus}/virus/confirmed/table/` + country + "/" + timestamp);
@@ -47,6 +55,10 @@ const virus = {
     getCountryDeathsVirusData(country, timestamp) {
         return axios.get(`${base.virus}/virus/deaths/table/` + country + "/" + timestamp);
     },
+    // 获取国家每个省份现存数据
+    getCountryActiveVirusData(country, timestamp) {
+        return axios.get(`${base.virus}/virus/avtive/table/` + country + "/" + timestamp);
+    },
     // 获取省份每个城市确诊数据
     getProvinceConfirmedVirusData(country, province, timestamp) {
         return axios.get(`${base.virus}/virus/confirmed/table/` + country + "/" + province + "/" + timestamp);
@@ -58,6 +70,10 @@ const virus = {
     // 获取省份每个城市死亡数据
     getProvinceDeathsVirusData(country, province, timestamp) {
         return axios.get(`${base.virus}/virus/deaths/table/` + country + "/" + province + "/" + timestamp);
+    },
+    // 获取省份每个城市现存数据
+    getProvinceActiveVirusData(country, province, timestamp) {
+        return axios.get(`${base.virus}/virus/active/table/` + country + "/" + province + "/" + timestamp);
     }
 }
 

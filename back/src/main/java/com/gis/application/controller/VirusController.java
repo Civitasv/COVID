@@ -4,10 +4,7 @@ import com.gis.application.model.Constants;
 import com.gis.application.model.Feature;
 import com.gis.application.model.GeoJSON;
 import com.gis.application.service.VirusService;
-import com.gis.application.vo.VirusActive;
-import com.gis.application.vo.VirusConfirmed;
-import com.gis.application.vo.VirusDeaths;
-import com.gis.application.vo.VirusRecovered;
+import com.gis.application.vo.*;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -98,6 +95,23 @@ public class VirusController {
         return geoJSON.toString();
     }
 
+    @GetMapping({"/deathsRatio", "/deathsRatio/{timestamp}"})
+    public String getAllDeathsRatioByTimestamp(@PathVariable(value = "timestamp", required = false) Integer timestamp) {
+        List<VirusDeathsRatio> virusList;
+        if (timestamp == null)
+            virusList = service.getAllDeathsRatioByTimestamp(Constants.END.val);
+        else virusList = service.getAllDeathsRatioByTimestamp(timestamp);
+        List<Feature> features = new ArrayList<>();
+        for (VirusDeathsRatio virus : virusList) {
+            Feature feature = new Feature(virus.getLocation());
+            feature.addProperty("ratio", String.valueOf(virus.getRatio()));
+            feature.addProperty("combined_key", virus.getCombinedKey());
+            features.add(feature);
+        }
+        GeoJSON geoJSON = new GeoJSON(features);
+        return geoJSON.toString();
+    }
+
     @GetMapping("/newIncrease")
     public String getWorldNewIncreaseVirusData() {
         Gson gson = new Gson();
@@ -142,6 +156,14 @@ public class VirusController {
         else return gson.toJson(service.getWorldActiveVirusData(timestamp));
     }
 
+    @GetMapping(value = {"/deathsRatio/table", "/deathsRatio/table/{timestamp}"})
+    public String getWorldDeathsRatioData(@PathVariable(value = "timestamp", required = false) Integer timestamp) {
+        Gson gson = new Gson();
+        if (timestamp == null)
+            return gson.toJson(service.getWorldDeathsRatioData(Constants.END.val));
+        else return gson.toJson(service.getWorldDeathsRatioData(timestamp));
+    }
+
     @GetMapping(value = "/confirmed/table/{country}/{timestamp}")
     public String getCountryConfirmedVirusData(@PathVariable("country") String country, @PathVariable("timestamp") int timestamp) {
         Gson gson = new Gson();
@@ -166,6 +188,12 @@ public class VirusController {
         return gson.toJson(service.getCountryActiveVirusData(country, timestamp));
     }
 
+    @GetMapping(value = "/deathsRatio/table/{country}/{timestamp}")
+    public String getCountryDeathsRatioData(@PathVariable("country") String country, @PathVariable("timestamp") int timestamp) {
+        Gson gson = new Gson();
+        return gson.toJson(service.getCountryDeathsRatioData(country, timestamp));
+    }
+
     @GetMapping(value = "/confirmed/table/{country}/{province}/{timestamp}")
     public String getProvinceConfirmedVirusData(@PathVariable("country") String country, @PathVariable("province") String province, @PathVariable("timestamp") int timestamp) {
         Gson gson = new Gson();
@@ -188,5 +216,11 @@ public class VirusController {
     public String getProvinceActiveVirusData(@PathVariable("country") String country, @PathVariable("province") String province, @PathVariable("timestamp") int timestamp) {
         Gson gson = new Gson();
         return gson.toJson(service.getProvinceActiveVirusData(country, province, timestamp));
+    }
+
+    @GetMapping(value = "/deathsRatio/table/{country}/{province}/{timestamp}")
+    public String getProvinceDeathsRatioData(@PathVariable("country") String country, @PathVariable("province") String province, @PathVariable("timestamp") int timestamp) {
+        Gson gson = new Gson();
+        return gson.toJson(service.getProvinceDeathsRatioData(country, province, timestamp));
     }
 }

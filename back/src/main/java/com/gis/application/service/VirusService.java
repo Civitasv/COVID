@@ -30,6 +30,9 @@ public interface VirusService {
     // 按时间戳查询世界每个国家现存数据
     List<VirusActive> getAllActiveVirusByTimestamp(int timestamp);
 
+    // 按时间戳查询世界每个国家死亡率数据
+    List<VirusDeathsRatio> getAllDeathsRatioByTimestamp(int timestamp);
+
     // 查询世界区域每日新增数据
     List<VirusNewIncrease> getWorldNewIncreaseVirusData();
 
@@ -48,6 +51,9 @@ public interface VirusService {
     // 获取世界每个国家现存数据
     List<Daily> getWorldActiveVirusData(int timestamp);
 
+    // 获取世界每个国家死亡率数据
+    List<DeathsRatio> getWorldDeathsRatioData(int timestamp);
+
     // 获取国家每个省份确诊数据
     List<Daily> getCountryConfirmedVirusData(String country, int timestamp);
 
@@ -60,6 +66,9 @@ public interface VirusService {
     // 获取国家每个省份现存数据
     List<Daily> getCountryActiveVirusData(String country, int timestamp);
 
+    // 获取国家每个省份死亡率数据
+    List<DeathsRatio> getCountryDeathsRatioData(String country, int timestamp);
+
     // 获取省份每个城市确诊数据
     List<Daily> getProvinceConfirmedVirusData(String country, String province, int timestamp);
 
@@ -71,4 +80,7 @@ public interface VirusService {
 
     // 获取省份每个现存死亡数据
     List<Daily> getProvinceActiveVirusData(String country, String province, int timestamp);
+
+    // 获取省份每个现存死亡率数据
+    List<DeathsRatio> getProvinceDeathsRatioData(String country, String province, int timestamp);
 }
