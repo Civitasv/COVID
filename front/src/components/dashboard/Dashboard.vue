@@ -4,21 +4,21 @@
       <div
         class="item one"
         @click="clickChart('1')"
-        style="transform: translate(-22.4%,-33.5%) scale(0.33)"
+        style="transform: translate(-22.4%, -33.5%) scale(0.33)"
       >
         <Time3></Time3>
       </div>
       <div
         class="item two"
         @click="clickChart('2')"
-        style="transform: translate(-22.4%,0.5%) scale(0.33)"
+        style="transform: translate(-22.4%, 0.5%) scale(0.33)"
       >
         <Time2></Time2>
       </div>
       <div
         class="item three"
         @click="clickChart('3')"
-        style="transform: translate(-22.4%,34.5%) scale(0.33)"
+        style="transform: translate(-22.4%, 34.5%) scale(0.33)"
       >
         <Time></Time>
       </div>
@@ -35,14 +35,14 @@
 
 <script>
 const Time2 = () => import("../time/Time2");
-const Time3 = () => import("../time/Time3");
+const Time3 = () => import("../time/WorldConfirmedRecoveredTrendChart");
 const Virus = () => import("../virus/Virus");
-const Time = () => import("../time/Time");
+const Time = () => import("../time/WorldNewIncreaseTrendChart");
 
 export default {
   data() {
     return {
-      items: []
+      items: [],
     };
   },
   mounted() {
@@ -71,14 +71,14 @@ export default {
       let transform2 = el2.style.transform;
       el1.style.transform = transform2;
       el2.style.transform = transform1;
-    }
+    },
   },
   components: {
     Virus,
     Time,
     Time2,
-    Time3
-  }
+    Time3,
+  },
 };
 </script>
 

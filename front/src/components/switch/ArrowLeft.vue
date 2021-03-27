@@ -15,6 +15,7 @@
 <style scoped>
 .arrow-left {
   fill: white;
+  cursor: pointer;
 }
 </style>
 

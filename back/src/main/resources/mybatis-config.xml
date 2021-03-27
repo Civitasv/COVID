@@ -4,15 +4,25 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <!-- 驼峰命名-->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
     <!-- 配置别名 -->
     <typeAliases>
         <typeAlias type="com.gis.application.model.Virus" alias="Virus"/>
+        <typeAlias type="com.gis.application.vo.VirusNewIncrease" alias="VirusNewIncrease"/>
+        <typeAlias type="com.gis.application.vo.VirusConfirmedRecovered" alias="VirusConfirmedRecovered"/>
+        <typeAlias type="com.gis.application.vo.VirusConfirmed" alias="VirusConfirmed"/>
+        <typeAlias type="com.gis.application.vo.VirusDeaths" alias="VirusDeaths"/>
+        <typeAlias type="com.gis.application.vo.VirusDeaths" alias="VirusActive"/>
+        <typeAlias type="com.gis.application.vo.Daily" alias="DailyVirus"/>
+        <typeAlias type="com.gis.application.vo.VirusRecovered" alias="VirusRecovered"/>
         <typeAlias type="com.gis.application.model.User" alias="User"/>
     </typeAliases>
     <!-- 配置mapper -->
     <mappers>
         <mapper resource="com/gis/application/mapper/VirusMapper.xml"/>
         <mapper resource="com/gis/application/mapper/UserMapper.xml"/>
-        <mapper resource="com/gis/application/mapper/update.xml"/>
     </mappers>
 </configuration>

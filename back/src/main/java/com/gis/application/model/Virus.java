@@ -15,6 +15,7 @@ public class Virus {
     private long timestamp;
     private double lat;
     private double lon;
+    private String location;
     private int confirmed;
     private int deaths;
     private int recovered;
@@ -30,10 +31,11 @@ public class Virus {
     private String combinedKey = "";
     private double caseFatalityRatio;
 
-    public Virus(long timestamp, double lat, double lon, int confirmed, int deaths, int recovered, int suspect, int currentConfirmed, int newConfirmed, int newDeaths, int newRecovered, int newSuspect, String country, String province, String city, String combinedKey, double caseFatalityRatio) {
+    public Virus(long timestamp, double lat, double lon, String location, int confirmed, int deaths, int recovered, int suspect, int currentConfirmed, int newConfirmed, int newDeaths, int newRecovered, int newSuspect, String country, String province, String city, String combinedKey, double caseFatalityRatio) {
         this.timestamp = timestamp;
         this.lat = lat;
         this.lon = lon;
+        this.location = location;
         this.confirmed = confirmed;
         this.deaths = deaths;
         this.recovered = recovered;

@@ -1,53 +1,13 @@
 package com.gis.application.service;
 
 import com.gis.application.model.Virus;
-import org.apache.ibatis.annotations.Param;
+import com.gis.application.vo.*;
 
-import java.util.HashMap;
 import java.util.List;
 
 public interface VirusService {
     // 插入数据
     int insertVirus(Virus virus);
-
-    // 查询经度或纬度为0的
-    List<HashMap<String, Object>> selectLatLngEqualZero();
-
-    // 按时间查询
-    List<HashMap<String, Object>> getVirusByTime(int publicTime);
-
-    // 按特定时间，对地点模糊查询
-    List<HashMap<String, Object>> getVirusByAddressAndTime(int publicTime,String address);
-
-    // 得到所有
-    List<HashMap<String, Object>> getAllVirus();
-
-    // 得到中国所有
-    List<HashMap<String, Object>> getAllChinaVirus();
-
-    // 按国家分组查询
-    List<HashMap<String, Object>> getVirusDivideByCountry();
-
-    // 按日期分组查询
-    List<HashMap<String, Integer>> getVirusDivideByTime();
-
-    // 按日期分组查询中国
-    List<HashMap<String, Integer>> getChinaVirusDivideByTime();
-
-    // 按省份分组查询
-    List<HashMap<String, Object>> getProvinceData();
-
-    // 按国家更新数据
-    int updateLngLatByCountry(String country, double lng, double lat);
-
-    // 按省份更新数据
-    int updateLngLatByProvince(String province, double lng, double lat);
-
-    // 按ID更新数据
-    int updateLngLatByID(int id, double lng, double lat);
-
-    // 更新ID
-    int updateID(int id, int ids);
 
     // 按ID更新疫情数据
     int updateVirus(Virus virus);
@@ -56,5 +16,59 @@ public interface VirusService {
     int deleteVirus(int id);
 
     // 按ID添加BASE64图片
-    int addImage(int id,String base64);
+    int addImage(int id, String base64);
+
+    // 按时间戳查询所有确诊数据(china_all && world_all)
+    List<VirusConfirmed> getAllConfirmedVirusByTimestamp(int timestamp);
+
+    // 按时间戳查询所有治愈数据(china_all && world_all)
+    List<VirusRecovered> getAllRecoveredVirusByTimestamp(int timestamp);
+
+    // 按时间戳查询所有死亡数据(china_all && world_all)
+    List<VirusDeaths> getAllDeathsVirusByTimestamp(int timestamp);
+
+    // 按时间戳查询世界每个国家现存数据
+    List<VirusActive> getAllActiveVirusByTimestamp(int timestamp);
+
+    // 查询世界区域每日新增数据
+    List<VirusNewIncrease> getWorldNewIncreaseVirusData();
+
+    // 获取每日现存确诊、治愈、死亡数据
+    List<VirusConfirmedRecovered> getConfirmedRecoveredVirusData();
+
+    // 获取世界每个国家确诊数据
+    List<Daily> getWorldConfirmedVirusData(int timestamp);
+
+    // 获取世界每个国家治愈数据
+    List<Daily> getWorldRecoveredVirusData(int timestamp);
+
+    // 获取世界每个国家死亡数据
+    List<Daily> getWorldDeathsVirusData(int timestamp);
+
+    // 获取世界每个国家现存数据
+    List<Daily> getWorldActiveVirusData(int timestamp);
+
+    // 获取国家每个省份确诊数据
+    List<Daily> getCountryConfirmedVirusData(String country, int timestamp);
+
+    // 获取国家每个省份治愈数据
+    List<Daily> getCountryRecoveredVirusData(String country, int timestamp);
+
+    // 获取国家每个省份死亡数据
+    List<Daily> getCountryDeathsVirusData(String country, int timestamp);
+
+    // 获取国家每个省份现存数据
+    List<Daily> getCountryActiveVirusData(String country, int timestamp);
+
+    // 获取省份每个城市确诊数据
+    List<Daily> getProvinceConfirmedVirusData(String country, String province, int timestamp);
+
+    // 获取省份每个城市治愈数据
+    List<Daily> getProvinceRecoveredVirusData(String country, String province, int timestamp);
+
+    // 获取省份每个城市死亡数据
+    List<Daily> getProvinceDeathsVirusData(String country, String province, int timestamp);
+
+    // 获取省份每个现存死亡数据
+    List<Daily> getProvinceActiveVirusData(String country, String province, int timestamp);
 }

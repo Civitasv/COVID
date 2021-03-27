@@ -5,108 +5,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gis.application.mapper.VirusMapper">
 
-    <!-- 插入数据 -->
+    <!--&lt;!&ndash; 插入数据 &ndash;&gt;
     <insert id="insertVirus" parameterType="Virus" flushCache="true" timeout="20" useGeneratedKeys="true"
             keyProperty="id">
-        <selectKey keyProperty="id" resultType="Long" order="BEFORE">
-            SELECT nextval('id_seq'::regclass)
-        </selectKey>
         insert into
         virus(public_time,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,location,description,image)
         values
         (#{publicTime},#{lat},#{lng},#{country},#{province},#{city},#{district},#{newDiagnosis},#{newRecovery},#{newDeath},ST_GeomFromText(#{location},
         4326),#{description},#{image})
     </insert>
-
-    <!-- 查询lat为0的 -->
-    <select id="selectLatLngEqualZero" resultType="Map">
-        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,description from virus where lat=0 or lng=0 and country='中国'
-    </select>
-
-    <!--获得所有数据-->
-    <select id="getAllVirus" resultType="Map">
-        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,description from virus order by id asc
-    </select>
-
-    <!--获得中国所有数据-->
-    <select id="getAllChinaVirus" resultType="Map">
-        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,description from virus  where country='中国' order by id asc
-    </select>
-
-    <!--根据时间戳获得数据-->
-    <select id="getVirusByTime" resultType="Map">
-        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,description,public_time,image from virus where public_time = #{publicTime}
-    </select>
-
-    <!-- 根据地点模糊查询 -->
-    <select id="getVirusByAddressAndTime" resultType="Map">
-        <bind name="pattern" value="'%' + address + '%'"/>
-        select id,lat,lng,country,province,city,district,new_diagnosis,new_recovery,new_death,description,public_time,image from virus
-        where (country like #{address} or province like #{address} or city like #{address}) and public_time=#{publicTime}
-    </select>
-    <!-- **************************************************************************分组查询********************************************************************************** -->
-    <!-- 按日期进行分组 -->
-    <select id="getVirusDivideByTime" resultType="Map">
-         select public_time , sum(new_diagnosis) as new_diagnosis,sum(new_recovery) as new_recovery,sum(new_death) as new_death
-            from virus
-            group by public_time
-            order by public_time asc
-    </select>
-
-    <select id="getChinaVirusDivideByTime" resultType="Map">
-         select public_time , sum(new_diagnosis) as new_diagnosis,sum(new_recovery) as new_recovery,sum(new_death) as new_death
-            from virus where country = '中国'
-            group by public_time
-            order by public_time asc
-    </select>
-    <!--按国家进行分组-->
-    <select id="getVirusDivideByCountry" resultType="Map">
-        select country as name, sum(new_recovery) as value
-            from virus
-            group by name
-            order by value Desc
-            limit 10
-    </select>
-
-    <select id="getProvinceData" resultType="Map">
-        select province , sum(new_diagnosis) as confirmed,sum(new_recovery) as recovery,sum(new_death) as deaths
-            from virus where country  = '中国'
-            group by province
-    </select>
-
-    <!-- 按国家更新数据 -->
-    <update id="updateLngLatByCountry">
-        <bind name="pattern" value="'%' + country + '%'"/>
-        update virus
-        set lng = #{lng},
-        lat = #{lat},
-        location=ST_GeomFromText('POINT(${lng} ${lat})', 4326)
-        where country like #{pattern};
-    </update>
-
-    <!-- 按省份更新数据 -->
-    <update id="updateLngLatByProvince">
-        <bind name="pattern" value="'%' + province + '%'"/>
-        update virus
-        set lng = #{lng},
-        lat = #{lat},
-        location=ST_GeomFromText('POINT(${lng} ${lat})', 4326)
-        where province like #{pattern} and city="";
-    </update>
-
-    <!-- 按ID更新数据 -->
-    <update id="updateLngLatByID">
-        update virus
-        set lng = #{lng},
-        lat = #{lat},
-        location=ST_GeomFromText('POINT(${lng} ${lat})', 4326)
-        where id=#{id}
-    </update>
-
-    <!-- 更新ID -->
-    <update id="updateID">
-        update virus set id = #{id} where id= #{ids}
-    </update>
 
     <update id="updateVirus" parameterType="Virus">
         update virus
@@ -128,5 +35,311 @@
     
     <update id="addImage" >
         update virus set image=#{image} where id=#{id}
-    </update>
+    </update>-->
+
+    <select id="getAllChinaConfirmedVirusByTimestamp" resultType="VirusConfirmed">
+        select timestamp,
+               confirmed,
+               combined_key,
+               ST_AsGeoJSON(location) as location
+        from china_all
+        where timestamp = #{timestamp}
+          and confirmed > 0
+    </select>
+    <select id="getAllWorldConfirmedVirusByTimestamp" resultType="VirusConfirmed">
+        select timestamp,
+               confirmed,
+               combined_key,
+               ST_ASGEOJSON(location) as location
+        from world_all
+        where timestamp = #{timestamp}
+          and confirmed > 0
+    </select>
+    <select id="getAllChinaRecoveredVirusByTimestamp" resultType="VirusRecovered">
+        select timestamp,
+               recovered,
+               combined_key,
+               ST_AsGeoJSON(location) as location
+        from china_all
+        where timestamp = #{timestamp}
+          and recovered > 0
+    </select>
+    <select id="getAllWorldRecoveredVirusByTimestamp" resultType="VirusRecovered">
+        select timestamp,
+               recovered,
+               combined_key,
+               ST_ASGEOJSON(location) as location
+        from world_all
+        where timestamp = #{timestamp}
+          and recovered > 0
+    </select>
+    <select id="getAllChinaDeathsVirusByTimestamp" resultType="VirusDeaths">
+        select timestamp,
+               deaths,
+               combined_key,
+               ST_AsGeoJSON(location) as location
+        from china_all
+        where timestamp = #{timestamp}
+          and deaths > 0
+    </select>
+    <select id="getAllWorldDeathsVirusByTimestamp" resultType="VirusDeaths">
+        select timestamp,
+               deaths,
+               combined_key,
+               ST_ASGEOJSON(location) as location
+        from world_all
+        where timestamp = #{timestamp}
+          and deaths > 0
+    </select>
+    <select id="getAllChinaActiveVirusByTimestamp" resultType="VirusActive">
+        select timestamp,
+               current_confirmed      as active,
+               combined_key,
+               ST_AsGeoJSON(location) as location
+        from china_all
+        where timestamp = #{timestamp}
+          and deaths > 0
+    </select>
+    <select id="getAllWorldActiveVirusByTimestamp" resultType="VirusActive">
+        select timestamp,
+               current_confirmed      as active,
+               combined_key,
+               ST_ASGEOJSON(location) as location
+        from world_all
+        where timestamp = #{timestamp}
+          and deaths > 0
+    </select>
+    <select id="getWorldNewIncreaseVirusData" resultType="VirusNewIncrease">
+        select timestamp,
+               sum(new_confirmed) as newConfirmed,
+               sum(new_deaths)    as newDeaths,
+               sum(new_recovered) as newRecovered
+        from world
+        group by timestamp;
+    </select>
+    <select id="getConfirmedRecoveredVirusData" resultType="VirusConfirmedRecovered">
+        select timestamp,
+               sum(current_confirmed) as currentConfirmed,
+               sum(deaths)            as deaths,
+               sum(recovered)         as recovered
+        from world
+        group by timestamp;
+    </select>
+
+    <!-- 按时间戳获取世界每个国家的确诊数据 -->
+    <select id="getWorldConfirmedVirusData" resultType="DailyVirus">
+        select timestamp,
+               confirmed as val,
+               country   as combined_key
+        from world
+        where timestamp = #{timestamp}
+          and confirmed > 0
+        order by val desc;
+    </select>
+    <!-- 按时间戳获取世界每个国家的治愈数据 -->
+    <select id="getWorldRecoveredVirusData" resultType="DailyVirus">
+        select timestamp,
+               recovered as val,
+               country   as combined_key
+        from world
+        where timestamp = #{timestamp}
+          and recovered > 0
+        order by val desc;
+    </select>
+    <!-- 按时间戳获取世界每个国家的死亡数据 -->
+    <select id="getWorldDeathsVirusData" resultType="DailyVirus">
+        select timestamp,
+               deaths  as val,
+               country as combined_key
+        from world
+        where timestamp = #{timestamp}
+          and deaths > 0
+        order by val desc;
+    </select>
+    <!-- 按时间戳获取世界每个国家的现存数据 -->
+    <select id="getWorldDeathsVirusData" resultType="VirusActive">
+        select timestamp,
+               current_confirmed as active,
+               country           as combined_key
+        from world
+        where timestamp = #{timestamp}
+          and current_confirmed > 0
+        order by active desc;
+    </select>
+    <!-- 按时间戳获取国家每个省份的确诊数据（除中国） -->
+    <select id="getCountryConfirmedVirusData" resultType="DailyVirus">
+        select timestamp,
+               confirmed as val,
+               province  as combined_key
+        from world_state
+        where timestamp = #{timestamp}
+          and country = #{country}
+          and confirmed > 0
+        order by val desc;
+    </select>
+    <!-- 按时间戳获取国家每个省份的治愈数据（除中国）-->
+    <select id="getCountryRecoveredVirusData" resultType="DailyVirus">
+        select timestamp,
+               recovered as val,
+               province  as combined_key
+        from world_state
+        where timestamp = #{timestamp}
+          and country = #{country}
+          and recovered > 0
+        order by val desc;
+    </select>
+    <!-- 按时间戳获取国家每个省份的死亡数据（除中国） -->
+    <select id="getCountryDeathsVirusData" resultType="DailyVirus">
+        select timestamp,
+               deaths   as val,
+               province as combined_key
+        from world_state
+        where timestamp = #{timestamp}
+          and country = #{country}
+          and deaths > 0
+        order by val desc;
+    </select>
+    <!-- 按时间戳获取国家每个省份的现存数据（除中国） -->
+    <select id="getCountryActiveVirusData" resultType="VirusActive">
+        select timestamp,
+               current_confirmed as active,
+               province          as combined_key
+        from world_state
+        where timestamp = #{timestamp}
+          and country = #{country}
+          and current_confirmed > 0
+        order by current_confirmed desc;
+    </select>
+    <!-- 按时间戳获取中国每个省份的确诊数据 -->
+    <select id="getChinaConfirmedVirusData" resultType="DailyVirus">
+        select timestamp,
+               confirmed as val,
+               province  as combined_key
+        from china_province
+        where timestamp = #{timestamp}
+          and confirmed > 0
+        order by val desc;
+    </select>
+    <!-- 按时间戳获取中国每个省份的治愈数据-->
+    <select id="getChinaRecoveredVirusData" resultType="DailyVirus">
+        select timestamp,
+               recovered as val,
+               province  as combined_key
+        from china_province
+        where timestamp = #{timestamp}
+          and recovered > 0
+        order by val desc;
+    </select>
+    <!-- 按时间戳获取中国每个省份的死亡数据 -->
+    <select id="getChinaDeathsVirusData" resultType="DailyVirus">
+        select timestamp,
+               deaths   as val,
+               province as combined_key
+        from china_province
+        where timestamp = #{timestamp}
+          and deaths > 0
+        order by val desc;
+    </select>
+    <!-- 按时间戳获取中国每个省份的死亡数据 -->
+    <select id="getChinaActiveVirusData" resultType="VirusActive">
+        select timestamp,
+               current_confirmed as active,
+               province          as combined_key
+        from china_province
+        where timestamp = #{timestamp}
+          and current_confirmed > 0
+        order by active desc;
+    </select>
+    <!-- 按时间戳获取省份每个城市的确诊数据（除中国） -->
+    <select id="getProvinceConfirmedVirusData" resultType="DailyVirus">
+        select timestamp,
+               confirmed as val,
+               city      as combined_key
+        from world_county
+        where timestamp = #{timestamp}
+          and country = #{country}
+          and province = #{province}
+          and confirmed > 0
+        order by val desc;
+    </select>
+    <!-- 按时间戳获取省份每个城市的治愈数据（除中国）-->
+    <select id="getProvinceRecoveredVirusData" resultType="DailyVirus">
+        select timestamp,
+               recovered as val,
+               city      as combined_key
+        from world_county
+        where timestamp = #{timestamp}
+          and country = #{country}
+          and province = #{province}
+          and recovered > 0
+        order by val desc;
+    </select>
+    <!-- 按时间戳获取省份每个城市的死亡数据（除中国） -->
+    <select id="getProvinceDeathsVirusData" resultType="DailyVirus">
+        select timestamp,
+               deaths as val,
+               city   as combined_key
+        from world_county
+        where timestamp = #{timestamp}
+          and country = #{country}
+          and province = #{province}
+          and deaths > 0
+        order by val desc;
+    </select>
+    <!-- 按时间戳获取省份每个城市的现存数据（除中国） -->
+    <select id="getProvinceDeathsVirusData" resultType="VirusActive">
+        select timestamp,
+               current_confirmed as active,
+               city              as combined_key
+        from world_county
+        where timestamp = #{timestamp}
+          and country = #{country}
+          and province = #{province}
+          and current_confirmed > 0
+        order by active desc;
+    </select>
+    <!-- 按时间戳获取中国省份每个城市的确诊数据 -->
+    <select id="getChinaProvinceConfirmedVirusData" resultType="DailyVirus">
+        select timestamp,
+               confirmed as val,
+               city      as combined_key
+        from china_city
+        where timestamp = #{timestamp}
+          and province = #{province}
+          and confirmed > 0
+        order by val desc;
+    </select>
+    <!-- 按时间戳获取中国省份每个城市的治愈数据-->
+    <select id="getChinaProvinceRecoveredVirusData" resultType="DailyVirus">
+        select timestamp,
+               recovered as val,
+               city      as combined_key
+        from china_city
+        where timestamp = #{timestamp}
+          and province = #{province}
+          and recovered > 0
+        order by val desc;
+    </select>
+    <!-- 按时间戳获取中国省份每个城市的死亡数据 -->
+    <select id="getChinaProvinceDeathsVirusData" resultType="DailyVirus">
+        select timestamp,
+               deaths as val,
+               city   as combined_key
+        from china_city
+        where timestamp = #{timestamp}
+          and province = #{province}
+          and deaths > 0
+        order by val desc;
+    </select>
+    <!-- 按时间戳获取中国省份每个城市的现存数据 -->
+    <select id="getChinaProvinceActiveVirusData" resultType="VirusActive">
+        select timestamp,
+               current_confirmed as active,
+               city              as combined_key
+        from china_city
+        where timestamp = #{timestamp}
+          and province = #{province}
+          and current_confirmed > 0
+        order by active desc;
+    </select>
 </mapper>

@@ -3,88 +3,62 @@ import axios from "../request" // 导入axios实例
 // import qs from "qs"
 
 const virus = {
-    // 查询最近一天的所有数据
-    getAllVirus() {
-        return axios.get(`${base.virus}/virus/`);
+    // 获取世界确诊数据
+    getAllConfirmedVirusByTimestamp(timestamp = 1610380800) {
+        return axios.get(`${base.virus}/virus/confirmed/` + timestamp);
     },
-    getAllLatestVirus() {
-        return axios.get(`${base.virus}/virus/latest`);
+    // 获取世界治愈数据
+    getAllRecoveredVirusByTimestamp(timestamp = 1610380800) {
+        return axios.get(`${base.virus}/virus/recovered/` + timestamp);
     },
-    // 获取全部中国数据 可静态 热力图 聚合图
-    getAllChinaVirus() {
-        return axios.get(`${base.virus}/virus/china`);
+    // 获取世界死亡数据
+    getAllDeathsVirusByTimestamp(timestamp = 1610380800) {
+        return axios.get(`${base.virus}/virus/deaths/` + timestamp);
     },
-    // 按时间查询数据 管理
-    getVirusByTime(time) {
-        return axios.get(`${base.virus}/virus/` + time)
+    // 获取世界每日新增数据（确诊，死亡，治愈）
+    getWorldNewIncreaseVirusData() {
+        return axios.get(`${base.virus}/virus/newIncrease`);
     },
-    // 按地点模糊查询数据 管理
-    getVirusByAddressAndTime(time, address) {
-        return axios.get(`${base.virus}/virus/address`, {
-            params: { 'time': time, 'address': address }
-        })
+    // 获取每日现存确诊、治愈、死亡数据
+    getConfirmedRecoveredVirusData() {
+        return axios.get(`${base.virus}/virus/confirmedRecovered`);
     },
-    // 获得每个国家数据 可静态 
-    getCountryData() {
-        return axios.get(`${base.virus}/virus/country`);
+    // 获取全球每个国家确诊数据
+    getWorldConfirmedVirusData(timestamp = 1610380800) {
+        return axios.get(`${base.virus}/virus/confirmed/table/` + timestamp);
     },
-    // 获得每个省份数据 可静态 
-    getProvinceData() {
-        return axios.get(`${base.virus}/virus/china/province`);
+    // 获取全球每个国家治愈数据
+    getWorldRecoveredVirusData(timestamp = 1610380800) {
+        return axios.get(`${base.virus}/virus/recovered/table/` + timestamp);
     },
-    // 获取每天的数据 可静态 echarts图
-    getVirusDivideByTime() {
-        return axios.get(`${base.virus}/virus/day`);
+    // 获取全球每个国家死亡数据
+    getWorldDeathsVirusData(timestamp = 1610380800) {
+        return axios.get(`${base.virus}/virus/deaths/table/` + timestamp);
     },
-    // 获取中国每天的数据 可静态 echarts图
-    getChinaVirusDivideByTime() {
-        return axios.get(`${base.virus}/virus/china/day`);
+    // 获取国家每个省份确诊数据
+    getCountryConfirmedVirusData(country, timestamp) {
+        return axios.get(`${base.virus}/virus/confirmed/table/` + country + "/" + timestamp);
     },
-    // 获取累积的数据 可静态 echarts图
-    getAllVirusDivideByTime() {
-        return axios.get(`${base.virus}/virus/dayAdded`);
+    // 获取国家每个省份治愈数据
+    getCountryRecoveredVirusData(country, timestamp) {
+        return axios.get(`${base.virus}/virus/recovered/table/` + country + "/" + timestamp);
     },
-    // 获取中国累积的数据 可静态 echarts图
-    getAllChinaVirusDivideByTime() {
-        return axios.get(`${base.virus}/virus/china/dayAdded`);
+    // 获取国家每个省份死亡数据
+    getCountryDeathsVirusData(country, timestamp) {
+        return axios.get(`${base.virus}/virus/deaths/table/` + country + "/" + timestamp);
     },
-    // 更新数据
-    updateVirus(virus) {
-        return axios.put(`${base.virus}/admin/update`, {
-            id: virus.id,
-            publicTime: virus.public_time,
-            newDiagnosis: virus.confirmed,
-            newRecovery: virus.recovery,
-            newDeath: virus.deaths,
-            country: virus.country,
-            province: virus.province,
-            city: virus.city,
-            description: virus.description,
-            image: virus.base64
-        })
+    // 获取省份每个城市确诊数据
+    getProvinceConfirmedVirusData(country, province, timestamp) {
+        return axios.get(`${base.virus}/virus/confirmed/table/` + country + "/" + province + "/" + timestamp);
     },
-    // 删除数据
-    deleteVirus(id) {
-        return axios.delete(`${base.virus}/admin/delete`, {
-            params: { 'id': id }
-        })
+    // 获取省份每个城市治愈数据
+    getProvinceRecoveredVirusData(country, province, timestamp) {
+        return axios.get(`${base.virus}/virus/recovered/table/` + country + "/" + province + "/" + timestamp);
     },
-    // 添加数据
-    addVirus(virus) {
-        return axios.post(`${base.virus}/admin/add`, {
-            publicTime: virus.public_time,
-            lat: virus.lat,
-            lng: virus.lng,
-            newDiagnosis: virus.confirmed,
-            newRecovery: virus.recovery,
-            newDeath: virus.deaths,
-            country: virus.country,
-            province: virus.province,
-            city: virus.city,
-            description: virus.description,
-            image: virus.base64
-        })
-    },
+    // 获取省份每个城市死亡数据
+    getProvinceDeathsVirusData(country, province, timestamp) {
+        return axios.get(`${base.virus}/virus/deaths/table/` + country + "/" + province + "/" + timestamp);
+    }
 }
 
 export default virus;

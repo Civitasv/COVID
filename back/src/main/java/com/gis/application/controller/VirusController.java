@@ -1,28 +1,20 @@
 package com.gis.application.controller;
 
-import com.gis.application.model.Virus;
+import com.gis.application.model.Constants;
+import com.gis.application.model.Feature;
+import com.gis.application.model.GeoJSON;
 import com.gis.application.service.VirusService;
-import com.gis.application.util.*;
-import org.apache.commons.io.IOUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.gis.application.vo.VirusActive;
+import com.gis.application.vo.VirusConfirmed;
+import com.gis.application.vo.VirusDeaths;
+import com.gis.application.vo.VirusRecovered;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 /**
  * restful style
@@ -31,13 +23,150 @@ import java.util.Objects;
 @RequestMapping("/virus")
 public class VirusController {
 
+    private VirusService service;
+
     @Autowired
-    VirusService service;
+    public void setService(VirusService service) {
+        this.service = service;
+    }
 
-    @Value("classpath:static/data/abroad.json")
-    private Resource lnglat;
+    @GetMapping(value = {"/confirmed", "/confirmed/{timestamp}"})
+    public String getAllConfirmedVirusByTimestamp(@PathVariable(value = "timestamp", required = false) Integer timestamp) {
+        List<VirusConfirmed> virusList;
+        if (timestamp == null)
+            virusList = service.getAllConfirmedVirusByTimestamp(Constants.END.val);
+        else virusList = service.getAllConfirmedVirusByTimestamp(timestamp);
+        List<Feature> features = new ArrayList<>();
+        for (VirusConfirmed virus : virusList) {
+            Feature feature = new Feature(virus.getLocation());
+            feature.addProperty("confirmed", String.valueOf(virus.getConfirmed()));
+            feature.addProperty("combined_key", virus.getCombinedKey());
+            features.add(feature);
+        }
+        GeoJSON geoJSON = new GeoJSON(features);
+        return geoJSON.toString();
+    }
 
-    @Value("classpath:static/data/china.json")
-    private Resource clnglat;
+    @GetMapping(value = {"/recovered", "/recovered/{timestamp}"})
+    public String getAllRecoveredVirusByTimestamp(@PathVariable(value = "timestamp", required = false) Integer timestamp) {
+        List<VirusRecovered> virusList;
+        if (timestamp == null)
+            virusList = service.getAllRecoveredVirusByTimestamp(Constants.END.val);
+        else virusList = service.getAllRecoveredVirusByTimestamp(timestamp);
+        List<Feature> features = new ArrayList<>();
+        for (VirusRecovered virus : virusList) {
+            Feature feature = new Feature(virus.getLocation());
+            feature.addProperty("recovered", String.valueOf(virus.getRecovered()));
+            feature.addProperty("combined_key", virus.getCombinedKey());
+            features.add(feature);
+        }
+        GeoJSON geoJSON = new GeoJSON(features);
+        return geoJSON.toString();
+    }
 
+    @GetMapping({"/deaths", "/deaths/{timestamp}"})
+    public String getAllDeathsVirusByTimestamp(@PathVariable(value = "timestamp", required = false) Integer timestamp) {
+        List<VirusDeaths> virusList;
+        if (timestamp == null)
+            virusList = service.getAllDeathsVirusByTimestamp(Constants.END.val);
+        else virusList = service.getAllDeathsVirusByTimestamp(timestamp);
+        List<Feature> features = new ArrayList<>();
+        for (VirusDeaths virus : virusList) {
+            Feature feature = new Feature(virus.getLocation());
+            feature.addProperty("deaths", String.valueOf(virus.getDeaths()));
+            feature.addProperty("combined_key", virus.getCombinedKey());
+            features.add(feature);
+        }
+        GeoJSON geoJSON = new GeoJSON(features);
+        return geoJSON.toString();
+    }
+
+    @GetMapping({"/active", "/avtive/{timestamp}"})
+    public String getAllActiveVirusByTimestamp(@PathVariable(value = "timestamp", required = false) Integer timestamp) {
+        List<VirusActive> virusList;
+        if (timestamp == null)
+            virusList = service.getAllActiveVirusByTimestamp(Constants.END.val);
+        else virusList = service.getAllActiveVirusByTimestamp(timestamp);
+        List<Feature> features = new ArrayList<>();
+        for (VirusActive virus : virusList) {
+            Feature feature = new Feature(virus.getLocation());
+            feature.addProperty("active", String.valueOf(virus.getActive()));
+            feature.addProperty("combined_key", virus.getCombinedKey());
+            features.add(feature);
+        }
+        GeoJSON geoJSON = new GeoJSON(features);
+        return geoJSON.toString();
+    }
+
+    @GetMapping("/newIncrease")
+    public String getWorldNewIncreaseVirusData() {
+        Gson gson = new Gson();
+        return gson.toJson(service.getWorldNewIncreaseVirusData());
+    }
+
+    @GetMapping("/confirmedRecovered")
+    public String getConfirmedRecoveredVirusData() {
+        Gson gson = new Gson();
+        return gson.toJson(service.getConfirmedRecoveredVirusData());
+    }
+
+    @GetMapping(value = {"/confirmed/table", "/confirmed/table/{timestamp}"})
+    public String getWorldConfirmedVirusData(@PathVariable(value = "timestamp", required = false) Integer timestamp) {
+        Gson gson = new Gson();
+        if (timestamp == null)
+            return gson.toJson(service.getWorldConfirmedVirusData(Constants.END.val));
+        else return gson.toJson(service.getWorldConfirmedVirusData(timestamp));
+    }
+
+    @GetMapping(value = {"/recovered/table", "/recovered/table/{timestamp}"})
+    public String getWorldRecoveredVirusData(@PathVariable(value = "timestamp", required = false) Integer timestamp) {
+        Gson gson = new Gson();
+        if (timestamp == null)
+            return gson.toJson(service.getWorldRecoveredVirusData(Constants.END.val));
+        else return gson.toJson(service.getWorldRecoveredVirusData(timestamp));
+    }
+
+    @GetMapping(value = {"/deaths/table", "/deaths/table/{timestamp}"})
+    public String getWorldDeathsVirusData(@PathVariable(value = "timestamp", required = false) Integer timestamp) {
+        Gson gson = new Gson();
+        if (timestamp == null)
+            return gson.toJson(service.getWorldDeathsVirusData(Constants.END.val));
+        else return gson.toJson(service.getWorldDeathsVirusData(timestamp));
+    }
+
+    @GetMapping(value = "/confirmed/table/{country}/{timestamp}")
+    public String getCountryConfirmedVirusData(@PathVariable("country") String country, @PathVariable("timestamp") int timestamp) {
+        Gson gson = new Gson();
+        return gson.toJson(service.getCountryConfirmedVirusData(country, timestamp));
+    }
+
+    @GetMapping(value = "/recovered/table/{country}/{timestamp}")
+    public String getCountryRecoveredVirusData(@PathVariable("country") String country, @PathVariable("timestamp") int timestamp) {
+        Gson gson = new Gson();
+        return gson.toJson(service.getCountryRecoveredVirusData(country, timestamp));
+    }
+
+    @GetMapping(value = "/deaths/table/{country}/{timestamp}")
+    public String getCountryDeathsVirusData(@PathVariable("country") String country, @PathVariable("timestamp") int timestamp) {
+        Gson gson = new Gson();
+        return gson.toJson(service.getCountryDeathsVirusData(country, timestamp));
+    }
+
+    @GetMapping(value = "/confirmed/table/{country}/{province}/{timestamp}")
+    public String getProvinceConfirmedVirusData(@PathVariable("country") String country, @PathVariable("province") String province, @PathVariable("timestamp") int timestamp) {
+        Gson gson = new Gson();
+        return gson.toJson(service.getProvinceConfirmedVirusData(country, province, timestamp));
+    }
+
+    @GetMapping(value = "/recovered/table/{country}/{province}/{timestamp}")
+    public String getProvinceRecoveredVirusData(@PathVariable("country") String country, @PathVariable("province") String province, @PathVariable("timestamp") int timestamp) {
+        Gson gson = new Gson();
+        return gson.toJson(service.getProvinceRecoveredVirusData(country, province, timestamp));
+    }
+
+    @GetMapping(value = "/deaths/table/{country}/{province}/{timestamp}")
+    public String getProvinceDeathsVirusData(@PathVariable("country") String country, @PathVariable("province") String province, @PathVariable("timestamp") int timestamp) {
+        Gson gson = new Gson();
+        return gson.toJson(service.getProvinceDeathsVirusData(country, province, timestamp));
+    }
 }

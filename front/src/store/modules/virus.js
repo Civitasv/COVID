@@ -1,23 +1,31 @@
 import virus from "../../network/common/api/virus"
 
 const state = {
-    // 全部数据
-    allVirus: "",
-    allChinaVirus: "",
-    // 按国家分组的数据
-    countryData: [],
-    // 按省份分组的数据
-    provinceData: [],
-    // 按时间分组的数据
-    virusDivideByTime: [],
-    // 按时间分组的中国数据
-    chinaVirusDivideByTime: [],
-    // 获取累积的数据
-    allVirusDivideByTime: [],
-    // 获取中国累积的数据
-    allChinaVirusDivideByTime: [],
-    // 最近一天的所有数据
-    allLatestVirus: ""
+    confirmedGeoJson: {},
+    recoveredGeoJson: {},
+    deathsGeoJson: {},
+    // 全球每日新增数据（确诊、治愈、死亡）
+    newIncrease: [],
+    // 获取每日现存确诊、治愈、死亡数据
+    confirmedRecovered: [],
+    // 全球每个国家确诊数据
+    worldConfirmed: {},
+    // 全球每个国家治愈数据
+    worldRecovered: {},
+    // 全球每个国家死亡数据
+    worldDeaths: {},
+    // 某国家每个省份确诊数据
+    countryConfirmed: {},
+    // 某国家每个省份治愈数据
+    countryRecovered: {},
+    // 某国家每个省份死亡数据
+    countryDeaths: {},
+    // 某国家某省份某城市确诊数据
+    provinceConfirmed: {},
+    // 某国家某省份某城市治愈数据
+    provinceRecovered: {},
+    // 某国家某省份某城市死亡数据
+    provinceDeaths: {},
 }
 
 // getters
@@ -27,100 +35,195 @@ const getters = {
 
 // actions
 const actions = {
-    async getAllVirus({ commit }) {
-        await virus.getAllVirus().then(
-            function (res) {
-                commit('setAllVirus', res.data);
-            }
-        )
+    // 获取世界确诊数据
+    async getAllConfirmedVirusByTimestamp({ commit }, timestamp) {
+        const res = await virus.getAllConfirmedVirusByTimestamp(timestamp);
+        commit('setAllConfirmedVirusByTimestamp', { data: res.data, timestamp: timestamp });
     },
-    async getAllChinaVirus({ commit }) {
-        await virus.getAllChinaVirus().then(
-            function (res) {
-                commit('setAllChinaVirus', res.data);
-            }
-        )
+    // 获取世界治愈数据
+    async getAllRecoveredVirusByTimestamp({ commit }, timestamp) {
+        const res = await virus.getAllRecoveredVirusByTimestamp(timestamp);
+        commit('setAllRecoveredVirusByTimestamp', { data: res.data, timestamp: timestamp });
     },
-    async getCountryData({ commit }) {
-        await virus.getCountryData().then(
-            function (res) {
-                commit('setCountryData', res.data);
-            }
-        )
+    // 获取世界死亡数据
+    async getAllDeathsVirusByTimestamp({ commit }, timestamp) {
+        const res = await virus.getAllDeathsVirusByTimestamp(timestamp);
+        commit('setAllDeathsVirusByTimestamp', { data: res.data, timestamp: timestamp });
     },
-    async getProvinceData({ commit }) {
-        await virus.getProvinceData().then(
-            function (res) {
-                commit('setProvinceData', res.data);
-            }
-        )
+    // 获取世界每日新增数据
+    async getWorldNewIncreaseVirusData({ commit }) {
+        const res = await virus.getWorldNewIncreaseVirusData();
+        commit('setWorldNewIncreaseVirusData', res.data);
     },
-    async getVirusDivideByTime({ commit }) {
-        await virus.getVirusDivideByTime().then(
-            function (res) {
-                commit('setVirusDivideByTime', res.data);
-            }
-        )
+    async getConfirmedRecoveredVirusData({ commit }) {
+        const res = await virus.getConfirmedRecoveredVirusData();
+        commit('setConfirmedRecoveredVirusData', res.data);
     },
-    async getChinaVirusDivideByTime({ commit }) {
-        await virus.getChinaVirusDivideByTime().then(
-            function (res) {
-                commit('setChinaVirusDivideByTime', res.data);
-            }
-        )
+    async getWorldConfirmedVirusData({ commit }, timestamp) {
+        const res = await virus.getWorldConfirmedVirusData(timestamp);
+        commit('setWorldConfirmedVirusData', { data: res.data, timestamp: timestamp });
     },
-    async getAllVirusDivideByTime({ commit }) {
-        await virus.getAllVirusDivideByTime().then(
-            function (res) {
-                commit('setAllVirusDivideByTime', res.data);
-            }
-        )
+    async getWorldRecoveredVirusData({ commit }, timestamp) {
+        const res = await virus.getWorldRecoveredVirusData(timestamp);
+        commit('setWorldRecoveredVirusData', { data: res.data, timestamp: timestamp });
     },
-    async getAllChinaVirusDivideByTime({ commit }) {
-        await virus.getAllChinaVirusDivideByTime().then(
-            function (res) {
-                commit('setAllChinaVirusDivideByTime', res.data);
-            }
-        )
+    async getWorldDeathsVirusData({ commit }, timestamp) {
+        const res = await virus.getWorldDeathsVirusData(timestamp);
+        commit('setWorldDeathsVirusData', { data: res.data, timestamp: timestamp });
     },
-    async getAllLatestVirus({ commit }) {
-        await virus.getAllLatestVirus().then(
-            function (res) {
-                commit("setAllLatestVirus", res.data);
-            }
-        )
+    async getCountryConfirmedVirusData({ commit }, { country, timestamp }) {
+        const res = await virus.getCountryConfirmedVirusData(country, timestamp);
+        commit('setCountryConfirmedVirusData', { data: res.data, country: country, timestamp: timestamp });
+    },
+    async getCountryRecoveredVirusData({ commit }, { country, timestamp }) {
+        const res = await virus.getCountryRecoveredVirusData(country, timestamp);
+        commit('setCountryRecoveredVirusData', { data: res.data, country: country, timestamp: timestamp });
+    },
+    async getCountryDeathsVirusData({ commit }, { country, timestamp }) {
+        const res = await virus.getCountryDeathsVirusData(country, timestamp);
+        commit('setCountryDeathsVirusData', { data: res.data, country: country, timestamp: timestamp });
+    },
+    async getProvinceConfirmedVirusData({ commit }, { country, province, timestamp }) {
+        const res = await virus.getProvinceConfirmedVirusData(country, province, timestamp);
+        commit('setProvinceConfirmedVirusData', { data: res.data, country: country, province, timestamp: timestamp });
+    }, async getProvinceRecoveredVirusData({ commit }, { country, province, timestamp }) {
+        const res = await virus.getProvinceRecoveredVirusData(country, province, timestamp);
+        commit('setProvinceRecoveredVirusData', { data: res.data, country: country, province, timestamp: timestamp });
+    }, async getProvinceDeathsVirusData({ commit }, { country, province, timestamp }) {
+        const res = await virus.getProvinceDeathsVirusData(country, province, timestamp);
+        commit('setProvinceDeathsVirusData', { data: res.data, country: country, province, timestamp: timestamp });
     }
 }
 
 // mutations
 const mutations = {
-    setAllVirus(state, allVirus) {
-        state.allVirus = allVirus;
+    setAllConfirmedVirusByTimestamp(state, res) {
+        state.confirmedGeoJson[res.timestamp] = res.data;
     },
-    setAllChinaVirus(state, allChinaVirus) {
-        state.allChinaVirus = allChinaVirus;
+    setAllRecoveredVirusByTimestamp(state, res) {
+        state.recoveredGeoJson[res.timestamp] = res.data;
     },
-    setCountryData(state, countryData) {
-        state.countryData = countryData;
+    setAllDeathsVirusByTimestamp(state, res) {
+        state.deathsGeoJson[res.timestamp] = res.data;
     },
-    setProvinceData(state, provinceData) {
-        state.provinceData = provinceData;
+    setWorldNewIncreaseVirusData(state, worldNewIncreaseVirusData) {
+        state.newIncrease = worldNewIncreaseVirusData;
     },
-    setVirusDivideByTime(state, virusDivideByTime) {
-        state.virusDivideByTime = virusDivideByTime;
+    setConfirmedRecoveredVirusData(state, confirmedRecovered) {
+        state.confirmedRecovered = confirmedRecovered;
     },
-    setChinaVirusDivideByTime(state, chinaVirusDivideByTime) {
-        state.chinaVirusDivideByTime = chinaVirusDivideByTime;
+    setWorldConfirmedVirusData(state, res) {
+        state.worldConfirmed[res.timestamp] = res.data;
     },
-    setAllVirusDivideByTime(state, allVirusDivideByTime) {
-        state.allVirusDivideByTime = allVirusDivideByTime;
+    setWorldRecoveredVirusData(state, res) {
+        state.worldRecovered[res.timestamp] = res.data;
     },
-    setAllChinaVirusDivideByTime(state, allChinaVirusDivideByTime) {
-        state.allChinaVirusDivideByTime = allChinaVirusDivideByTime;
+    setWorldDeathsVirusData(state, res) {
+        state.worldDeaths[res.timestamp] = res.data;
     },
-    setAllLatestVirus(state, allLatestVirus) {
-        state.allLatestVirus = allLatestVirus;
-    }
+    setCountryConfirmedVirusData(state, res) {
+        if (state.countryConfirmed[res.country]) {
+            const country = state.countryConfirmed[res.country];
+            country[res.timestamp] = res.data;
+        } else {
+            state.countryConfirmed[res.country] = new Object();
+            const country = state.countryConfirmed[res.country];
+            country[res.timestamp] = res.data;
+        }
+
+    },
+    setCountryRecoveredVirusData(state, res) {
+        if (state.countryRecovered[res.country]) {
+            const country = state.countryRecovered[res.country];
+            country[res.timestamp] = res.data;
+        } else {
+            state.countryRecovered[res.country] = new Object();
+            const country = state.countryRecovered[res.country];
+            country[res.timestamp] = res.data;
+        }
+    },
+    setCountryDeathsVirusData(state, res) {
+        if (state.countryDeaths[res.country]) {
+            const country = state.countryDeaths[res.country];
+            country[res.timestamp] = res.data;
+        } else {
+            state.countryDeaths[res.country] = new Object();
+            const country = state.countryDeaths[res.country];
+            country[res.timestamp] = res.data;
+        }
+    },
+    setProvinceConfirmedVirusData(state, res) {
+        if (state.provinceConfirmed[res.country]) {
+            const country = state.provinceConfirmed[res.country];
+            if (country[res.province]) {
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            } else {
+                country[res.province] = new Object();
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            }
+        } else {
+            state.provinceConfirmed[res.country] = new Object();
+            const country = state.provinceConfirmed[res.country];
+            if (country[res.province]) {
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            } else {
+                country[res.province] = new Object();
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            }
+        }
+    },
+    setProvinceRecoveredVirusData(state, res) {
+        if (state.provinceRecovered[res.country]) {
+            const country = state.provinceRecovered[res.country];
+            if (country[res.province]) {
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            } else {
+                country[res.province] = new Object();
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            }
+        } else {
+            state.provinceRecovered[res.country] = new Object();
+            const country = state.provinceRecovered[res.country];
+            if (country[res.province]) {
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            } else {
+                country[res.province] = new Object();
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            }
+        }
+    },
+    setProvinceDeathsVirusData(state, res) {
+        if (state.provinceDeaths[res.country]) {
+            const country = state.provinceDeaths[res.country];
+            if (country[res.province]) {
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            } else {
+                country[res.province] = new Object();
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            }
+        } else {
+            state.provinceDeaths[res.country] = new Object();
+            const country = state.provinceDeaths[res.country];
+            if (country[res.province]) {
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            } else {
+                country[res.province] = new Object();
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            }
+        }
+    },
 }
 
 export default {
