@@ -6,11 +6,20 @@ import com.gis.application.model.GeoJSON;
 import com.gis.application.service.VirusService;
 import com.gis.application.vo.*;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -112,16 +121,44 @@ public class VirusController {
         return geoJSON.toString();
     }
 
-    @GetMapping("/newIncrease")
-    public String getWorldNewIncreaseVirusData() {
+    @GetMapping({"/newIncrease", "/newIncrease/{country}", "/newIncrease/{country}/{province}", "/newIncrease/{country}/{province}/{city}"})
+    public String getWorldNewIncreaseVirusData(@PathVariable(value = "country", required = false) String country,
+                                               @PathVariable(value = "province", required = false) String province,
+                                               @PathVariable(value = "city", required = false) String city) {
         Gson gson = new Gson();
-        return gson.toJson(service.getWorldNewIncreaseVirusData());
+        if (country == null || country.isEmpty()) {
+            return gson.toJson(service.getWorldNewIncreaseVirusData());
+        } else {
+            if (province == null || province.isEmpty()) {
+                return gson.toJson(service.getCountryNewIncreaseVirusData(country));
+            } else {
+                if (city == null || city.isEmpty()) {
+                    return gson.toJson(service.getProvinceNewIncreaseVirusData(country, province));
+                } else {
+                    return gson.toJson(service.getCityNewIncreaseVirusData(country, province, city));
+                }
+            }
+        }
     }
 
-    @GetMapping("/confirmedRecovered")
-    public String getConfirmedRecoveredVirusData() {
+    @GetMapping({"/confirmedRecovered", "/confirmedRecovered/{country}", "/confirmedRecovered/{country}/{province}", "/confirmedRecovered/{country}/{province}/{city}"})
+    public String getConfirmedRecoveredVirusData(@PathVariable(value = "country", required = false) String country,
+                                                 @PathVariable(value = "province", required = false) String province,
+                                                 @PathVariable(value = "city", required = false) String city) {
         Gson gson = new Gson();
-        return gson.toJson(service.getConfirmedRecoveredVirusData());
+        if (country == null || country.isEmpty()) {
+            return gson.toJson(service.getWorldConfirmedRecoveredVirusData());
+        } else {
+            if (province == null || province.isEmpty()) {
+                return gson.toJson(service.getCountryConfirmedRecoveredVirusData(country));
+            } else {
+                if (city == null || city.isEmpty()) {
+                    return gson.toJson(service.getProvinceConfirmedRecoveredVirusData(country, province));
+                } else {
+                    return gson.toJson(service.getCityConfirmedRecoveredVirusData(country, province, city));
+                }
+            }
+        }
     }
 
     @GetMapping(value = {"/confirmed/table", "/confirmed/table/{timestamp}"})
@@ -222,5 +259,73 @@ public class VirusController {
     public String getProvinceDeathsRatioData(@PathVariable("country") String country, @PathVariable("province") String province, @PathVariable("timestamp") int timestamp) {
         Gson gson = new Gson();
         return gson.toJson(service.getProvinceDeathsRatioData(country, province, timestamp));
+    }
+
+    @GetMapping("/china/confirmed/{timestamp}")
+    public String getChinaProvinceConfirmedVirusByTimestamp(@PathVariable("timestamp") int timestamp) {
+        List<VirusConfirmed> virusList = service.getChinaProvinceConfirmedVirusByTimestamp(timestamp);
+        List<Feature> features = new ArrayList<>();
+        for (VirusConfirmed virus : virusList) {
+            String code = virus.getLocation();
+            try {
+                String geojson = Files.lines(Paths.get("src", "main", "resources", "static", "province", code + ".json")).collect(Collectors.joining("\n"));
+                Gson gson = new Gson();
+                JsonObject jsonObject = gson.fromJson(geojson, JsonObject.class);
+                JsonArray array = jsonObject.getAsJsonArray("features");
+                JsonObject geometry = array.get(0).getAsJsonObject().getAsJsonObject("geometry");
+                Feature feature = new Feature(geometry.toString());
+                feature.addProperty("confirmed", String.valueOf(virus.getConfirmed()));
+                feature.addProperty("combined_key", virus.getCombinedKey());
+                features.add(feature);
+            } catch (IOException e) {
+                return "";
+            }
+        }
+        GeoJSON geoJSON = new GeoJSON(features);
+        return geoJSON.toString();
+    }
+
+    @GetMapping("/china/confirmed/{province}/{timestamp}")
+    public String getChinaCityConfirmedVirusByTimestamp(@PathVariable("province") String province, @PathVariable("timestamp") int timestamp) {
+        List<VirusConfirmed> virusList = service.getChinaCityConfirmedVirusByTimestamp(province, timestamp);
+        List<Feature> features = new ArrayList<>();
+        if (virusList.size() == 0) {
+            virusList = service.getChinaProvinceConfirmedVirusByTimestamp(province, timestamp);
+            for (VirusConfirmed virus : virusList) {
+                String code = virus.getLocation();
+                try {
+                    String geojson = Files.lines(Paths.get("src", "main", "resources", "static", "province", code + ".json")).collect(Collectors.joining("\n"));
+                    Gson gson = new Gson();
+                    JsonObject jsonObject = gson.fromJson(geojson, JsonObject.class);
+                    JsonArray array = jsonObject.getAsJsonArray("features");
+                    JsonObject geometry = array.get(0).getAsJsonObject().getAsJsonObject("geometry");
+                    Feature feature = new Feature(geometry.toString());
+                    feature.addProperty("confirmed", String.valueOf(virus.getConfirmed()));
+                    feature.addProperty("combined_key", virus.getCombinedKey());
+                    features.add(feature);
+                } catch (IOException e) {
+                    return "";
+                }
+            }
+        } else {
+            for (VirusConfirmed virus : virusList) {
+                String code = virus.getLocation();
+                try {
+                    String geojson = Files.lines(Paths.get("src", "main", "resources", "static", "city", code + ".json")).collect(Collectors.joining("\n"));
+                    Gson gson = new Gson();
+                    JsonObject jsonObject = gson.fromJson(geojson, JsonObject.class);
+                    JsonArray array = jsonObject.getAsJsonArray("features");
+                    JsonObject geometry = array.get(0).getAsJsonObject().getAsJsonObject("geometry");
+                    Feature feature = new Feature(geometry.toString());
+                    feature.addProperty("confirmed", String.valueOf(virus.getConfirmed()));
+                    feature.addProperty("combined_key", virus.getCombinedKey());
+                    features.add(feature);
+                } catch (IOException e) {
+                    return "";
+                }
+            }
+        }
+        GeoJSON geoJSON = new GeoJSON(features);
+        return geoJSON.toString();
     }
 }

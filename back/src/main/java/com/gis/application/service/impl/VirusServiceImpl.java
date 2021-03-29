@@ -97,9 +97,49 @@ public class VirusServiceImpl implements VirusService {
     }
 
     @Override
-    public List<VirusConfirmedRecovered> getConfirmedRecoveredVirusData() {
+    public List<VirusNewIncrease> getCountryNewIncreaseVirusData(String country) {
         VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
-        return mapper.getConfirmedRecoveredVirusData();
+        return mapper.getCountryNewIncreaseVirusData(country);
+    }
+
+    @Override
+    public List<VirusNewIncrease> getProvinceNewIncreaseVirusData(String country, String state) {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        if ("China".equals(country)) return mapper.getChinaProvinceNewIncreaseVirusData("中国", state);
+        else return mapper.getProvinceNewIncreaseVirusData(country, state);
+    }
+
+    @Override
+    public List<VirusNewIncrease> getCityNewIncreaseVirusData(String country, String state, String county) {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        if ("China".equals(country)) return mapper.getChinaCityNewIncreaseVirusData("中国", state, county);
+        else return mapper.getCityNewIncreaseVirusData(country, state, county);
+    }
+
+    @Override
+    public List<VirusConfirmedRecovered> getWorldConfirmedRecoveredVirusData() {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.getWorldConfirmedRecoveredVirusData();
+    }
+
+    @Override
+    public List<VirusConfirmedRecovered> getCountryConfirmedRecoveredVirusData(String country) {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.getCountryConfirmedRecoveredVirusData(country);
+    }
+
+    @Override
+    public List<VirusConfirmedRecovered> getProvinceConfirmedRecoveredVirusData(String country, String state) {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        if ("China".equals(country)) return mapper.getChinaProvinceConfirmedRecoveredVirusData("中国", state);
+        else return mapper.getProvinceConfirmedRecoveredVirusData(country, state);
+    }
+
+    @Override
+    public List<VirusConfirmedRecovered> getCityConfirmedRecoveredVirusData(String country, String state, String county) {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        if ("China".equals(country)) return mapper.getChinaCityConfirmedRecoveredVirusData("中国", state, county);
+        else return mapper.getCityConfirmedRecoveredVirusData(country, state, county);
     }
 
     @Override
@@ -200,5 +240,23 @@ public class VirusServiceImpl implements VirusService {
         VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
         if ("China".equals(country)) return mapper.getChinaProvinceDeathsRatioData(province, timestamp);
         else return mapper.getProvinceDeathsRatioData(country, province, timestamp);
+    }
+
+    @Override
+    public List<VirusConfirmed> getChinaProvinceConfirmedVirusByTimestamp(int timestamp) {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.getChinaProvinceConfirmedVirusByTimestamp(timestamp);
+    }
+
+    @Override
+    public List<VirusConfirmed> getChinaProvinceConfirmedVirusByTimestamp(String province, int timestamp) {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.getChinaProvinceOnlyConfirmedVirusByTimestamp(province, timestamp);
+    }
+
+    @Override
+    public List<VirusConfirmed> getChinaCityConfirmedVirusByTimestamp(String province, int timestamp) {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.getChinaCityConfirmedVirusByTimestamp(province, timestamp);
     }
 }

@@ -135,7 +135,64 @@
         from world
         group by timestamp;
     </select>
-    <select id="getConfirmedRecoveredVirusData" resultType="VirusConfirmedRecovered">
+
+    <select id="getCountryNewIncreaseVirusData" resultType="VirusNewIncrease">
+        select timestamp,
+               sum(new_confirmed) as newConfirmed,
+               sum(new_deaths)    as newDeaths,
+               sum(new_recovered) as newRecovered
+        from world
+        where country = #{country}
+        group by timestamp;
+    </select>
+
+    <select id="getProvinceNewIncreaseVirusData" resultType="VirusNewIncrease">
+        select timestamp,
+               sum(new_confirmed) as newConfirmed,
+               sum(new_deaths)    as newDeaths,
+               sum(new_recovered) as newRecovered
+        from world_state
+        where country = #{country}
+          and province = #{state}
+        group by timestamp;
+    </select>
+
+    <select id="getCityNewIncreaseVirusData" resultType="VirusNewIncrease">
+        select timestamp,
+               sum(new_confirmed) as newConfirmed,
+               sum(new_deaths)    as newDeaths,
+               sum(new_recovered) as newRecovered
+        from world_county
+        where country = #{country}
+          and province = #{state}
+          and city = #{county}
+        group by timestamp;
+    </select>
+
+    <select id="getChinaProvinceNewIncreaseVirusData" resultType="VirusNewIncrease">
+        select timestamp,
+               sum(new_confirmed) as newConfirmed,
+               sum(new_deaths)    as newDeaths,
+               sum(new_recovered) as newRecovered
+        from china_province
+        where country = #{country}
+          and province = #{province}
+        group by timestamp;
+    </select>
+
+    <select id="getChinaCityNewIncreaseVirusData" resultType="VirusNewIncrease">
+        select timestamp,
+               sum(new_confirmed) as newConfirmed,
+               sum(new_deaths)    as newDeaths,
+               sum(new_recovered) as newRecovered
+        from china_city
+        where country = #{country}
+          and province = #{province}
+          and city = #{city}
+        group by timestamp;
+    </select>
+
+    <select id="getWorldConfirmedRecoveredVirusData" resultType="VirusConfirmedRecovered">
         select timestamp,
                sum(current_confirmed) as currentConfirmed,
                sum(deaths)            as deaths,
@@ -144,6 +201,61 @@
         group by timestamp;
     </select>
 
+    <select id="getCountryConfirmedRecoveredVirusData" resultType="VirusConfirmedRecovered">
+        select timestamp,
+               sum(current_confirmed) as currentConfirmed,
+               sum(deaths)            as deaths,
+               sum(recovered)         as recovered
+        from world
+        where country = #{country}
+        group by timestamp;
+    </select>
+
+    <select id="getProvinceConfirmedRecoveredVirusData" resultType="VirusConfirmedRecovered">
+        select timestamp,
+               sum(current_confirmed) as currentConfirmed,
+               sum(deaths)            as deaths,
+               sum(recovered)         as recovered
+        from world_state
+        where country = #{country}
+          and province = #{state}
+        group by timestamp;
+    </select>
+
+    <select id="getCityConfirmedRecoveredVirusData" resultType="VirusConfirmedRecovered">
+        select timestamp,
+               sum(current_confirmed) as currentConfirmed,
+               sum(deaths)            as deaths,
+               sum(recovered)         as recovered
+        from world_county
+        where country = #{country}
+          and province = #{state}
+          and city = #{county}
+        group by timestamp;
+    </select>
+
+    <select id="getChinaProvinceConfirmedRecoveredVirusData" resultType="VirusConfirmedRecovered">
+        select timestamp,
+               sum(current_confirmed) as currentConfirmed,
+               sum(deaths)            as deaths,
+               sum(recovered)         as recovered
+        from china_province
+        where country = #{country}
+          and province = #{province}
+        group by timestamp;
+    </select>
+
+    <select id="getChinaCityConfirmedRecoveredVirusData" resultType="VirusConfirmedRecovered">
+        select timestamp,
+               sum(current_confirmed) as currentConfirmed,
+               sum(deaths)            as deaths,
+               sum(recovered)         as recovered
+        from china_city
+        where country = #{country}
+          and province = #{province}
+          and city = #{city}
+        group by timestamp;
+    </select>
     <!-- 按时间戳获取世界每个国家的确诊数据 -->
     <select id="getWorldConfirmedVirusData" resultType="DailyVirus">
         select timestamp,
@@ -187,12 +299,12 @@
     <!-- 按时间戳获取世界每个国家的死亡率数据 -->
     <select id="getWorldDeathsRatioData" resultType="DeathsRatio">
         select timestamp,
-               case_fatality_ratio as ratio,
+               case_fatality_ratio as val,
                country             as combined_key
         from world
         where timestamp = #{timestamp}
           and case_fatality_ratio > 0
-        order by ratio desc;
+        order by val desc;
     </select>
     <!-- 按时间戳获取国家每个省份的确诊数据（除中国） -->
     <select id="getCountryConfirmedVirusData" resultType="DailyVirus">
@@ -241,13 +353,13 @@
     <!-- 按时间戳获取国家每个省份的死亡率数据（除中国） -->
     <select id="getCountryDeathsRatioData" resultType="DeathsRatio">
         select timestamp,
-               case_fatality_ratio as ratio,
+               case_fatality_ratio as val,
                province            as combined_key
         from world_state
         where timestamp = #{timestamp}
           and country = #{country}
           and case_fatality_ratio > 0
-        order by ratio desc;
+        order by val desc;
     </select>
     <!-- 按时间戳获取中国每个省份的确诊数据 -->
     <select id="getChinaConfirmedVirusData" resultType="DailyVirus">
@@ -292,12 +404,12 @@
     <!-- 按时间戳获取中国每个省份的死亡率数据 -->
     <select id="getChinaDeathsRatioData" resultType="DeathsRatio">
         select timestamp,
-               case_fatality_ratio as ratio,
+               case_fatality_ratio as val,
                province            as combined_key
         from china_province
         where timestamp = #{timestamp}
           and case_fatality_ratio > 0
-        order by ratio desc;
+        order by val desc;
     </select>
     <!-- 按时间戳获取省份每个城市的确诊数据（除中国） -->
     <select id="getProvinceConfirmedVirusData" resultType="DailyVirus">
@@ -350,14 +462,14 @@
     <!-- 按时间戳获取省份每个城市的死亡率数据（除中国） -->
     <select id="getProvinceDeathsRatioData" resultType="DeathsRatio">
         select timestamp,
-               case_fatality_ratio as ratio,
+               case_fatality_ratio as val,
                city                as combined_key
         from world_county
         where timestamp = #{timestamp}
           and country = #{country}
           and province = #{province}
           and case_fatality_ratio > 0
-        order by ratio desc;
+        order by val desc;
     </select>
     <!-- 按时间戳获取中国省份每个城市的确诊数据 -->
     <select id="getChinaProvinceConfirmedVirusData" resultType="DailyVirus">
@@ -406,12 +518,40 @@
     <!-- 按时间戳获取中国省份每个城市的死亡率数据 -->
     <select id="getChinaProvinceDeathsRatioData" resultType="DeathsRatio">
         select timestamp,
-               case_fatality_ratio as ratio,
+               case_fatality_ratio as val,
                city                as combined_key
         from china_city
         where timestamp = #{timestamp}
           and province = #{province}
           and case_fatality_ratio > 0
-        order by ratio desc;
+        order by val desc;
+    </select>
+    <select id="getChinaProvinceConfirmedVirusByTimestamp" resultType="VirusConfirmed">
+        select timestamp,
+               confirmed,
+               combined_key,
+               location_code as location
+        from china_province
+        where timestamp = #{timestamp}
+    </select>
+
+    <select id="getChinaProvinceOnlyConfirmedVirusByTimestamp" resultType="VirusConfirmed">
+        select timestamp,
+               confirmed,
+               combined_key,
+               location_code as location
+        from china_province
+        where timestamp = #{timestamp}
+          and province = #{province}
+    </select>
+
+    <select id="getChinaCityConfirmedVirusByTimestamp" resultType="VirusConfirmed">
+        select timestamp,
+               confirmed,
+               combined_key,
+               location_code as location
+        from china_city
+        where timestamp = #{timestamp}
+          and province = #{province}
     </select>
 </mapper>

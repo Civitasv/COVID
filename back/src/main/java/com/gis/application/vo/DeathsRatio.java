@@ -11,6 +11,6 @@ import lombok.ToString;
 @ToString
 public class DeathsRatio {
     private int timestamp;
-    private double ratio;
+    private double val;
     private String combinedKey;
 }

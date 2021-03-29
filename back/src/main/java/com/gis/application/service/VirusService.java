@@ -18,13 +18,13 @@ public interface VirusService {
     // 按ID添加BASE64图片
     int addImage(int id, String base64);
 
-    // 按时间戳查询所有确诊数据(china_all && world_all)
+    // 按时间戳查询所有确诊数据
     List<VirusConfirmed> getAllConfirmedVirusByTimestamp(int timestamp);
 
-    // 按时间戳查询所有治愈数据(china_all && world_all)
+    // 按时间戳查询所有治愈数据
     List<VirusRecovered> getAllRecoveredVirusByTimestamp(int timestamp);
 
-    // 按时间戳查询所有死亡数据(china_all && world_all)
+    // 按时间戳查询所有死亡数据
     List<VirusDeaths> getAllDeathsVirusByTimestamp(int timestamp);
 
     // 按时间戳查询世界每个国家现存数据
@@ -33,11 +33,28 @@ public interface VirusService {
     // 按时间戳查询世界每个国家死亡率数据
     List<VirusDeathsRatio> getAllDeathsRatioByTimestamp(int timestamp);
 
+
     // 查询世界区域每日新增数据
     List<VirusNewIncrease> getWorldNewIncreaseVirusData();
 
-    // 获取每日现存确诊、治愈、死亡数据
-    List<VirusConfirmedRecovered> getConfirmedRecoveredVirusData();
+    // 获取某国家每日新增确诊、治愈、死亡数据
+    List<VirusNewIncrease> getCountryNewIncreaseVirusData(String country);
+
+    // 获取某省份每日新增确诊、治愈、死亡数据（除中国）
+    List<VirusNewIncrease> getProvinceNewIncreaseVirusData(String country, String state);
+
+    // 获取某城市每日新增确诊、治愈、死亡数据（除中国）
+    List<VirusNewIncrease> getCityNewIncreaseVirusData(String country, String state, String county);
+
+    List<VirusConfirmedRecovered> getWorldConfirmedRecoveredVirusData();
+
+    List<VirusConfirmedRecovered> getCountryConfirmedRecoveredVirusData(String country);
+
+    // 获取某省份每日现存确诊、治愈、死亡数据（除中国）
+    List<VirusConfirmedRecovered> getProvinceConfirmedRecoveredVirusData(String country, String state);
+
+    // 获取某城市每日现存确诊、治愈、死亡数据（除中国）
+    List<VirusConfirmedRecovered> getCityConfirmedRecoveredVirusData(String country, String state, String county);
 
     // 获取世界每个国家确诊数据
     List<Daily> getWorldConfirmedVirusData(int timestamp);
@@ -83,4 +100,13 @@ public interface VirusService {
 
     // 获取省份每个现存死亡率数据
     List<DeathsRatio> getProvinceDeathsRatioData(String country, String province, int timestamp);
+
+    // 获取中国省级确诊数据
+    List<VirusConfirmed> getChinaProvinceConfirmedVirusByTimestamp(int timestamp);
+
+    // 获取中国某省份确诊数据
+    List<VirusConfirmed> getChinaProvinceConfirmedVirusByTimestamp(String province, int timestamp);
+
+    // 获取中国市级确诊数据
+    List<VirusConfirmed> getChinaCityConfirmedVirusByTimestamp(String province, int timestamp);
 }

@@ -4,9 +4,9 @@ const state = {
     confirmedGeoJson: {},
     recoveredGeoJson: {},
     deathsGeoJson: {},
-    // 全球每日新增数据（确诊、治愈、死亡）
+    // 获取某地每日新增数据（确诊、治愈、死亡）
     newIncrease: [],
-    // 获取每日现存确诊、治愈、死亡数据
+    // 获取某地每日现存确诊、治愈、死亡数据
     confirmedRecovered: [],
     // 全球每个国家确诊数据
     worldConfirmed: {},
@@ -16,6 +16,8 @@ const state = {
     worldDeaths: {},
     // 全球每个国家现存数据
     worldActive: {},
+    // 全球每个国家死亡率数据
+    worldDeathsRatio: {},
     // 某国家每个省份确诊数据
     countryConfirmed: {},
     // 某国家每个省份治愈数据
@@ -24,6 +26,8 @@ const state = {
     countryDeaths: {},
     // 某国家每个省份现存数据
     countryActive: {},
+    // 某国家每个省份死亡率数据
+    countryDeathsRatio: {},
     // 某国家某省份某城市确诊数据
     provinceConfirmed: {},
     // 某国家某省份某城市治愈数据
@@ -32,6 +36,10 @@ const state = {
     provinceDeaths: {},
     // 某国家某省份某城市现存数据
     provinceActive: {},
+    // 某国家某省份某城市死亡率数据
+    provinceDeathsRatio: {},
+    // 中国某日各省份确诊数据（包括geojson面数据）
+    chinaProvinceConfirmedWithGeoJson: {},
 }
 
 // getters
@@ -57,13 +65,26 @@ const actions = {
         commit('setAllDeathsVirusByTimestamp', { data: res.data, timestamp: timestamp });
     },
     // 获取世界每日新增数据
-    async getWorldNewIncreaseVirusData({ commit }) {
-        const res = await virus.getWorldNewIncreaseVirusData();
-        commit('setWorldNewIncreaseVirusData', res.data);
+    async getWorldNewIncreaseVirusData({ commit }, { country, province, city }) {
+        const res = await virus.getWorldNewIncreaseVirusData(country, province, city);
+        commit('setWorldNewIncreaseVirusData', {
+            location: country + province + city,
+            data: res.data
+        });
     },
-    async getConfirmedRecoveredVirusData({ commit }) {
-        const res = await virus.getConfirmedRecoveredVirusData();
-        commit('setConfirmedRecoveredVirusData', res.data);
+    async getConfirmedRecoveredVirusData({ commit }, { country, province, city }) {
+        const res = await virus.getConfirmedRecoveredVirusData(country, province, city);
+        commit('setConfirmedRecoveredVirusData', {
+            location: country + province + city,
+            data: res.data
+        });
+    },
+    async getCumulativeVirusData({ commit }, { country, province, city }) {
+        const res = await virus.getCumulativeVirusData(country, province, city);
+        commit('setCumulativeVirusData', {
+            location: location,
+            data: res.data
+        });
     },
     async getWorldConfirmedVirusData({ commit }, timestamp) {
         const res = await virus.getWorldConfirmedVirusData(timestamp);
@@ -81,6 +102,10 @@ const actions = {
         const res = await virus.getWorldActiveVirusData(timestamp);
         commit('setWorldActiveVirusData', { data: res.data, timestamp: timestamp });
     },
+    async getWorldDeathsRatioData({ commit }, timestamp) {
+        const res = await virus.getWorldDeathsRatioData(timestamp);
+        commit('setWorldDeathsRatioData', { data: res.data, timestamp: timestamp });
+    },
     async getCountryConfirmedVirusData({ commit }, { country, timestamp }) {
         const res = await virus.getCountryConfirmedVirusData(country, timestamp);
         commit('setCountryConfirmedVirusData', { data: res.data, country: country, timestamp: timestamp });
@@ -97,6 +122,10 @@ const actions = {
         const res = await virus.getCountryActiveVirusData(country, timestamp);
         commit('setCountryActiveVirusData', { data: res.data, country: country, timestamp: timestamp });
     },
+    async getCountryDeathsRatioData({ commit }, { country, timestamp }) {
+        const res = await virus.getCountryDeathsRatioData(country, timestamp);
+        commit('setCountryDeathsRatioData', { data: res.data, country: country, timestamp: timestamp });
+    },
     async getProvinceConfirmedVirusData({ commit }, { country, province, timestamp }) {
         const res = await virus.getProvinceConfirmedVirusData(country, province, timestamp);
         commit('setProvinceConfirmedVirusData', { data: res.data, country: country, province, timestamp: timestamp });
@@ -112,7 +141,15 @@ const actions = {
     async getProvinceActiveVirusData({ commit }, { country, province, timestamp }) {
         const res = await virus.getProvinceActiveVirusData(country, province, timestamp);
         commit('setProvinceActiveVirusData', { data: res.data, country: country, province, timestamp: timestamp });
-    }
+    },
+    async getProvinceDeathsRatioData({ commit }, { country, province, timestamp }) {
+        const res = await virus.getProvinceDeathsRatioData(country, province, timestamp);
+        commit('setProvinceDeathsRatioData', { data: res.data, country: country, province, timestamp: timestamp });
+    },
+    async getChinaProvinceConfirmedWithGeoJsonVirusByTimestamp({ commit }, timestamp) {
+        const res = await virus.getChinaProvinceConfirmedWithGeoJsonVirusByTimestamp(timestamp);
+        commit('setChinaProvinceConfirmedWithGeoJsonVirusByTimestamp', { data: res.data, timestamp: timestamp });
+    },
 }
 
 // mutations
@@ -126,11 +163,14 @@ const mutations = {
     setAllDeathsVirusByTimestamp(state, res) {
         state.deathsGeoJson[res.timestamp] = res.data;
     },
-    setWorldNewIncreaseVirusData(state, worldNewIncreaseVirusData) {
-        state.newIncrease = worldNewIncreaseVirusData;
+    setWorldNewIncreaseVirusData(state, res) {
+        state.newIncrease[res.location == "" ? "world" : res.location] = res.data;
     },
-    setConfirmedRecoveredVirusData(state, confirmedRecovered) {
-        state.confirmedRecovered = confirmedRecovered;
+    setConfirmedRecoveredVirusData(state, res) {
+        state.confirmedRecovered[res.location == "" ? "world" : res.location] = res.data;
+    },
+    setCumulativeVirusData(state, res) {
+        state.cumulativeConfirmed[res.location] = res.data;
     },
     setWorldConfirmedVirusData(state, res) {
         state.worldConfirmed[res.timestamp] = res.data;
@@ -143,6 +183,12 @@ const mutations = {
     },
     setWorldActiveVirusData(state, res) {
         state.worldActive[res.timestamp] = res.data;
+    },
+    setWorldDeathsRatioData(state, res) {
+        state.worldDeathsRatio[res.timestamp] = res.data;
+    },
+    setChinaProvinceConfirmedWithGeoJsonVirusByTimestamp(state, res) {
+        state.chinaProvinceConfirmedWithGeoJson[res.timestamp] = res.data;
     },
     setCountryConfirmedVirusData(state, res) {
         if (state.countryConfirmed[res.country]) {
@@ -182,6 +228,16 @@ const mutations = {
         } else {
             state.countryActive[res.country] = new Object();
             const country = state.countryActive[res.country];
+            country[res.timestamp] = res.data;
+        }
+    },
+    setCountryDeathsRatioData(state, res) {
+        if (state.countryDeathsRatio[res.country]) {
+            const country = state.countryDeathsRatio[res.country];
+            country[res.timestamp] = res.data;
+        } else {
+            state.countryDeathsRatio[res.country] = new Object();
+            const country = state.countryDeathsRatio[res.country];
             country[res.timestamp] = res.data;
         }
     },
@@ -271,6 +327,30 @@ const mutations = {
         } else {
             state.provinceActive[res.country] = new Object();
             const country = state.provinceActive[res.country];
+            if (country[res.province]) {
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            } else {
+                country[res.province] = new Object();
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            }
+        }
+    },
+    setProvinceDeathsRatioData(state, res) {
+        if (state.provinceDeathsRatio[res.country]) {
+            const country = state.provinceDeathsRatio[res.country];
+            if (country[res.province]) {
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            } else {
+                country[res.province] = new Object();
+                const province = country[res.province];
+                province[res.timestamp] = res.data;
+            }
+        } else {
+            state.provinceDeathsRatio[res.country] = new Object();
+            const country = state.provinceDeathsRatio[res.country];
             if (country[res.province]) {
                 const province = country[res.province];
                 province[res.timestamp] = res.data;

@@ -26,6 +26,15 @@ public interface VirusMapper {
     // 查询某时间戳的中国所有确诊数据
     List<VirusConfirmed> getAllChinaConfirmedVirusByTimestamp(int timestamp);
 
+    // 查询某时间戳的中国省级确诊数据
+    List<VirusConfirmed> getChinaProvinceConfirmedVirusByTimestamp(int timestamp);
+
+    // 获取中国某省份确诊数据
+    List<VirusConfirmed> getChinaProvinceOnlyConfirmedVirusByTimestamp(String province, int timestamp);
+
+    // 查询某省某时间戳的中国市级确诊数据
+    List<VirusConfirmed> getChinaCityConfirmedVirusByTimestamp(String province, int timestamp);
+
     // 查询某时间戳的世界所有确诊数据
     List<VirusConfirmed> getAllWorldConfirmedVirusByTimestamp(int timestamp);
 
@@ -53,11 +62,41 @@ public interface VirusMapper {
     // 查询某时间戳的世界所有死亡率数据
     List<VirusDeathsRatio> getAllWorldDeathsRatioByTimestamp(int timestamp);
 
-    // 查询世界区域每日新增数据
+    // 获取全球每日新增数据
     List<VirusNewIncrease> getWorldNewIncreaseVirusData();
 
-    // 获取每日现存确诊、治愈、死亡数据
-    List<VirusConfirmedRecovered> getConfirmedRecoveredVirusData();
+    // 获取某国家每日新增确诊、治愈、死亡数据
+    List<VirusNewIncrease> getCountryNewIncreaseVirusData(String country);
+
+    // 获取某省份每日新增确诊、治愈、死亡数据（除中国）
+    List<VirusNewIncrease> getProvinceNewIncreaseVirusData(String country, String state);
+
+    // 获取某城市每日新增确诊、治愈、死亡数据（除中国）
+    List<VirusNewIncrease> getCityNewIncreaseVirusData(String country, String state, String county);
+
+    // 获取中国某省份每日新增确诊、治愈、死亡数据
+    List<VirusNewIncrease> getChinaProvinceNewIncreaseVirusData(String country, String province);
+
+    // 获取中国某城市每日新增确诊、治愈、死亡数据
+    List<VirusNewIncrease> getChinaCityNewIncreaseVirusData(String country, String province, String city);
+
+    // 获取全球每日现存确诊、治愈、死亡数据
+    List<VirusConfirmedRecovered> getWorldConfirmedRecoveredVirusData();
+
+    // 获取某国家每日现存确诊、治愈、死亡数据
+    List<VirusConfirmedRecovered> getCountryConfirmedRecoveredVirusData(String country);
+
+    // 获取某省份每日现存确诊、治愈、死亡数据（除中国）
+    List<VirusConfirmedRecovered> getProvinceConfirmedRecoveredVirusData(String country, String state);
+
+    // 获取某城市每日现存确诊、治愈、死亡数据（除中国）
+    List<VirusConfirmedRecovered> getCityConfirmedRecoveredVirusData(String country, String state, String county);
+
+    // 获取中国某省份每日现存确诊、治愈、死亡数据
+    List<VirusConfirmedRecovered> getChinaProvinceConfirmedRecoveredVirusData(String country, String province);
+
+    // 获取中国某城市每日现存确诊、治愈、死亡数据
+    List<VirusConfirmedRecovered> getChinaCityConfirmedRecoveredVirusData(String country, String province, String city);
 
     // 获取世界每个国家确诊数据
     List<Daily> getWorldConfirmedVirusData(int timestamp);
@@ -101,7 +140,7 @@ public interface VirusMapper {
     // 获取中国每个省份现存数据
     List<Daily> getChinaActiveVirusData(int timestamp);
 
-    // 获取中国每个省份现存数据
+    // 获取中国每个省份死亡率数据
     List<DeathsRatio> getChinaDeathsRatioData(int timestamp);
 
     // 获取省份每个城市确诊数据

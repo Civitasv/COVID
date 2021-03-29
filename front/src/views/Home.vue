@@ -21,8 +21,12 @@
       <i class="el-icon-location-outline"></i>
     </div>
     <el-card class="card">
-      <h1>新冠疫情数据可视化与管理平台</h1>
-      <p>2020年WebGIS实习作品，数据来源：澎湃新闻美数课</p>
+      <h1>GIS战疫——传染病多尺度智能检测系统</h1>
+      <p>
+        数据来源：<a href="https://github.com/CSSEGISandData/COVID-19."
+          >JHU CSSE COVID-19 Data</a
+        >
+      </p>
       <br />
       <p>武汉大学：胡森 2017301110153</p>
     </el-card>
@@ -32,7 +36,9 @@
         <label class="link">INTRO</label>
       </el-button>
       <el-button :style="btnstyle" class="btn">
-        <router-link to="/wvisual" class="link" tag="label">VISUALIZE</router-link>
+        <router-link to="/wvisual" class="link" tag="label"
+          >VISUALIZE</router-link
+        >
       </el-button>
 
       <el-button :style="btnstyle" class="btn">
@@ -110,11 +116,11 @@ const Footer = () => import("../components/common/Footer");
 export default {
   data() {
     return {
-      btnstyle: "background:transparent;color:whitesmoke;"
+      btnstyle: "background:transparent;color:whitesmoke;",
     };
   },
   components: {
-    Footer
-  }
+    Footer,
+  },
 };
 </script>

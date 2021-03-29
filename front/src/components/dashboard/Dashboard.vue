@@ -35,9 +35,9 @@
 
 <script>
 const Time2 = () => import("../time/Time2");
-const Time3 = () => import("../time/WorldConfirmedRecoveredTrendChart");
+const Time3 = () => import("../time/ConfirmedRecoveredTrendChart");
 const Virus = () => import("../virus/Virus");
-const Time = () => import("../time/WorldNewIncreaseTrendChart");
+const Time = () => import("../time/NewIncreaseTrendChart");
 
 export default {
   data() {
