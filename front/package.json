@@ -11,7 +11,7 @@
     "@mapbox/mapbox-gl-language": "^0.10.1",
     "@supermap/vue-iclient-mapboxgl": "^10.0.1",
     "@vue/component-compiler-utils": "^1.3.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.4",
     "echarts": "^5.0.2",
     "echarts-liquidfill": "^3.0.0",
