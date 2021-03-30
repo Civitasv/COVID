@@ -7,20 +7,27 @@
       <span class="content">GIS战疫——传染病多尺度智能检测系统</span>
     </div>
     <div class="nav">
-      <router-link
-        to="/dashboard/first"
-        tag="span"
-        active-class="active"
-        class="nav-item"
-        ><i class="el-icon-help"></i>全球战疫</router-link
-      >
-      <router-link
-        to="/dashboard/second"
-        tag="span"
-        active-class="active"
-        class="nav-item"
-        ><i class="el-icon-help"></i>多维监测</router-link
-      >
+      <div class="menu">
+        <router-link
+          to="/dashboard/first"
+          tag="span"
+          active-class="active"
+          class="nav-item"
+          ><i class="el-icon-help"></i>全球数据可视化</router-link
+        >
+        <router-link
+          to="/dashboard/second"
+          tag="span"
+          active-class="active"
+          class="nav-item"
+          ><i class="el-icon-s-data"></i>中国数据可视化</router-link
+        >
+      </div>
+      <div class="exit">
+        <span @click="toHome" class="nav-item"
+          ><i class="el-icon-caret-left"></i>退出</span
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -48,16 +55,23 @@
 .header .title .content {
   color: white;
   font-size: 20px;
+  font-weight: bold;
 }
 .nav {
   flex: 1;
-  text-align: left;
-  margin-left: 10%;
+  margin-right: 10px;
+  display: flex;
+}
+
+.nav .menu {
+  flex: 1;
+  text-align: right;
 }
 .nav .nav-item {
   color: white;
   font-size: 15px;
   cursor: pointer;
+  flex: 1;
 }
 
 .active {
@@ -78,6 +92,14 @@
 export default {
   data() {
     return {};
+  },
+  methods: {
+    toHome() {
+      window.localStorage.removeItem("JWT_TOKEN");
+      this.$router.push({
+        path: "/home",
+      });
+    },
   },
 };
 </script>

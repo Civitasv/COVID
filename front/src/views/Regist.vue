@@ -2,7 +2,7 @@
   <div id="poster">
     <el-form class="login-container" label-position="left">
       <h3 class="login_title">请注册</h3>
-      <el-form-item style="margin-bottom:10px">
+      <el-form-item style="margin-bottom: 10px">
         <el-input
           type="text"
           v-model="userInfo.username"
@@ -11,11 +11,15 @@
           @blur="checkUsername"
         />
       </el-form-item>
-      <div class="checkName" v-show="nameTip.flag" :class="[nameTip.success?'success':'fail']">
-        <label style="padding-left:15px;">{{message}}</label>
+      <div
+        class="checkName"
+        v-show="nameTip.flag"
+        :class="[nameTip.success ? 'success' : 'fail']"
+      >
+        <label style="padding-left: 15px">{{ message }}</label>
         <i class="el-icon-close" @click="closeNameTip" id="closeBtn"></i>
       </div>
-      <el-form-item style="margin-bottom:10px">
+      <el-form-item style="margin-bottom: 10px">
         <el-input
           type="password"
           v-model="userInfo.password"
@@ -24,23 +28,29 @@
           @blur="checkPwd"
         />
       </el-form-item>
-      <div class="checkPwd" v-show="pwdTip.flag" :class="[pwdTip.success?'success':'fail']">
-        <label style="padding-left:15px;">{{message2}}</label>
+      <div
+        class="checkPwd"
+        v-show="pwdTip.flag"
+        :class="[pwdTip.success ? 'success' : 'fail']"
+      >
+        <label style="padding-left: 15px">{{ message2 }}</label>
         <i class="el-icon-close" @click="closePwdTip" id="closeBtn"></i>
       </div>
       <el-form-item style="width: 100%">
         <el-button
           type="primary"
-          style="width: 100%;background: #505458;border: none"
+          style="width: 100%; background: #505458; border: none"
           v-on:click="regist"
-        >注册</el-button>
+          >注册</el-button
+        >
       </el-form-item>
       <el-form-item style="width: 100%">
         <el-button
           type="primary"
-          style="width: 100%;background: #051a37;border: none"
+          style="width: 100%; background: #051a37; border: none"
           v-on:click="toLogin"
-        >已有账号？立即登录</el-button>
+          >已有账号？立即登录</el-button
+        >
       </el-form-item>
     </el-form>
   </div>
@@ -55,18 +65,18 @@ export default {
     return {
       userInfo: {
         username: "",
-        password: ""
+        password: "",
       },
       message: "",
       message2: "",
       nameTip: {
         success: false,
-        flag: false
+        flag: false,
       },
       pwdTip: {
         success: false,
-        flag: false
-      }
+        flag: false,
+      },
     };
   },
   methods: {
@@ -85,21 +95,21 @@ export default {
       }
       user
         .regist(this.userInfo.username, md5(this.userInfo.password))
-        .then(res => {
+        .then((res) => {
           if (res.data.token) {
             // 如果存在token
             var path = this.$route.query.redirect;
             window.localStorage.setItem("JWT_TOKEN", res.data.token);
 
             this.$router.replace({
-              path: path === "/" || path === undefined ? "/manage" : path
+              path: path === "/" || path === undefined ? "/manage" : path,
             });
           }
         });
     },
     toLogin() {
       this.$router.push({
-        path: "/login"
+        path: "/login",
       });
     },
     checkUsername() {
@@ -109,7 +119,7 @@ export default {
         this.nameTip.flag = true;
         return;
       }
-      user.checkUsername(this.userInfo.username).then(res => {
+      user.checkUsername(this.userInfo.username).then((res) => {
         this.message = res.data.mes;
         this.nameTip.flag = true;
 
@@ -141,8 +151,8 @@ export default {
     },
     closePwdTip() {
       this.pwdTip.flag = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

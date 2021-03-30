@@ -1,12 +1,12 @@
 <template>
   <div class="manage">
-    <el-container style="height:100%;">
+    <el-container style="height: 100%">
       <div class="nav">
-        <el-aside style="height:100%;width:210px;">
+        <el-aside style="height: 100%; width: 210px">
           <el-menu
             default-active="2"
             class="el-menu-vertical-demo"
-            style="height:100%;border:none;"
+            style="height: 100%; border: none"
             :background-color="menuColor"
             text-color="#fff"
             active-text-color="#ffd04b"
@@ -34,8 +34,8 @@
         </el-aside>
       </div>
 
-      <el-container style="height:100%;">
-        <el-header style="height:10%;background:#343332;">
+      <el-container style="height: 100%">
+        <el-header style="height: 10%; background: #343332">
           <div class="time">
             <i class="el-icon-time"></i>
             <label>当前数据时间：</label>
@@ -47,18 +47,23 @@
               placeholder="选择数据日期"
               :picker-options="pickerOptions"
               @change="changeTime"
-              style="background:#d7d7d7"
+              style="background: #d7d7d7"
               :clearable="false"
               :editable="false"
             ></el-date-picker>
           </div>
           <div class="add-feature">
-            <el-tooltip class="item" effect="light" content="添加点" placement="bottom">
+            <el-tooltip
+              class="item"
+              effect="light"
+              content="添加点"
+              placement="bottom"
+            >
               <el-button
                 type="info"
                 icon="el-icon-add-location"
                 circle
-                @click="addAction=!addAction"
+                @click="addAction = !addAction"
               ></el-button>
             </el-tooltip>
           </div>
@@ -68,7 +73,7 @@
               prefix-icon="el-icon-search"
               v-model="searchContent"
               @change="search"
-              style="background:#d7d7d7"
+              style="background: #d7d7d7"
             ></el-input>
           </div>
           <div class="user">
@@ -78,15 +83,21 @@
                 class="el-dropdown-link"
               ></el-avatar>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="quit" icon="el-icon-circle-close">退出登录</el-dropdown-item>
+                <el-dropdown-item command="quit" icon="el-icon-circle-close"
+                  >退出登录</el-dropdown-item
+                >
               </el-dropdown-menu>
             </el-dropdown>
           </div>
         </el-header>
-        <el-main style="padding:0">
-          <div id="map" :class="['map',addAction?'choose':'']"></div>
+        <el-main style="padding: 0">
+          <div id="map" :class="['map', addAction ? 'choose' : '']"></div>
           <div id="popup" class="ol-popup">
-            <a id="popup-closer" class="ol-popup-closer" @click="popupClose"></a>
+            <a
+              id="popup-closer"
+              class="ol-popup-closer"
+              @click="popupClose"
+            ></a>
             <div id="popup-content">
               <div class="virus-time">
                 <div class="virus-time-title">
@@ -101,7 +112,7 @@
                       align="right"
                       type="date"
                       placeholder="时间"
-                      style="background:#d7d7d7"
+                      style="background: #d7d7d7"
                       :readonly="readonly"
                       size="mini"
                       :clearable="false"
@@ -126,39 +137,54 @@
                   <el-row>
                     <el-col :span="6" :offset="1">
                       <div class="country">
-                        <el-tooltip class="item" effect="dark" content="国家" placement="left">
+                        <el-tooltip
+                          class="item"
+                          effect="dark"
+                          content="国家"
+                          placement="left"
+                        >
                           <el-input
                             v-model="selectVirus.country"
                             placeholder="国家"
                             :readonly="readonly"
                             size="mini"
-                            style="background:#d7d7d7"
+                            style="background: #d7d7d7"
                           ></el-input>
                         </el-tooltip>
                       </div>
                     </el-col>
                     <el-col :span="6" :offset="2">
                       <div class="province">
-                        <el-tooltip class="item" effect="dark" content="省份" placement="bottom">
+                        <el-tooltip
+                          class="item"
+                          effect="dark"
+                          content="省份"
+                          placement="bottom"
+                        >
                           <el-input
                             v-model="selectVirus.province"
                             placeholder="省份"
                             :readonly="readonly"
                             size="mini"
-                            style="background:#d7d7d7"
+                            style="background: #d7d7d7"
                           ></el-input>
                         </el-tooltip>
                       </div>
                     </el-col>
                     <el-col :span="6" :offset="2">
                       <div class="city">
-                        <el-tooltip class="item" effect="dark" content="城市" placement="right">
+                        <el-tooltip
+                          class="item"
+                          effect="dark"
+                          content="城市"
+                          placement="right"
+                        >
                           <el-input
                             v-model="selectVirus.city"
                             placeholder="城市"
                             :readonly="readonly"
                             size="mini"
-                            style="background:#d7d7d7"
+                            style="background: #d7d7d7"
                           ></el-input>
                         </el-tooltip>
                       </div>
@@ -177,39 +203,54 @@
                     <el-row>
                       <el-col :span="6" :offset="1">
                         <div class="confirmed">
-                          <el-tooltip class="item" effect="dark" content="确诊" placement="left">
+                          <el-tooltip
+                            class="item"
+                            effect="dark"
+                            content="确诊"
+                            placement="left"
+                          >
                             <el-input
                               v-model="selectVirus.confirmed"
                               placeholder="确诊"
                               :readonly="readonly"
                               size="mini"
-                              style="background:#d7d7d7"
+                              style="background: #d7d7d7"
                             ></el-input>
                           </el-tooltip>
                         </div>
                       </el-col>
                       <el-col :span="6" :offset="2">
                         <div class="recovery">
-                          <el-tooltip class="item" effect="dark" content="治愈" placement="bottom">
+                          <el-tooltip
+                            class="item"
+                            effect="dark"
+                            content="治愈"
+                            placement="bottom"
+                          >
                             <el-input
                               v-model="selectVirus.recovery"
                               placeholder="治愈"
                               :readonly="readonly"
                               size="mini"
-                              style="background:#d7d7d7"
+                              style="background: #d7d7d7"
                             ></el-input>
                           </el-tooltip>
                         </div>
                       </el-col>
                       <el-col :span="6" :offset="2">
                         <div class="deaths">
-                          <el-tooltip class="item" effect="dark" content="死亡" placement="right">
+                          <el-tooltip
+                            class="item"
+                            effect="dark"
+                            content="死亡"
+                            placement="right"
+                          >
                             <el-input
                               v-model="selectVirus.deaths"
                               placeholder="死亡"
                               :readonly="readonly"
                               size="mini"
-                              style="background:#d7d7d7"
+                              style="background: #d7d7d7"
                             ></el-input>
                           </el-tooltip>
                         </div>
@@ -229,29 +270,8 @@
                     placeholder="描述"
                     :readonly="readonly"
                     size="mini"
-                    style="background:#d7d7d7"
+                    style="background: #d7d7d7"
                   ></el-input>
-                </div>
-              </div>
-              <div class="virus-image-description">
-                <div class="virus-image-description-title">
-                  <i class="el-icon-full-screen"></i>
-                  <label>图片描述</label>
-                </div>
-                <div class="virus-image-description-content" style="display:inline">
-                  <img :src="selectVirus.base64" class="avatar" />
-                  <input
-                    type="file"
-                    name="file"
-                    id="file"
-                    class="inputfile"
-                    ref="file"
-                    @change="previewFile"
-                  />
-                  <label for="file" v-show="!readonly">
-                    <i class="el-icon-upload"></i>
-                    Choose a file
-                  </label>
                 </div>
               </div>
               <div class="modify">
@@ -269,8 +289,16 @@
                   @click="deleteVirus"
                   v-show="!addMode"
                 ></el-button>
-                <el-button size="mini" round v-show="!readonly && !addMode" @click="updateVirus">提交</el-button>
-                <el-button size="mini" round v-show="addMode" @click="addVirus">添加</el-button>
+                <el-button
+                  size="mini"
+                  round
+                  v-show="!readonly && !addMode"
+                  @click="updateVirus"
+                  >提交</el-button
+                >
+                <el-button size="mini" round v-show="addMode" @click="addVirus"
+                  >添加</el-button
+                >
               </div>
             </div>
           </div>
@@ -281,12 +309,9 @@
 </template>
 
 <script>
-//import user from "../network/common/api/user";
 import virus from "../network/common/api/virus";
 import "ol/ol.css";
 import Map from "ol/Map";
-//import OSM from "ol/source/OSM";
-//import Projection from "ol/proj/Projection";
 import View from "ol/View";
 import Overlay from "ol/Overlay";
 import TileLayer from "ol/layer/Tile";
@@ -300,14 +325,13 @@ import VectorLayer from "ol/layer/Vector";
 import GeoJSON from "ol/format/GeoJSON";
 import { fromLonLat, toLonLat } from "ol/proj";
 import { defaults as defaultControls, OverviewMap } from "ol/control";
-import china from "../assets/china/json/china.json";
+import china from "../assets/basemap/china.json";
 import Fill from "ol/style/Fill";
 import Stroke from "ol/style/Stroke";
-//import Select from "ol/interaction/Select";
-//import { click } from "ol/events/condition";
-//import TileJSON from "ol/source/TileJSON";
 import icon from "@/assets/images/icon.png";
 import icon2 from "@/assets/images/icon2.png";
+import { DateStringToTimestamp } from "../assets/js/DateUtil";
+
 export default {
   data() {
     return {
@@ -323,71 +347,48 @@ export default {
       imageUrl: "https://w.wallhaven.cc/full/ey/wallhaven-eymzjk.jpg",
       pickerOptions: {
         disabledDate(time) {
-          var date1 = new Date(2020, 0, 11);
+          var date1 = new Date(2020, 0, 22);
+          var date2 = new Date(2021, 0, 12);
           return (
-            time.getTime() > Date.now() || time.getTime() < date1.getTime()
+            time.getTime() > date2.getTime() || time.getTime() < date1.getTime()
           );
-        }
+        },
       },
       searchContent: "",
       ptfeatures: [],
       selectVirus: {
         id: 1,
-        time: "2020-01-11",
+        time: "2020-01-22",
         lat: 0,
         lng: 0,
-        public_time: 0,
+        date_timestamp: 0,
         country: "",
         province: "",
         city: "",
         confirmed: 0,
         recovery: 0,
         deaths: 0,
-        description: "数据来源：澎湃新闻美数课",
-        base64: ""
+        description: "数据来源：JHU CSSE COVID-19 Data",
       },
       readonly: true,
       editMode: false,
       addFeature: null,
       addAction: false, // 控制添加点行为
-      addMode: false // 控制按钮显示
+      addMode: false, // 控制按钮显示
     };
   },
   methods: {
-    previewFile() {
-      const file = this.$refs.file.files[0];
-      const reader = new FileReader();
-
-      reader.addEventListener(
-        "load",
-        () => {
-          // convert image file to base64 string\
-          this.selectVirus.base64 = reader.result;
-        },
-        false
-      );
-
-      if (file) {
-        if (/image\/\w+/.test(file.type))
-          //如果是图片的话就返回true)
-          reader.readAsDataURL(file);
-      }
-    },
-    addImage() {},
-
     addVirus() {
       this.$confirm("添加数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
-          // 转化为excel时间
-          var time = Date.parse(this.selectVirus.time);
-          var lastTime = Date.parse("1900-01-01");
-          this.selectVirus.public_time =
-            parseInt((time - lastTime) / (1000 * 60 * 60 * 24)) + 2;
-          virus.addVirus(this.selectVirus).then(res => {
+          this.selectVirus.date_timestamp = DateStringToTimestamp(
+            this.selectVirus.time
+          );
+          virus.addVirus(this.selectVirus).then((res) => {
             console.log(res.data);
             alert("添加成功!");
             // 重新加载数据
@@ -416,10 +417,10 @@ export default {
       this.$confirm("更新数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
-          virus.updateVirus(this.selectVirus).then(res => {
+          virus.updateVirus(this.selectVirus).then((res) => {
             console.log(res.data);
             //this.overlay.setPosition(undefined);
             alert("更新成功!");
@@ -436,10 +437,10 @@ export default {
       this.$confirm("此操作将永久删除该数据点, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
-          virus.deleteVirus(this.selectVirus.id).then(res => {
+          virus.deleteVirus(this.selectVirus.id).then((res) => {
             console.log(res.data);
             this.overlay.setPosition(undefined);
             alert("删除成功!!");
@@ -460,7 +461,6 @@ export default {
       this.overlay.setPosition(undefined);
       this.readonly = true;
       this.editMode = false;
-      this.selectVirus.base64 = "";
       return false;
     },
     styleFunction(feature) {
@@ -468,21 +468,21 @@ export default {
         MultiPolygon: new Style({
           stroke: new Stroke({
             color: "#cc3e3e",
-            width: 1.2
+            width: 1.2,
           }),
           fill: new Fill({
-            color: "rgba(255, 255, 255, 0.1)"
-          })
+            color: "rgba(255, 255, 255, 0.1)",
+          }),
         }),
         Polygon: new Style({
           stroke: new Stroke({
             color: "#cc3e3e",
-            width: 1.2
+            width: 1.2,
           }),
           fill: new Fill({
-            color: "rgba(255, 255, 255, 0.1)"
-          })
-        })
+            color: "rgba(255, 255, 255, 0.1)",
+          }),
+        }),
       };
       return styles[feature.getGeometry().getType()];
     },
@@ -494,10 +494,10 @@ export default {
         positioning: "bottom-center",
         autoPan: true,
         autoPanAnimation: {
-          duration: 250
+          duration: 250,
         },
         stopEvent: false,
-        offset: [0, -30]
+        offset: [0, -30],
       });
 
       /**
@@ -509,8 +509,8 @@ export default {
           new TileLayer({
             source: new XYZSource({
               url:
-                "https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2l2aXRhc3YiLCJhIjoiY2s3YXBvdDU1MTZpdDNlcDVhb3FrbjdtaiJ9.kLk_w4wIjIQ6dunGULViqw"
-            })
+                "https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2l2aXRhc3YiLCJhIjoiY2s3YXBvdDU1MTZpdDNlcDVhb3FrbjdtaiJ9.kLk_w4wIjIQ6dunGULViqw",
+            }),
             /*
             source: new TileJSON({
               url: "https://a.tiles.mapbox.com/v3/aj.1x1-degrees.json"
@@ -520,12 +520,12 @@ export default {
           new VectorLayer({
             source: new VectorSource({
               features: new GeoJSON().readFeatures(china, {
-                featureProjection: "EPSG:3857"
-              })
+                featureProjection: "EPSG:3857",
+              }),
             }),
-            style: this.styleFunction
-          })
-        ]
+            style: this.styleFunction,
+          }),
+        ],
       });
       this.map = new Map({
         controls: defaultControls().extend([overviewMapControl]),
@@ -533,8 +533,8 @@ export default {
           new TileLayer({
             source: new XYZSource({
               url:
-                "https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2l2aXRhc3YiLCJhIjoiY2s3YXBvdDU1MTZpdDNlcDVhb3FrbjdtaiJ9.kLk_w4wIjIQ6dunGULViqw"
-            })
+                "https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2l2aXRhc3YiLCJhIjoiY2s3YXBvdDU1MTZpdDNlcDVhb3FrbjdtaiJ9.kLk_w4wIjIQ6dunGULViqw",
+            }),
             /*
             source: new TileJSON({
               url: "https://a.tiles.mapbox.com/v3/aj.1x1-degrees.json"
@@ -544,18 +544,18 @@ export default {
           new VectorLayer({
             source: new VectorSource({
               features: new GeoJSON().readFeatures(china, {
-                featureProjection: "EPSG:3857"
-              })
+                featureProjection: "EPSG:3857",
+              }),
             }),
-            style: this.styleFunction
-          })
+            style: this.styleFunction,
+          }),
         ],
         overlays: [this.overlay],
         target: "map",
         view: new View({
           center: [12723812.23169663, 3580328.695683322],
-          zoom: 4
-        })
+          zoom: 4,
+        }),
       });
       this.iconStyle2 = new Style({
         image: new Icon({
@@ -564,8 +564,8 @@ export default {
           anchorYUnits: "pixels",
           opacity: 0.75,
           scale: 0.1,
-          src: icon2
-        })
+          src: icon2,
+        }),
       });
       this.iconStyle = new Style({
         image: new Icon({
@@ -573,8 +573,8 @@ export default {
           anchorXUnits: "fraction",
           anchorYUnits: "pixels",
           opacity: 0.75,
-          src: icon
-        })
+          src: icon,
+        }),
       });
       // display popup on click
       /*
@@ -599,7 +599,7 @@ export default {
       });
       */
       // display popup on click
-      this.map.on("click", evt => {
+      this.map.on("click", (evt) => {
         if (this.editMode) return;
         if (this.addAction) {
           // 在第二次添加时，删除第一次
@@ -609,7 +609,7 @@ export default {
           }
           var coordinate = evt.coordinate;
           this.addFeature = new Feature({
-            geometry: new Point(coordinate)
+            geometry: new Point(coordinate),
           });
           this.addFeature.setStyle(this.iconStyle2);
           this.vectorSource.addFeature(this.addFeature);
@@ -622,7 +622,7 @@ export default {
           this.selectVirus.confirmed = 0;
           this.selectVirus.recovery = 0;
           this.selectVirus.deaths = 0;
-          this.selectVirus.description = "数据来源：澎湃新闻美数课";
+          this.selectVirus.description = "数据来源：JHU CSSE COVID-19 Data";
           this.readonly = false;
           this.addMode = true;
 
@@ -631,11 +631,12 @@ export default {
 
           return;
         }
-        var feature = this.map.forEachFeatureAtPixel(evt.pixel, function(
-          feature
-        ) {
-          return feature;
-        });
+        var feature = this.map.forEachFeatureAtPixel(
+          evt.pixel,
+          function (feature) {
+            return feature;
+          }
+        );
         if (feature) {
           this.readonly = true;
           this.addMode = false;
@@ -643,14 +644,13 @@ export default {
           var attr = feature.getProperties();
           if ("country" in attr) {
             this.selectVirus.time = this.datatime;
-            this.selectVirus.public_time = attr.public_time;
+            this.selectVirus.date_timestamp = attr.date_timestamp;
             this.selectVirus.country = attr.country;
             this.selectVirus.province = attr.province;
             this.selectVirus.city = attr.city;
-            this.selectVirus.confirmed = attr.new_diagnosis;
-            this.selectVirus.recovery = attr.new_recovery;
-            this.selectVirus.deaths = attr.new_death;
-            this.selectVirus.base64 = attr.base64;
+            this.selectVirus.confirmed = attr.new_confirmed;
+            this.selectVirus.recovery = attr.new_recovered;
+            this.selectVirus.deaths = attr.new_deaths;
             if (attr.description)
               this.selectVirus.description = attr.description;
             this.selectVirus.id = attr.id;
@@ -658,7 +658,7 @@ export default {
           }
         }
       });
-      this.map.on("pointermove", e => {
+      this.map.on("pointermove", (e) => {
         if (e.dragging) {
           if (this.addFeature) {
             this.vectorSource.removeFeature(this.addFeature);
@@ -666,7 +666,6 @@ export default {
           }
           this.readonly = true;
           this.editMode = false;
-          this.selectVirus.base64 = "";
 
           this.overlay.setPosition(undefined);
           return;
@@ -683,7 +682,7 @@ export default {
     },
     loadData() {
       // 发送请求获得数据
-      virus.getVirusByTime(this.datatime).then(res => {
+      virus.getVirusByTime(this.datatime).then((res) => {
         if (this.vectorLayer) {
           this.map.removeLayer(this.vectorLayer);
           this.vectorSource.clear();
@@ -691,28 +690,27 @@ export default {
         }
         var _this = this;
         // 绘制
-        res.data.map(function(item) {
+        res.data.map(function (item) {
           var feature = new Feature({
             geometry: new Point(fromLonLat([item.lng, item.lat])),
             country: item.country,
             province: item.province,
             city: item.city,
-            new_diagnosis: item.new_diagnosis,
-            new_recovery: item.new_recovery,
-            new_death: item.new_death,
+            new_confirmed: item.new_confirmed,
+            new_recovered: item.new_recovered,
+            new_deaths: item.new_deaths,
             description: item.description,
-            public_time: item.public_time,
-            base64: item.image,
-            id: item.id
+            date_timestamp: item.date_timestamp,
+            id: item.id,
           });
           feature.setStyle(_this.iconStyle);
           _this.ptfeatures.push(feature);
         });
         this.vectorSource = new VectorSource({
-          features: this.ptfeatures
+          features: this.ptfeatures,
         });
         this.vectorLayer = new VectorLayer({
-          source: this.vectorSource
+          source: this.vectorSource,
         });
 
         this.map.addLayer(this.vectorLayer);
@@ -732,7 +730,7 @@ export default {
       }
       virus
         .getVirusByAddressAndTime(this.datatime, this.searchContent)
-        .then(res => {
+        .then((res) => {
           if (this.vectorLayer) {
             this.map.removeLayer(this.vectorLayer);
             this.vectorSource.clear();
@@ -740,28 +738,27 @@ export default {
           }
           var _this = this;
           // 绘制
-          res.data.map(function(item) {
+          res.data.map(function (item) {
             var feature = new Feature({
               geometry: new Point(fromLonLat([item.lng, item.lat])),
               country: item.country,
               province: item.province,
               city: item.city,
-              new_diagnosis: item.new_diagnosis,
-              new_recovery: item.new_recovery,
-              new_death: item.new_death,
-              base64: item.base64,
+              new_confirmed: item.new_confirmed,
+              new_recovered: item.new_recovered,
+              new_deaths: item.new_deaths,
               description: item.description,
-              public_time: item.public_time,
-              id: item.id
+              date_timestamp: item.date_timestamp,
+              id: item.id,
             });
             feature.setStyle(_this.iconStyle);
             _this.ptfeatures.push(feature);
           });
           this.vectorSource = new VectorSource({
-            features: this.ptfeatures
+            features: this.ptfeatures,
           });
           this.vectorLayer = new VectorLayer({
-            source: this.vectorSource
+            source: this.vectorSource,
           });
 
           this.map.addLayer(this.vectorLayer);
@@ -771,17 +768,17 @@ export default {
       if (command == "quit") {
         window.localStorage.removeItem("JWT_TOKEN");
         this.$router.push({
-          path: "login"
+          path: "login",
         });
       }
-    }
+    },
   },
   mounted() {
     this.init();
     this.search();
   },
   computed: {},
-  components: {}
+  components: {},
 };
 </script>
 

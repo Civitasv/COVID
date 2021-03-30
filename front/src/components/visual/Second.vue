@@ -37,7 +37,6 @@
 <style scoped>
 #sub_container {
   padding-left: 20px;
-  padding-right: 20px;
 }
 #sub_container .left {
   display: flex;
