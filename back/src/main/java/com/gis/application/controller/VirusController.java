@@ -328,4 +328,77 @@ public class VirusController {
         GeoJSON geoJSON = new GeoJSON(features);
         return geoJSON.toString();
     }
+
+    @GetMapping("/china/density/{timestamp}")
+    public String getChinaProvinceDensityVirusByTimestamp(@PathVariable("timestamp") int timestamp) {
+        List<VirusDensity> virusList = service.getChinaProvinceDensityVirusByTimestamp(timestamp);
+        List<Feature> features = new ArrayList<>();
+        for (VirusDensity virus : virusList) {
+            String code = virus.getLocation();
+            try {
+                String geojson = Files.lines(Paths.get("src", "main", "resources", "static", "province", code + ".json")).collect(Collectors.joining("\n"));
+                Gson gson = new Gson();
+                JsonObject jsonObject = gson.fromJson(geojson, JsonObject.class);
+                JsonArray array = jsonObject.getAsJsonArray("features");
+                JsonObject geometry = array.get(0).getAsJsonObject().getAsJsonObject("geometry");
+                Feature feature = new Feature(geometry.toString());
+                feature.addProperty("active", String.valueOf(virus.getActive()));
+                feature.addProperty("recovered", String.valueOf(virus.getRecovered()));
+                feature.addProperty("deaths", String.valueOf(virus.getDeaths()));
+                feature.addProperty("combined_key", virus.getCombinedKey());
+                features.add(feature);
+            } catch (IOException e) {
+                return "";
+            }
+        }
+        GeoJSON geoJSON = new GeoJSON(features);
+        return geoJSON.toString();
+    }
+
+    @GetMapping("/china/density/{province}/{timestamp}")
+    public String getChinaCityDensityVirusByTimestamp(@PathVariable("province") String province, @PathVariable("timestamp") int timestamp) {
+        List<VirusDensity> virusList = service.getChinaCityDensityVirusByTimestamp(province, timestamp);
+        List<Feature> features = new ArrayList<>();
+        if (virusList.size() == 0) {
+            virusList = service.getChinaProvinceDensityVirusByTimestamp(province, timestamp);
+            for (VirusDensity virus : virusList) {
+                String code = virus.getLocation();
+                try {
+                    String geojson = Files.lines(Paths.get("src", "main", "resources", "static", "province", code + ".json")).collect(Collectors.joining("\n"));
+                    Gson gson = new Gson();
+                    JsonObject jsonObject = gson.fromJson(geojson, JsonObject.class);
+                    JsonArray array = jsonObject.getAsJsonArray("features");
+                    JsonObject geometry = array.get(0).getAsJsonObject().getAsJsonObject("geometry");
+                    Feature feature = new Feature(geometry.toString());
+                    feature.addProperty("active", String.valueOf(virus.getActive()));
+                    feature.addProperty("recovered", String.valueOf(virus.getRecovered()));
+                    feature.addProperty("deaths", String.valueOf(virus.getDeaths()));
+                    feature.addProperty("combined_key", virus.getCombinedKey());
+                    features.add(feature);
+                } catch (IOException e) {
+                    return "";
+                }
+            }
+        } else {
+            for (VirusDensity virus : virusList) {
+                String code = virus.getLocation();
+                try {
+                    String geojson = Files.lines(Paths.get("src", "main", "resources", "static", "city", code + ".json")).collect(Collectors.joining("\n"));
+                    Gson gson = new Gson();
+                    JsonObject jsonObject = gson.fromJson(geojson, JsonObject.class);
+                    JsonArray array = jsonObject.getAsJsonArray("features");
+                    JsonObject geometry = array.get(0).getAsJsonObject().getAsJsonObject("geometry");
+                    Feature feature = new Feature(geometry.toString());
+                    feature.addProperty("active", String.valueOf(virus.getActive()));
+                    feature.addProperty("recovered", String.valueOf(virus.getRecovered()));
+                    feature.addProperty("deaths", String.valueOf(virus.getDeaths()));
+                    features.add(feature);
+                } catch (IOException e) {
+                    return "";
+                }
+            }
+        }
+        GeoJSON geoJSON = new GeoJSON(features);
+        return geoJSON.toString();
+    }
 }

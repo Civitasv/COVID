@@ -109,4 +109,13 @@ public interface VirusService {
 
     // 获取中国市级确诊数据
     List<VirusConfirmed> getChinaCityConfirmedVirusByTimestamp(String province, int timestamp);
+
+    // 查询某时间戳的中国省级所有确诊\治愈\死亡数据，用于密度图可视化
+    List<VirusDensity> getChinaProvinceDensityVirusByTimestamp(int timestamp);
+
+    // 获取中国某省份所有确诊\治愈\死亡数据，用于密度图可视化
+    List<VirusDensity> getChinaProvinceDensityVirusByTimestamp(String province, int timestamp);
+
+    // 查询某省某时间戳的中国市级所有确诊\治愈\死亡数据，用于密度图可视化
+    List<VirusDensity> getChinaCityDensityVirusByTimestamp(String province, int timestamp);
 }

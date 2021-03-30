@@ -259,4 +259,22 @@ public class VirusServiceImpl implements VirusService {
         VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
         return mapper.getChinaCityConfirmedVirusByTimestamp(province, timestamp);
     }
+
+    @Override
+    public List<VirusDensity> getChinaProvinceDensityVirusByTimestamp(int timestamp) {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.getChinaProvinceDensityVirusByTimestamp(timestamp);
+    }
+
+    @Override
+    public List<VirusDensity> getChinaProvinceDensityVirusByTimestamp(String province, int timestamp) {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.getChinaProvinceOnlyDensityVirusByTimestamp(province, timestamp);
+    }
+
+    @Override
+    public List<VirusDensity> getChinaCityDensityVirusByTimestamp(String province, int timestamp) {
+        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
+        return mapper.getChinaCityDensityVirusByTimestamp(province, timestamp);
+    }
 }

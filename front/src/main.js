@@ -5,7 +5,7 @@ import store from "./store/index.js"
 // 引入element
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import echarts from "echarts"
+import * as echarts from 'echarts';
 import 'mapbox-gl/dist/mapbox-gl.css'
 import VueiClient from '@supermap/vue-iclient-mapboxgl';
 import "./assets/css/app.css"

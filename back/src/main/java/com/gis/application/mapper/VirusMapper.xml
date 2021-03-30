@@ -535,6 +535,16 @@
         where timestamp = #{timestamp}
     </select>
 
+    <select id="getChinaProvinceDensityVirusByTimestamp" resultType="VirusDensity">
+        select timestamp,
+               current_confirmed as active,
+               recovered,
+               deaths,
+               combined_key,
+               location_code     as location
+        from china_province
+        where timestamp = #{timestamp}
+    </select>
     <select id="getChinaProvinceOnlyConfirmedVirusByTimestamp" resultType="VirusConfirmed">
         select timestamp,
                confirmed,
@@ -544,12 +554,33 @@
         where timestamp = #{timestamp}
           and province = #{province}
     </select>
-
+    <select id="getChinaProvinceOnlyDensityVirusByTimestamp" resultType="VirusDensity">
+        select timestamp,
+               current_confirmed as active,
+               recovered,
+               deaths,
+               combined_key,
+               location_code     as location
+        from china_province
+        where timestamp = #{timestamp}
+          and province = #{province}
+    </select>
     <select id="getChinaCityConfirmedVirusByTimestamp" resultType="VirusConfirmed">
         select timestamp,
                confirmed,
                combined_key,
                location_code as location
+        from china_city
+        where timestamp = #{timestamp}
+          and province = #{province}
+    </select>
+    <select id="getChinaCityDensityVirusByTimestamp" resultType="VirusDensity">
+        select timestamp,
+               current_confirmed as active,
+               recovered,
+               deaths,
+               combined_key,
+               location_code     as location
         from china_city
         where timestamp = #{timestamp}
           and province = #{province}
