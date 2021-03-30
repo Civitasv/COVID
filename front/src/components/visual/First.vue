@@ -259,6 +259,7 @@ export default {
       table_active_province: "",
       table_active_city_index: -1,
       table_active_city: "",
+      showIndex: 0,
     };
   },
   watch: {
@@ -746,7 +747,7 @@ export default {
               maxPixelIntensity: 1,
               minPixelIntensity: 0,
             };
-            var layers = () => {
+            var addLayers = () => {
               const confirmedLayer = new GeoJSONLayer({
                 url: this.confirmedUrl,
                 renderer: confirmedRenderer,
@@ -853,21 +854,28 @@ export default {
                 renderer: deathsRatioRenderer,
                 title: "COVID-19死亡率（热力图）",
               });
-              return [
-                deathsRatioLayer,
-                clusterActiveLayer,
-                activeLayer,
-                deathsLayer,
-                recoveredLayer,
+              var data = [
                 confirmedLayer,
+                recoveredLayer,
+                deathsLayer,
+                activeLayer,
+                clusterActiveLayer,
+                deathsRatioLayer,
               ];
+              groupLayer.removeAll();
+              data.forEach((item, index) => {
+                if (this.showIndex != index) groupLayer.add(item);
+                item.on("layerview-create-error", () => {
+                  groupLayer.remove(item);
+                });
+              });
+              groupLayer.add(data[this.showIndex]);
             };
 
             var groupLayer = new GroupLayer({
               title: "COVID-19数据可视化",
               visible: true,
               visibilityMode: "exclusive",
-              layers: layers(),
             });
             const map = new Map({
               basemap: "dark-gray-vector",
@@ -886,16 +894,22 @@ export default {
                   if (visible) {
                     if (item.title == "COVID-19累计确诊（分布图）") {
                       this.info_title = "累计确诊";
+                      this.showIndex = 0;
                     } else if (item.title == "COVID-19累计治愈（分布图）") {
                       this.info_title = "累计治愈";
+                      this.showIndex = 1;
                     } else if (item.title == "COVID-19累计死亡（分布图）") {
                       this.info_title = "累计死亡";
+                      this.showIndex = 2;
                     } else if (
                       item.title == "COVID-19现存确诊（聚合图）" ||
                       item.title == "COVID-19现存确诊（分布图）"
                     ) {
                       this.info_title = "现存确诊";
+                      this.showIndex =
+                        item.title == "COVID-19现存确诊（聚合图）" ? 3 : 4;
                     } else if (item.title == "COVID-19死亡率（热力图）") {
+                      this.showIndex = 5;
                       this.info_title = "死亡率";
                     }
                     // 返回国家数据，防止数据冲突
@@ -920,6 +934,7 @@ export default {
                 document.getElementsByClassName(
                   "esri-time-slider__animation"
                 )[0].style.display = "none";
+                addLayers();
                 addGrouplayerListener();
               });
             // time slider widget initialization
@@ -977,12 +992,10 @@ export default {
               this.clearTableSelect(0);
               this.clearTableSelect(1);
               this.clearTableSelect(2);
-              this.info_title = "累计确诊";
               this.tableIndex = 0;
               await this.showTableData();
               // 更新地图
-              groupLayer.removeAll();
-              groupLayer.addMany(layers());
+              addLayers();
               addGrouplayerListener();
             });
             var basemapGallery = new BasemapGallery({

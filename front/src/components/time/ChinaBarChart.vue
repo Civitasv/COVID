@@ -49,6 +49,12 @@ export default {
       "getProvinceRecoveredVirusData",
       "getProvinceDeathsVirusData",
     ]),
+    initChart() {
+      this.chart = this.$echarts.init(
+        document.querySelector("#china-bar-trend"),
+        "light"
+      );
+    },
     // Echarts 的 resize 方法
     resizeHandler() {
       this.chart.resize();
@@ -79,11 +85,6 @@ export default {
             country: "China",
             timestamp: this.timestamp,
           });
-
-        this.chart = this.$echarts.init(
-          document.querySelector("#china-bar-trend"),
-          "light"
-        );
 
         const option = {
           tooltip: {
@@ -216,10 +217,7 @@ export default {
             province: this.province,
             timestamp: this.timestamp,
           });
-        this.chart = this.$echarts.init(
-          document.querySelector("#china-bar-trend"),
-          "light"
-        );
+
         let x, confirmed, recovered, deaths;
         if (
           !this.provinceConfirmed["China"][this.province][this.timestamp] ||
@@ -417,6 +415,7 @@ export default {
     },
   },
   mounted() {
+    this.initChart();
     this.drawGraph();
     // 绑定监听事件
     window.addEventListener("resize", this.resizeHandler);

@@ -93,6 +93,7 @@ export default {
       groupLayer: null,
       view: null,
       tags: { country: "中国", province: "" },
+      showIndex: 0,
     };
   },
   watch: {
@@ -405,10 +406,18 @@ export default {
           },
         });
         this.groupLayer.removeAll();
-        this.groupLayer.addMany([
-          provinceDotDensityLayer,
-          provinceConfirmedLayer,
-        ]);
+        if (this.showIndex == 0)
+          this.groupLayer.addMany([
+            provinceDotDensityLayer,
+            provinceConfirmedLayer,
+          ]);
+        else {
+          this.groupLayer.addMany([
+            provinceConfirmedLayer,
+            provinceDotDensityLayer,
+          ]);
+        }
+        this.addGroupLayerListener();
         provinceConfirmedLayer.queryExtent().then((res) => {
           this.view
             .goTo({
@@ -535,7 +544,12 @@ export default {
           },
         });
         this.groupLayer.removeAll();
-        this.groupLayer.addMany([dotDensityLayer, confirmedLayer]);
+        if (this.showIndex == 0)
+          this.groupLayer.addMany([dotDensityLayer, confirmedLayer]);
+        else {
+          this.groupLayer.addMany([confirmedLayer, dotDensityLayer]);
+        }
+        this.addGroupLayerListener();
         confirmedLayer.queryExtent().then((res) => {
           this.view
             .goTo({
@@ -546,6 +560,22 @@ export default {
                 console.error(error);
               }
             });
+        });
+      });
+    },
+    addGroupLayerListener() {
+      this.groupLayer.layers.forEach((item) => {
+        item.watch("visible", async (visible) => {
+          if (visible) {
+            if (item.title == "COVID-19累计确诊（填色图）") {
+              this.showIndex = 0;
+            } else if (item.title == "COVID-19（密度图）") {
+              this.showIndex = 1;
+            }
+          }
+        });
+        item.on("layerview-create-error", () => {
+          this.groupLayer.remove(item);
         });
       });
     },
