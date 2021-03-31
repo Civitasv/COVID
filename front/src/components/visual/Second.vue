@@ -28,7 +28,31 @@
         <!-- 分布图 -->
         <div id="china-distribution"></div>
         <!-- 时间控件-->
-        <div id="china-timeSlider"></div>
+        <div id="china-slider-wrapper">
+          <div
+            id="china-playButton"
+            class="esri-widget esri-widget--button toggle-button"
+          >
+            <!-- <div>
+                    <span class="toggle-button-icon esri-icon-play" aria-label="play icon"></span> Play
+                </div> -->
+            <div>
+              <span
+                class="toggle-button-icon esri-icon-play"
+                aria-label="play icon"
+              ></span>
+              Play
+            </div>
+            <div>
+              <span
+                class="toggle-button-icon esri-icon-pause"
+                aria-label="pause icon"
+              ></span>
+              Pause
+            </div>
+          </div>
+          <div id="china-timeSlider" class="esri-widget"></div>
+        </div>
       </div>
     </el-main>
   </el-container>
@@ -69,6 +93,45 @@
   margin-left: 20px;
   z-index: 99;
 }
+#china-slider-wrapper {
+  display: flex;
+  align-items: center;
+  background-color: #242424;
+  z-index: 100;
+}
+/*Play/Stop toggle button */
+
+#china-playButton {
+  height: 100%;
+  width: 100%;
+  margin: 5px;
+  min-width: 60px;
+  background-color: #242424;
+}
+
+.toggle-button {
+  display: flex;
+}
+
+.toggle-button.toggled .toggle-button-icon {
+  color: #cc1b1b;
+}
+
+.toggle-button .toggle-button-icon {
+  color: #1bcc1b;
+}
+
+.toggle-button > :nth-child(2) {
+  display: none;
+}
+
+.toggle-button.toggled > :nth-child(1) {
+  display: none;
+}
+
+.toggle-button.toggled > :nth-child(2) {
+  display: block;
+}
 </style>
 
 <script>
@@ -92,13 +155,11 @@ export default {
       groupLayer: null,
       view: null,
       tags: { country: "中国", province: "" },
+      isPlaying: false,
       showIndex: 0,
     };
   },
   watch: {
-    date_timestamp() {
-      this.setDescription();
-    },
     province() {
       this.setDescription();
       if (this.province != "") this.showProvinceLayer();
@@ -294,273 +355,269 @@ export default {
         this.deaths = deaths;
       }
     },
-    showProvinceLayer() {
-      const options = {
-        url: "https://js.arcgis.com/4.18/",
-        css: "https://js.arcgis.com/4.18/esri/themes/dark/main.css",
-      };
-      loadModules(
-        ["esri/layers/GeoJSONLayer", "esri/renderers/DotDensityRenderer"],
-        options
-      ).then(([GeoJSONLayer, DotDensityRenderer]) => {
-        const provinceConfirmedRenderer = {
-          type: "simple", // autocasts as new SimpleRenderer()
-          symbol: {
-            type: "simple-fill",
-            outline: {
-              color: "#f0f5f9",
-              width: 1,
-            },
-          },
-          visualVariables: [
-            {
-              type: "color",
-              field: "confirmed",
-              legendOptions: {
-                title: "累计确诊人数",
-              },
-              stops: [
-                { color: "#fae3d9", value: 0 },
-                { color: "#ffd0a6", value: 10 },
-                { color: "#ffaa7f", value: 100 },
-                { color: "#ff704e", value: 500 },
-                { color: "#f04040", value: 1000 },
-                { color: "#b50a09", value: 10000 },
-              ],
-            },
-          ],
-        };
-        const provinceDotDensityRenderer = new DotDensityRenderer({
-          dotValue: 10,
-          outline: null,
-          referenceScale: null,
-          dotBlendingEnabled: true,
-          legendOptions: {
-            unit: "cases",
-          },
-          attributes: [
-            {
-              field: "active",
-              color: "#c23531",
-              label: "Active",
-            },
-            {
-              field: "recovered",
-              color: "#38ea82",
-              label: "Recovered",
-            },
-            {
-              field: "deaths",
-              color: "#949fa5",
-              label: "Deaths",
-            },
-          ],
-        });
-        const provinceConfirmedLayer = new GeoJSONLayer({
-          url: this.provinceConfirmedUrl,
-          renderer: provinceConfirmedRenderer,
-          title: "COVID-19累计确诊（填色图）",
-          popupTemplate: {
-            // autocasts as new PopupTemplate()
-            title: "<font color='#FFFFFF'>{combined_key}",
-            content: [
-              {
-                type: "fields",
-                fieldInfos: [
-                  {
-                    fieldName: "confirmed",
-                    label: "累计确诊",
-                  },
-                ],
-              },
-            ],
-          },
-        });
-        const provinceDotDensityLayer = new GeoJSONLayer({
-          url: this.provinceDensityUrl,
-          renderer: provinceDotDensityRenderer,
-          title: "COVID-19（密度图）",
-          popupTemplate: {
-            // autocasts as new PopupTemplate()
-            title: "<font color='#FFFFFF'>{combined_key}",
-            content: [
-              {
-                type: "fields",
-                fieldInfos: [
-                  {
-                    fieldName: "active",
-                    label: "现存确诊",
-                  },
-                  {
-                    fieldName: "recovered",
-                    label: "治愈",
-                  },
-                  {
-                    fieldName: "deaths",
-                    label: "死亡",
-                  },
-                ],
-              },
-            ],
-          },
-        });
-        this.groupLayer.removeAll();
-        if (this.showIndex == 0)
-          this.groupLayer.addMany([
-            provinceDotDensityLayer,
-            provinceConfirmedLayer,
-          ]);
-        else {
-          this.groupLayer.addMany([
-            provinceConfirmedLayer,
-            provinceDotDensityLayer,
-          ]);
-        }
-        this.addGroupLayerListener();
-        provinceConfirmedLayer.queryExtent().then((res) => {
-          this.view
-            .goTo({
-              center: res.extent,
-            })
-            .catch(function (error) {
-              if (error.name != "AbortError") {
-                console.error(error);
-              }
-            });
-        });
-      });
+    sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
     },
-    showChinaLayer() {
+    async showProvinceLayer() {
       const options = {
         url: "https://js.arcgis.com/4.18/",
         css: "https://js.arcgis.com/4.18/esri/themes/dark/main.css",
       };
-      loadModules(
+      const [GeoJSONLayer, DotDensityRenderer] = await loadModules(
         ["esri/layers/GeoJSONLayer", "esri/renderers/DotDensityRenderer"],
         options
-      ).then(([GeoJSONLayer, DotDensityRenderer]) => {
-        // 默认marker
-        const confirmedSym = {
+      );
+      const provinceConfirmedRenderer = {
+        type: "simple", // autocasts as new SimpleRenderer()
+        symbol: {
           type: "simple-fill",
           outline: {
-            width: 0,
+            color: "#f0f5f9",
+            width: 1,
           },
-        };
-
-        const confirmedRenderer = {
-          type: "simple", // autocasts as new SimpleRenderer()
-          symbol: confirmedSym,
-          visualVariables: [
+        },
+        visualVariables: [
+          {
+            type: "color",
+            field: "confirmed",
+            legendOptions: {
+              title: "累计确诊人数",
+            },
+            stops: [
+              { color: "#fae3d9", value: 0 },
+              { color: "#ffd0a6", value: 10 },
+              { color: "#ffaa7f", value: 100 },
+              { color: "#ff704e", value: 500 },
+              { color: "#f04040", value: 1000 },
+              { color: "#b50a09", value: 10000 },
+            ],
+          },
+        ],
+      };
+      const provinceDotDensityRenderer = new DotDensityRenderer({
+        dotValue: 10,
+        outline: null,
+        referenceScale: null,
+        dotBlendingEnabled: true,
+        legendOptions: {
+          unit: "cases",
+        },
+        attributes: [
+          {
+            field: "active",
+            color: "#c23531",
+            label: "Active",
+          },
+          {
+            field: "recovered",
+            color: "#38ea82",
+            label: "Recovered",
+          },
+          {
+            field: "deaths",
+            color: "#949fa5",
+            label: "Deaths",
+          },
+        ],
+      });
+      const provinceConfirmedLayer = new GeoJSONLayer({
+        url: this.provinceConfirmedUrl,
+        renderer: provinceConfirmedRenderer,
+        title: "COVID-19累计确诊（填色图）",
+        popupTemplate: {
+          // autocasts as new PopupTemplate()
+          title: "<font color='#FFFFFF'>{combined_key}",
+          content: [
             {
-              type: "color",
-              field: "confirmed",
-              legendOptions: {
-                title: "累计确诊人数",
-              },
-              stops: [
-                { color: "#fae3d9", value: 0 },
-                { color: "#ffd0a6", value: 10 },
-                { color: "#ffaa7f", value: 100 },
-                { color: "#ff704e", value: 500 },
-                { color: "#f04040", value: 1000 },
-                { color: "#b50a09", value: 10000 },
+              type: "fields",
+              fieldInfos: [
+                {
+                  fieldName: "confirmed",
+                  label: "累计确诊",
+                },
               ],
             },
           ],
-        };
-        const dotDensityRenderer = new DotDensityRenderer({
-          dotValue: 5,
-          outline: null,
-          referenceScale: null,
-          dotBlendingEnabled: true,
-          legendOptions: {
-            unit: "cases",
-          },
-          attributes: [
+        },
+      });
+      const provinceDotDensityLayer = new GeoJSONLayer({
+        url: this.provinceDensityUrl,
+        renderer: provinceDotDensityRenderer,
+        title: "COVID-19（密度图）",
+        popupTemplate: {
+          // autocasts as new PopupTemplate()
+          title: "<font color='#FFFFFF'>{combined_key}",
+          content: [
             {
-              field: "active",
-              color: "#c23531",
-              label: "Active",
-            },
-            {
-              field: "recovered",
-              color: "#38ea82",
-              label: "Recovered",
-            },
-            {
-              field: "deaths",
-              color: "#949fa5",
-              label: "Deaths",
+              type: "fields",
+              fieldInfos: [
+                {
+                  fieldName: "active",
+                  label: "现存确诊",
+                },
+                {
+                  fieldName: "recovered",
+                  label: "治愈",
+                },
+                {
+                  fieldName: "deaths",
+                  label: "死亡",
+                },
+              ],
             },
           ],
-        });
-        const confirmedLayer = new GeoJSONLayer({
-          url: this.confirmedUrl,
-          renderer: confirmedRenderer,
-          title: "COVID-19累计确诊（填色图）",
-          popupTemplate: {
-            // autocasts as new PopupTemplate()
-            title: "<font color='#FFFFFF'>{combined_key}",
-            content: [
-              {
-                type: "fields",
-                fieldInfos: [
-                  {
-                    fieldName: "confirmed",
-                    label: "累计确诊",
-                  },
-                ],
-              },
+        },
+      });
+      this.groupLayer.removeAll();
+      if (this.showIndex == 0) {
+        this.groupLayer.addMany([
+          provinceDotDensityLayer,
+          provinceConfirmedLayer,
+        ]);
+        await this.view.whenLayerView(provinceConfirmedLayer);
+      } else {
+        this.groupLayer.addMany([
+          provinceConfirmedLayer,
+          provinceDotDensityLayer,
+        ]);
+        await this.view.whenLayerView(provinceDotDensityLayer);
+      }
+      this.addGroupLayerListener();
+      const res = await provinceConfirmedLayer.queryExtent();
+      this.view.goTo({
+        center: res.extent,
+      });
+    },
+    async showChinaLayer() {
+      const options = {
+        url: "https://js.arcgis.com/4.18/",
+        css: "https://js.arcgis.com/4.18/esri/themes/dark/main.css",
+      };
+      const [GeoJSONLayer, DotDensityRenderer] = await loadModules(
+        ["esri/layers/GeoJSONLayer", "esri/renderers/DotDensityRenderer"],
+        options
+      );
+
+      // 默认marker
+      const confirmedSym = {
+        type: "simple-fill",
+        outline: {
+          width: 0,
+        },
+      };
+
+      const confirmedRenderer = {
+        type: "simple", // autocasts as new SimpleRenderer()
+        symbol: confirmedSym,
+        visualVariables: [
+          {
+            type: "color",
+            field: "confirmed",
+            legendOptions: {
+              title: "累计确诊人数",
+            },
+            stops: [
+              { color: "#fae3d9", value: 0 },
+              { color: "#ffd0a6", value: 10 },
+              { color: "#ffaa7f", value: 100 },
+              { color: "#ff704e", value: 500 },
+              { color: "#f04040", value: 1000 },
+              { color: "#b50a09", value: 10000 },
             ],
           },
-        });
-        const dotDensityLayer = new GeoJSONLayer({
-          url: this.densityUrl,
-          renderer: dotDensityRenderer,
-          title: "COVID-19（密度图）",
-          popupTemplate: {
-            // autocasts as new PopupTemplate()
-            title: "<font color='#FFFFFF'>{combined_key}",
-            content: [
-              {
-                type: "fields",
-                fieldInfos: [
-                  {
-                    fieldName: "active",
-                    label: "现存确诊",
-                  },
-                  {
-                    fieldName: "recovered",
-                    label: "治愈",
-                  },
-                  {
-                    fieldName: "deaths",
-                    label: "死亡",
-                  },
-                ],
-              },
-            ],
+        ],
+      };
+      const dotDensityRenderer = new DotDensityRenderer({
+        dotValue: 5,
+        outline: null,
+        referenceScale: null,
+        dotBlendingEnabled: true,
+        legendOptions: {
+          unit: "cases",
+        },
+        attributes: [
+          {
+            field: "active",
+            color: "#c23531",
+            label: "Active",
           },
-        });
-        this.groupLayer.removeAll();
-        if (this.showIndex == 0)
-          this.groupLayer.addMany([dotDensityLayer, confirmedLayer]);
-        else {
-          this.groupLayer.addMany([confirmedLayer, dotDensityLayer]);
+          {
+            field: "recovered",
+            color: "#38ea82",
+            label: "Recovered",
+          },
+          {
+            field: "deaths",
+            color: "#949fa5",
+            label: "Deaths",
+          },
+        ],
+      });
+      const confirmedLayer = new GeoJSONLayer({
+        url: this.confirmedUrl,
+        renderer: confirmedRenderer,
+        title: "COVID-19累计确诊（填色图）",
+        popupTemplate: {
+          // autocasts as new PopupTemplate()
+          title: "<font color='#FFFFFF'>{combined_key}",
+          content: [
+            {
+              type: "fields",
+              fieldInfos: [
+                {
+                  fieldName: "confirmed",
+                  label: "累计确诊",
+                },
+              ],
+            },
+          ],
+        },
+      });
+      const dotDensityLayer = new GeoJSONLayer({
+        url: this.densityUrl,
+        renderer: dotDensityRenderer,
+        title: "COVID-19（密度图）",
+        popupTemplate: {
+          // autocasts as new PopupTemplate()
+          title: "<font color='#FFFFFF'>{combined_key}",
+          content: [
+            {
+              type: "fields",
+              fieldInfos: [
+                {
+                  fieldName: "active",
+                  label: "现存确诊",
+                },
+                {
+                  fieldName: "recovered",
+                  label: "治愈",
+                },
+                {
+                  fieldName: "deaths",
+                  label: "死亡",
+                },
+              ],
+            },
+          ],
+        },
+      });
+      this.groupLayer.removeAll();
+      var data = [confirmedLayer, dotDensityLayer];
+      data.forEach((item, index) => {
+        if (this.showIndex != index) {
+          this.groupLayer.add(item);
         }
-        this.addGroupLayerListener();
-        confirmedLayer.queryExtent().then((res) => {
-          this.view
-            .goTo({
-              center: res.extent,
-            })
-            .catch(function (error) {
-              if (error.name != "AbortError") {
-                console.error(error);
-              }
-            });
+        item.on("layerview-create-error", () => {
+          this.groupLayer.remove(item);
         });
       });
+      this.groupLayer.add(data[this.showIndex]);
+      await this.view.whenLayerView(data[this.showIndex]);
+      const res = await data[this.showIndex].queryExtent();
+      this.view.goTo({
+        center: res.extent,
+      });
+      this.addGroupLayerListener();
     },
     addGroupLayerListener() {
       this.groupLayer.layers.forEach((item) => {
@@ -659,6 +716,7 @@ export default {
                 "esri-time-slider__animation"
               )[0].style.display = "none";
               this.showChinaLayer();
+              this.setDescription();
             });
             // time slider widget initialization
             const timeSlider = new TimeSlider({
@@ -701,9 +759,45 @@ export default {
                 }
               },
             });
+            // set vars for play button
+            const playButton = document.getElementById("china-playButton");
+
+            playButton.addEventListener("click", () => {
+              if (playButton.classList.contains("toggled")) {
+                this.isPlaying = false;
+                playButton.classList.remove("toggled");
+              } else {
+                this.isPlaying = true;
+                playButton.classList.add("toggled");
+                startAnimation();
+              }
+            });
+
+            // Starts the animation that cycle through the years
+            var startAnimation = async () => {
+              if (!this.isPlaying) return;
+              timeSlider.next();
+              var date = timeSlider.values[0];
+              this.date_time =
+                date.getFullYear() +
+                "-" +
+                (date.getMonth() + 1) +
+                "-" +
+                date.getDate();
+              this.date_timestamp = DateStringToTimestamp(this.date_time);
+              if (this.province == "") {
+                await this.showChinaLayer();
+              } else {
+                await this.showProvinceLayer();
+              }
+              await this.setDescription();
+              await this.sleep(1500);
+              startAnimation();
+            };
 
             // 定义函数
             timeSlider.watch("values", async (values) => {
+              if (this.isPlaying) return;
               var date = values[0];
               this.date_time =
                 date.getFullYear() +
@@ -717,6 +811,8 @@ export default {
               } else {
                 this.showProvinceLayer();
               }
+              await this.setDescription();
+              await this.sleep(1500);
             });
             var basemapGallery = new BasemapGallery({
               view: this.view,
@@ -772,7 +868,7 @@ export default {
             );
             this.view.ui.add(
               new Expand({
-                content: timeSlider.container,
+                content: document.getElementById("china-slider-wrapper"),
                 view: this.view,
                 expanded: false,
               }),
@@ -798,7 +894,6 @@ export default {
   },
   mounted() {
     this.showDistributionMap();
-    this.setDescription();
   },
   components: {
     DateTime,

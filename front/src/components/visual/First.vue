@@ -77,7 +77,31 @@
         <!-- 分布图 -->
         <div id="distribution"></div>
         <!-- 时间控件-->
-        <div id="timeSlider"></div>
+        <div id="slider-wrapper">
+          <div
+            id="playButton"
+            class="esri-widget esri-widget--button toggle-button"
+          >
+            <!-- <div>
+                    <span class="toggle-button-icon esri-icon-play" aria-label="play icon"></span> Play
+                </div> -->
+            <div>
+              <span
+                class="toggle-button-icon esri-icon-play"
+                aria-label="play icon"
+              ></span>
+              Play
+            </div>
+            <div>
+              <span
+                class="toggle-button-icon esri-icon-pause"
+                aria-label="pause icon"
+              ></span>
+              Pause
+            </div>
+          </div>
+          <div id="timeSlider" class="esri-widget"></div>
+        </div>
       </div>
     </el-main>
     <el-aside class="right">
@@ -225,6 +249,46 @@
 .text-gray {
   color: #949fa5;
 }
+
+#slider-wrapper {
+  display: flex;
+  align-items: center;
+  background-color: #242424;
+  z-index: 100;
+}
+/*Play/Stop toggle button */
+
+#playButton {
+  height: 100%;
+  width: 100%;
+  margin: 5px;
+  min-width: 60px;
+  background-color: #242424;
+}
+
+.toggle-button {
+  display: flex;
+}
+
+.toggle-button.toggled .toggle-button-icon {
+  color: #cc1b1b;
+}
+
+.toggle-button .toggle-button-icon {
+  color: #1bcc1b;
+}
+
+.toggle-button > :nth-child(2) {
+  display: none;
+}
+
+.toggle-button.toggled > :nth-child(1) {
+  display: none;
+}
+
+.toggle-button.toggled > :nth-child(2) {
+  display: block;
+}
 </style>
 
 <script>
@@ -260,6 +324,7 @@ export default {
       table_active_city_index: -1,
       table_active_city: "",
       showIndex: 0,
+      isPlaying: false,
     };
   },
   watch: {
@@ -329,6 +394,9 @@ export default {
       "getProvinceActiveVirusData",
       "getProvinceDeathsRatioData",
     ]),
+    sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    },
     async showTableData() {
       this.date_timestamp = DateStringToTimestamp(this.date_time);
       if (this.tableIndex == 0) {
@@ -747,7 +815,7 @@ export default {
               maxPixelIntensity: 1,
               minPixelIntensity: 0,
             };
-            var addLayers = () => {
+            var addLayers = async () => {
               const confirmedLayer = new GeoJSONLayer({
                 url: this.confirmedUrl,
                 renderer: confirmedRenderer,
@@ -864,12 +932,16 @@ export default {
               ];
               groupLayer.removeAll();
               data.forEach((item, index) => {
-                if (this.showIndex != index) groupLayer.add(item);
+                if (this.showIndex != index) {
+                  groupLayer.add(item);
+                }
                 item.on("layerview-create-error", () => {
                   groupLayer.remove(item);
                 });
               });
               groupLayer.add(data[this.showIndex]);
+              await view.whenLayerView(data[this.showIndex]);
+              await this.sleep(1000);
             };
 
             var groupLayer = new GroupLayer({
@@ -978,9 +1050,45 @@ export default {
                 }
               },
             });
+            // set vars for play button
+            const playButton = document.getElementById("playButton");
 
-            // 定义函数
+            playButton.addEventListener("click", () => {
+              if (playButton.classList.contains("toggled")) {
+                this.isPlaying = false;
+                playButton.classList.remove("toggled");
+              } else {
+                this.isPlaying = true;
+                playButton.classList.add("toggled");
+                startAnimation();
+              }
+            });
+
+            // Starts the animation that cycle through the years
+            var startAnimation = async () => {
+              if (!this.isPlaying) return;
+              timeSlider.next();
+              var date = timeSlider.values[0];
+              this.date_time =
+                date.getFullYear() +
+                "-" +
+                (date.getMonth() + 1) +
+                "-" +
+                date.getDate();
+              // 返回国家数据，防止数据冲突
+              this.clearTableSelect(0);
+              this.clearTableSelect(1);
+              this.clearTableSelect(2);
+              this.tableIndex = 0;
+              await this.showTableData();
+              // 更新地图
+              await addLayers();
+              addGrouplayerListener();
+              startAnimation();
+            };
+
             timeSlider.watch("values", async (values) => {
+              if (this.isPlaying) return;
               var date = values[0];
               this.date_time =
                 date.getFullYear() +
@@ -995,9 +1103,10 @@ export default {
               this.tableIndex = 0;
               await this.showTableData();
               // 更新地图
-              addLayers();
+              await addLayers();
               addGrouplayerListener();
             });
+
             var basemapGallery = new BasemapGallery({
               view: view,
               source: [
@@ -1033,7 +1142,7 @@ export default {
             );
             view.ui.add(
               new Expand({
-                content: timeSlider.container,
+                content: document.getElementById("slider-wrapper"),
                 view: view,
                 expanded: false,
               }),
