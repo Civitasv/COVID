@@ -93,11 +93,4 @@ public class AdminController {
     public int addVirus(@RequestBody Virus virus) {
         return virusService.insertVirus(virus);
     }
-
-    @VerifyToken
-    @PostMapping("/uploadImage")
-    public int uploadImage(int virusID, String base64) {
-        // 上传至服务器
-        return virusService.addImage(virusID, base64);
-    }
 }

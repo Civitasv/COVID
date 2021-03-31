@@ -1,7 +1,7 @@
 <template>
   <footer>
     <!-- 版权 -->
-    Copyright © 2020
+    Copyright © 2021
     &nbsp;&nbsp;Mr. Hu
   </footer>
 </template>

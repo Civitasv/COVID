@@ -1,3 +1,5 @@
+package com.gis.application;
+
 import com.gis.application.model.Feature;
 import com.gis.application.model.GeoJSON;
 import org.junit.jupiter.api.Test;

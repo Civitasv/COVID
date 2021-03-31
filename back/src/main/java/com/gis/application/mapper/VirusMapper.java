@@ -20,9 +20,6 @@ public interface VirusMapper {
     // 按ID删除疫情数据
     int deleteVirus(int id);
 
-    // 按ID添加BASE64图片
-    int addImage(int id, String base64);
-
     // 查询某时间戳的中国所有确诊数据
     List<VirusConfirmed> getAllChinaConfirmedVirusByTimestamp(int timestamp);
 

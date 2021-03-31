@@ -15,9 +15,6 @@ public interface VirusService {
     // 按ID删除疫情数据
     int deleteVirus(int id);
 
-    // 按ID添加BASE64图片
-    int addImage(int id, String base64);
-
     // 按时间戳查询所有确诊数据
     List<VirusConfirmed> getAllConfirmedVirusByTimestamp(int timestamp);
 

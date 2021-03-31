@@ -533,6 +533,7 @@
                location_code as location
         from china_province
         where timestamp = #{timestamp}
+          and confirmed > 0
     </select>
 
     <select id="getChinaProvinceDensityVirusByTimestamp" resultType="VirusDensity">
@@ -544,6 +545,7 @@
                location_code     as location
         from china_province
         where timestamp = #{timestamp}
+          and current_confirmed > 0
     </select>
     <select id="getChinaProvinceOnlyConfirmedVirusByTimestamp" resultType="VirusConfirmed">
         select timestamp,
@@ -553,6 +555,7 @@
         from china_province
         where timestamp = #{timestamp}
           and province = #{province}
+          and confirmed > 0
     </select>
     <select id="getChinaProvinceOnlyDensityVirusByTimestamp" resultType="VirusDensity">
         select timestamp,
@@ -564,6 +567,7 @@
         from china_province
         where timestamp = #{timestamp}
           and province = #{province}
+          and confirmed > 0
     </select>
     <select id="getChinaCityConfirmedVirusByTimestamp" resultType="VirusConfirmed">
         select timestamp,
@@ -573,6 +577,7 @@
         from china_city
         where timestamp = #{timestamp}
           and province = #{province}
+          and confirmed > 0
     </select>
     <select id="getChinaCityDensityVirusByTimestamp" resultType="VirusDensity">
         select timestamp,
@@ -584,5 +589,6 @@
         from china_city
         where timestamp = #{timestamp}
           and province = #{province}
+          and confirmed > 0
     </select>
 </mapper>

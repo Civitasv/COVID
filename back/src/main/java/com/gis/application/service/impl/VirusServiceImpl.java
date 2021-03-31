@@ -40,12 +40,6 @@ public class VirusServiceImpl implements VirusService {
     }
 
     @Override
-    public int addImage(int id, String base64) {
-        VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
-        return mapper.addImage(id, base64);
-    }
-
-    @Override
     public List<VirusConfirmed> getAllConfirmedVirusByTimestamp(int timestamp) {
         VirusMapper mapper = sqlSession.getMapper(VirusMapper.class);
         List<VirusConfirmed> all = mapper.getAllChinaConfirmedVirusByTimestamp(timestamp);
