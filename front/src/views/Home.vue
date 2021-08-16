@@ -2,7 +2,7 @@
   <div class="home">
     <div class="wrapper">
       <el-card class="card">
-        <h1>GIS战疫——传染病多尺度智能检测系统</h1>
+        <h1>基于Redis的时空数据可视化系统：以COVID-19为例</h1>
         <p>
           数据来源:
           <a

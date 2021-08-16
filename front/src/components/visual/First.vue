@@ -941,7 +941,7 @@ export default {
               });
               groupLayer.add(data[this.showIndex]);
               await view.whenLayerView(data[this.showIndex]);
-              await this.sleep(1000);
+              await this.sleep(1500);
             };
 
             var groupLayer = new GroupLayer({

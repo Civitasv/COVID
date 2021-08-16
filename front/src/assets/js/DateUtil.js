@@ -5,7 +5,7 @@ function DateStringToTimestamp(DateString) {
 
 function TimestampToDateString(timestamp) {
     var date = new Date(timestamp * 1000);
-    return date.getFullYear + "-" + date.getMonth + "-" + date.getDate();
+    return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
 }
 
 export { DateStringToTimestamp, TimestampToDateString }

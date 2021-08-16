@@ -4,7 +4,7 @@
       <img src="../../assets/images/virus.png" />
     </div>
     <div class="title">
-      <span class="content">GIS战疫——传染病多尺度智能检测系统</span>
+      <span class="content">基于Redis的时空数据可视化系统：以COVID-19为例</span>
     </div>
     <div class="nav">
       <div class="menu">

@@ -7,7 +7,7 @@
         :number="3"
         mask="black"
         btn
-        :colors="[ '#267773', '#A7425C', '#620101', '#F3825F', '#F19584']"
+        :colors="['#267773', '#A7425C', '#620101', '#F3825F', '#F19584']"
       >
         <span slot="item_1" @click="showWorld">World</span>
         <span slot="item_2" @click="showChina">China</span>
@@ -41,7 +41,7 @@ export default {
   components: {
     //Footer,
     CircleMenu,
-    Dashboard2
+    Dashboard2,
   },
   methods: {
     showWorld() {
@@ -50,7 +50,7 @@ export default {
     showChina() {
       this.$router.push("/cvisual");
     },
-    showMore() {}
-  }
+    showMore() {},
+  },
 };
 </script>
